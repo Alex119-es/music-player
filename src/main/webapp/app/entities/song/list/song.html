@@ -1,0 +1,177 @@
+<div>
+  <h2 id="page-heading" data-cy="SongHeading">
+    <span jhiTranslate="musicPlayerApp.song.home.title">Songs</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
+        <span jhiTranslate="musicPlayerApp.song.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-song"
+        [routerLink]="['/song/new']"
+      >
+        <fa-icon icon="plus" />
+        <span jhiTranslate="musicPlayerApp.song.home.createLabel">Crear nuevo Song</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  @if (songs().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="musicPlayerApp.song.home.notFound">Ningún Songs encontrado</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="title">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.title">Title</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="duration">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.duration">Duration</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fileUrl">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.fileUrl">File Url</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="coverImage">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.coverImage">Cover Image</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lyrics">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.lyrics">Lyrics</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="releaseDate">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.releaseDate">Release Date</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdAt">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.createdAt">Created At</span>
+
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="album.id">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.album">Album</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="genre.id">
+              <div class="d-flex">
+                <span jhiTranslate="musicPlayerApp.song.genre">Genre</span>
+                <fa-icon class="p-1" icon="sort" />
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (song of songs(); track trackId(song)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/song', song.id, 'view']">{{ song.id }}</a>
+              </td>
+              <td>{{ song.title }}</td>
+              <td>{{ song.duration }}</td>
+              <td>{{ song.fileUrl }}</td>
+              <td>{{ song.coverImage }}</td>
+              <td>{{ song.lyrics }}</td>
+              <td>{{ song.releaseDate | formatMediumDate }}</td>
+              <td>{{ song.createdAt | formatMediumDatetime }}</td>
+              <td>
+                @if (song.album) {
+                  <div>
+                    <a [routerLink]="['/album', song.album.id, 'view']">{{ song.album.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (song.genre) {
+                  <div>
+                    <a [routerLink]="['/genre', song.genre.id, 'view']">{{ song.genre.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/song', song.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/song', song.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(song)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times" />
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (songs().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    </div>
+  }
+</div>

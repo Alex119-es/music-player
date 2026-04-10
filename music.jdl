@@ -1,0 +1,97 @@
+application {
+  config {
+   baseName musicPlayer
+    packageName com.musicplayer
+    applicationType monolith
+    authenticationType jwt
+    databaseType sql
+    prodDatabaseType mysql
+    devDatabaseType h2Disk
+    buildTool maven
+    clientFramework angular
+    enableTranslation true
+    nativeLanguage es
+    languages [es, en]
+    cacheProvider ehcache
+    enableHibernateCache true
+  }
+  entities Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like
+  paginate Song, Album, Artist, Playlist with pagination
+  service Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like with serviceImpl
+  dto Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like with mapstruct
+}
+
+enum AlbumType {
+    ALBUM, SINGLE, EP, PODCAST_SERIES
+}
+
+entity Genre {
+    name String required unique maxlength(50)
+}
+
+entity Artist {
+    name String required maxlength(100)
+    bio TextBlob
+    image String maxlength(255)
+    country String maxlength(2)
+    verified Boolean
+    createdAt Instant
+}
+
+entity Album {
+    title String required maxlength(150)
+    coverImage String maxlength(255)
+    releaseDate LocalDate
+    albumType AlbumType
+}
+
+entity Song {
+    title String required maxlength(150)
+    duration Integer
+    fileUrl String required maxlength(255)
+    coverImage String maxlength(255)
+    lyrics TextBlob
+    releaseDate LocalDate
+    createdAt Instant
+}
+
+entity Playlist {
+    name String required maxlength(100)
+    description TextBlob
+    isPublic Boolean
+    coverImage String maxlength(255)
+    createdAt Instant
+    updatedAt Instant
+}
+
+entity PlaylistSong {
+    position Integer
+    addedAt Instant
+}
+
+entity Play {
+    playedAt Instant
+    durationListened Integer
+}
+
+entity Like {
+    createdAt Instant
+}
+
+relationship ManyToOne {
+    Album{artist required} to Artist
+    Album{genre} to Genre
+    Song{album} to Album
+    Song{genre} to Genre
+    Playlist{user required} to User with builtInEntity
+    Play{user} to User with builtInEntity
+    Play{song} to Song
+    Like{user} to User with builtInEntity
+    Like{song} to Song
+    PlaylistSong{playlist required} to Playlist
+    PlaylistSong{song required} to Song
+}
+
+relationship ManyToMany {
+    Song{artists} to Artist{songs}
+}

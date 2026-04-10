@@ -1,0 +1,26 @@
+{
+  "musicPlayerApp": {
+    "like": {
+      "home": {
+        "title": "Likes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Like",
+        "createOrEditLabel": "Crear o editar Like",
+        "notFound": "Ningún Likes encontrado"
+      },
+      "created": "Un nuevo Like ha sido creado con el identificador {{ param }}",
+      "updated": "Un Like ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Like ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Like {{ id }}?"
+      },
+      "detail": {
+        "title": "Like"
+      },
+      "id": "ID",
+      "createdAt": "Created At",
+      "user": "User",
+      "song": "Song"
+    }
+  }
+}

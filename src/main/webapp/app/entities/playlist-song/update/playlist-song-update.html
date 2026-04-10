@@ -1,0 +1,105 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-playlist-song-heading"
+        data-cy="PlaylistSongCreateUpdateHeading"
+        jhiTranslate="musicPlayerApp.playlistSong.home.createOrEditLabel"
+      >
+        Crear o editar Playlist Song
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="global.field.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_position" jhiTranslate="musicPlayerApp.playlistSong.position">Position</label>
+          <input type="number" class="form-control" name="position" id="field_position" data-cy="position" formControlName="position" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_addedAt" jhiTranslate="musicPlayerApp.playlistSong.addedAt">Added At</label>
+          <div class="d-flex">
+            <input
+              id="field_addedAt"
+              data-cy="addedAt"
+              type="datetime-local"
+              class="form-control"
+              name="addedAt"
+              formControlName="addedAt"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_playlist" jhiTranslate="musicPlayerApp.playlistSong.playlist">Playlist</label>
+          <select
+            class="form-control"
+            id="field_playlist"
+            data-cy="playlist"
+            name="playlist"
+            formControlName="playlist"
+            [compareWith]="comparePlaylist"
+          >
+            @if (!editForm.get('playlist')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (playlistOption of playlistsSharedCollection(); track $index) {
+              <option [ngValue]="playlistOption">{{ playlistOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['playlist'])!.invalid && (editForm.get(['playlist'])!.dirty || editForm.get(['playlist'])!.touched)) {
+          <div>
+            @if (editForm.get(['playlist'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+            }
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_song" jhiTranslate="musicPlayerApp.playlistSong.song">Song</label>
+          <select class="form-control" id="field_song" data-cy="song" name="song" formControlName="song" [compareWith]="compareSong">
+            @if (!editForm.get('song')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (songOption of songsSharedCollection(); track $index) {
+              <option [ngValue]="songOption">{{ songOption.id }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['song'])!.invalid && (editForm.get(['song'])!.dirty || editForm.get(['song'])!.touched)) {
+          <div>
+            @if (editForm.get(['song'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving()"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save" />&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

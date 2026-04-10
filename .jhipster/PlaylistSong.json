@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20260410184441"
+  },
+  "applications": ["musicPlayer"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "position",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "addedAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "PlaylistSong",
+  "relationships": [
+    {
+      "otherEntityName": "playlist",
+      "relationshipName": "playlist",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "song",
+      "relationshipName": "song",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

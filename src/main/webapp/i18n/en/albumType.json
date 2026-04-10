@@ -1,0 +1,11 @@
+{
+  "musicPlayerApp": {
+    "AlbumType": {
+      "null": "",
+      "ALBUM": "ALBUM",
+      "SINGLE": "SINGLE",
+      "EP": "EP",
+      "PODCAST_SERIES": "PODCAST_SERIES"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (playlistSong(); as playlistSongRef) {
+      <div>
+        <h2 data-cy="playlistSongDetailsHeading"><span jhiTranslate="musicPlayerApp.playlistSong.detail.title">Playlist Song</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ playlistSongRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlistSong.position">Position</span></dt>
+          <dd>
+            <span>{{ playlistSongRef.position }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlistSong.addedAt">Added At</span></dt>
+          <dd>
+            <span>{{ playlistSongRef.addedAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlistSong.playlist">Playlist</span></dt>
+          <dd>
+            @if (playlistSong()!.playlist) {
+              <div>
+                <a [routerLink]="['/playlist', playlistSong()!.playlist?.id, 'view']">{{ playlistSongRef.playlist?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlistSong.song">Song</span></dt>
+          <dd>
+            @if (playlistSong()!.song) {
+              <div>
+                <a [routerLink]="['/song', playlistSong()!.song?.id, 'view']">{{ playlistSongRef.song?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/playlist-song', playlistSongRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

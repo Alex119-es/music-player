@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (song(); as songRef) {
+      <div>
+        <h2 data-cy="songDetailsHeading"><span jhiTranslate="musicPlayerApp.song.detail.title">Song</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ songRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.title">Title</span></dt>
+          <dd>
+            <span>{{ songRef.title }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.duration">Duration</span></dt>
+          <dd>
+            <span>{{ songRef.duration }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.fileUrl">File Url</span></dt>
+          <dd>
+            <span>{{ songRef.fileUrl }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.coverImage">Cover Image</span></dt>
+          <dd>
+            <span>{{ songRef.coverImage }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.lyrics">Lyrics</span></dt>
+          <dd>
+            <span>{{ songRef.lyrics }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.releaseDate">Release Date</span></dt>
+          <dd>
+            <span>{{ songRef.releaseDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.createdAt">Created At</span></dt>
+          <dd>
+            <span>{{ songRef.createdAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.album">Album</span></dt>
+          <dd>
+            @if (song()!.album) {
+              <div>
+                <a [routerLink]="['/album', song()!.album?.id, 'view']">{{ songRef.album?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.genre">Genre</span></dt>
+          <dd>
+            @if (song()!.genre) {
+              <div>
+                <a [routerLink]="['/genre', song()!.genre?.id, 'view']">{{ songRef.genre?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.song.artists">Artists</span></dt>
+          <dd>
+            @for (artists of songRef.artistses; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/artist', artists.id, 'view']">{{ artists?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/song', songRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

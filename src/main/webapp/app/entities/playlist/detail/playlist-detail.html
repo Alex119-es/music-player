@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (playlist(); as playlistRef) {
+      <div>
+        <h2 data-cy="playlistDetailsHeading"><span jhiTranslate="musicPlayerApp.playlist.detail.title">Playlist</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ playlistRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.name">Name</span></dt>
+          <dd>
+            <span>{{ playlistRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.description">Description</span></dt>
+          <dd>
+            <span>{{ playlistRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.isPublic">Is Public</span></dt>
+          <dd>
+            <span>{{ playlistRef.isPublic }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.coverImage">Cover Image</span></dt>
+          <dd>
+            <span>{{ playlistRef.coverImage }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.createdAt">Created At</span></dt>
+          <dd>
+            <span>{{ playlistRef.createdAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.updatedAt">Updated At</span></dt>
+          <dd>
+            <span>{{ playlistRef.updatedAt | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.playlist.user">User</span></dt>
+          <dd>
+            <span>{{ playlistRef.user?.id }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/playlist', playlistRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

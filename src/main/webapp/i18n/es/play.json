@@ -1,0 +1,27 @@
+{
+  "musicPlayerApp": {
+    "play": {
+      "home": {
+        "title": "Plays",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Play",
+        "createOrEditLabel": "Crear o editar Play",
+        "notFound": "Ningún Plays encontrado"
+      },
+      "created": "Un nuevo Play ha sido creado con el identificador {{ param }}",
+      "updated": "Un Play ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Play ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Play {{ id }}?"
+      },
+      "detail": {
+        "title": "Play"
+      },
+      "id": "ID",
+      "playedAt": "Played At",
+      "durationListened": "Duration Listened",
+      "user": "User",
+      "song": "Song"
+    }
+  }
+}

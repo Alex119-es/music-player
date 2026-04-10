@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20260410184641"
+  },
+  "applications": ["musicPlayer"],
+  "dto": "mapstruct",
+  "entityTableName": "jhi_like",
+  "fields": [
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Like",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "song",
+      "relationshipName": "song",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

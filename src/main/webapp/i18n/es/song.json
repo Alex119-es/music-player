@@ -1,0 +1,33 @@
+{
+  "musicPlayerApp": {
+    "song": {
+      "home": {
+        "title": "Songs",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Song",
+        "createOrEditLabel": "Crear o editar Song",
+        "notFound": "Ningún Songs encontrado"
+      },
+      "created": "Un nuevo Song ha sido creado con el identificador {{ param }}",
+      "updated": "Un Song ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Song ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Song {{ id }}?"
+      },
+      "detail": {
+        "title": "Song"
+      },
+      "id": "ID",
+      "title": "Title",
+      "duration": "Duration",
+      "fileUrl": "File Url",
+      "coverImage": "Cover Image",
+      "lyrics": "Lyrics",
+      "releaseDate": "Release Date",
+      "createdAt": "Created At",
+      "album": "Album",
+      "genre": "Genre",
+      "artists": "Artists"
+    }
+  }
+}

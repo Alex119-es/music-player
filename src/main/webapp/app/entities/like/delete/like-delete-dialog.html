@@ -1,0 +1,24 @@
+@if (like) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(like.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="likeDeleteDialogHeading" jhiTranslate="entity.delete.title">Confirmar operación de borrado</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error />
+      <p id="jhi-delete-like-heading" jhiTranslate="musicPlayerApp.like.delete.question" [translateValues]="{ id: like.id }">
+        ¿Seguro que quiere eliminar Like {{ like.id }}?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban" />&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-like" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times" />&nbsp;<span jhiTranslate="entity.action.delete">Eliminar</span>
+      </button>
+    </div>
+  </form>
+}

@@ -1,0 +1,27 @@
+{
+  "musicPlayerApp": {
+    "playlistSong": {
+      "home": {
+        "title": "Playlist Songs",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Playlist Song",
+        "createOrEditLabel": "Crear o editar Playlist Song",
+        "notFound": "Ningún Playlist Songs encontrado"
+      },
+      "created": "Un nuevo Playlist Song ha sido creado con el identificador {{ param }}",
+      "updated": "Un Playlist Song ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Playlist Song ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Playlist Song {{ id }}?"
+      },
+      "detail": {
+        "title": "Playlist Song"
+      },
+      "id": "ID",
+      "position": "Position",
+      "addedAt": "Added At",
+      "playlist": "Playlist",
+      "song": "Song"
+    }
+  }
+}

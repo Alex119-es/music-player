@@ -1,0 +1,22 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "musicPlayer",
+    "buildTool": "maven",
+    "cacheProvider": "ehcache",
+    "clientFramework": "angular",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "enableHibernateCache": true,
+    "enableTranslation": true,
+    "entities": ["Genre", "Artist", "Album", "Song", "Playlist", "PlaylistSong", "Play", "Like"],
+    "jhipsterVersion": "9.0.0",
+    "jwtSecretKey": "NGU4Mjk2MDZmM2E4MjQzZWMxMGM5ZTc5NWEzZjFmYjRlZWNkZDI0ZjVkZGYyMzU2MWM0NmIxM2YzYzQ2OGIxMGJlZTZkN2UyNWU5YTU4ODAxODU2MzUyYTYzY2IwMmVmOTUxNzNhZmYzMTg4Njg2NTRjMzA0M2E5NzBmMzAyYjQ=",
+    "languages": ["es", "en"],
+    "lastLiquibaseTimestamp": 1775846801000,
+    "nativeLanguage": "es",
+    "packageName": "com.musicplayer",
+    "prodDatabaseType": "mysql"
+  }
+}

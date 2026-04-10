@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20260410184141"
+  },
+  "applications": ["musicPlayer"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "150"
+    },
+    {
+      "fieldName": "coverImage",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "releaseDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "albumType",
+      "fieldType": "AlbumType",
+      "fieldValues": "ALBUM,SINGLE,EP,PODCAST_SERIES"
+    }
+  ],
+  "name": "Album",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "artist",
+      "relationshipName": "artist",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityName": "genre",
+      "relationshipName": "genre",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (album(); as albumRef) {
+      <div>
+        <h2 data-cy="albumDetailsHeading"><span jhiTranslate="musicPlayerApp.album.detail.title">Album</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ albumRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.title">Title</span></dt>
+          <dd>
+            <span>{{ albumRef.title }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.coverImage">Cover Image</span></dt>
+          <dd>
+            <span>{{ albumRef.coverImage }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.releaseDate">Release Date</span></dt>
+          <dd>
+            <span>{{ albumRef.releaseDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.albumType">Album Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'musicPlayerApp.AlbumType.' + (albumRef.albumType ?? 'null')">{{
+              { null: '', ALBUM: 'ALBUM', SINGLE: 'SINGLE', EP: 'EP', PODCAST_SERIES: 'PODCAST_SERIES' }[albumRef.albumType ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.artist">Artist</span></dt>
+          <dd>
+            @if (album()!.artist) {
+              <div>
+                <a [routerLink]="['/artist', album()!.artist?.id, 'view']">{{ albumRef.artist?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="musicPlayerApp.album.genre">Genre</span></dt>
+          <dd>
+            @if (album()!.genre) {
+              <div>
+                <a [routerLink]="['/genre', album()!.genre?.id, 'view']">{{ albumRef.genre?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/album', albumRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

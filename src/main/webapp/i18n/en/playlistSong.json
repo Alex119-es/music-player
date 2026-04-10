@@ -1,0 +1,27 @@
+{
+  "musicPlayerApp": {
+    "playlistSong": {
+      "home": {
+        "title": "Playlist Songs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Playlist Song",
+        "createOrEditLabel": "Create or edit a Playlist Song",
+        "notFound": "No Playlist Songs found"
+      },
+      "created": "A new Playlist Song is created with identifier {{ param }}",
+      "updated": "A Playlist Song is updated with identifier {{ param }}",
+      "deleted": "A Playlist Song is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Playlist Song {{ id }}?"
+      },
+      "detail": {
+        "title": "Playlist Song"
+      },
+      "id": "ID",
+      "position": "Position",
+      "addedAt": "Added At",
+      "playlist": "Playlist",
+      "song": "Song"
+    }
+  }
+}

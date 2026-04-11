@@ -15,10 +15,10 @@ application {
     cacheProvider ehcache
     enableHibernateCache true
   }
-  entities Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like
+  entities Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like, UserProfile, UserFollower
   paginate Song, Album, Artist, Playlist with pagination
-  service Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like with serviceImpl
-  dto Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like with mapstruct
+  service Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like, UserProfile, UserFollower with serviceImpl
+  dto Genre, Artist, Album, Song, Playlist, PlaylistSong, Play, Like, UserProfile, UserFollower with mapstruct
 }
 
 enum AlbumType {
@@ -78,6 +78,15 @@ entity Like {
     createdAt Instant
 }
 
+entity UserProfile {
+    bio TextBlob
+    profileImage String maxlength(255)
+}
+
+entity UserFollower {
+    createdAt Instant
+}
+
 relationship ManyToOne {
     Album{artist required} to Artist
     Album{genre} to Genre
@@ -90,6 +99,9 @@ relationship ManyToOne {
     Like{song} to Song
     PlaylistSong{playlist required} to Playlist
     PlaylistSong{song required} to Song
+    UserProfile{user required} to User with builtInEntity
+    UserFollower{follower required} to User with builtInEntity
+    UserFollower{followed required} to User with builtInEntity
 }
 
 relationship ManyToMany {

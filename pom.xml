@@ -1047,6 +1047,7 @@
                                 <phase>generate-resources</phase>
                                 <configuration>
                                     <arguments>run webapp:prod</arguments>
+                                    <skip>${skip.frontend}</skip>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>

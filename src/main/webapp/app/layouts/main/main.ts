@@ -8,12 +8,13 @@ import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import { AccountService } from 'app/core/auth/account.service';
 import Footer from '../footer/footer';
 import PageRibbon from '../profiles/page-ribbon';
+import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, Footer, PageRibbon],
+  imports: [RouterOutlet, Footer, PageRibbon, Navbar],
 })
 export default class Main implements OnInit {
   private readonly renderer: Renderer2;

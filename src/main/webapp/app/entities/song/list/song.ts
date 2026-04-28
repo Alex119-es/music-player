@@ -25,6 +25,7 @@ import { ISong } from '../song.model';
 @Component({
   selector: 'jhi-song',
   templateUrl: './song.html',
+  styleUrls: ['./song.scss'],
   imports: [
     RouterLink,
     FormsModule,

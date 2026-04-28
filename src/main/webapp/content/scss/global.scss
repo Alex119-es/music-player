@@ -234,3 +234,68 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* SIDEBAR */
+.sidebar-nav {
+  height: 100vh;
+  width: 260px;
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding: 1rem;
+  background: #121212 !important;
+}
+.sidebar-nav {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  background: #121212;
+  border-right: 1px solid #282828;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  color: #b3b3b3;
+  border-radius: 6px;
+}
+
+.sidebar-link:hover {
+  background: #282828;
+  color: white;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  color: #777;
+  text-transform: uppercase;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.sidebar-submenu {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.sidebar-submenu li a {
+  display: block;
+  padding: 5px 0;
+  color: #b3b3b3;
+  text-decoration: none;
+}
+
+.sidebar-submenu li a:hover {
+  color: white;
+}
+.content {
+  margin-left: 260px;
+}

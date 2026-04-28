@@ -1,129 +1,104 @@
-<div>
-  <h2 id="page-heading" data-cy="AlbumHeading">
-    <span jhiTranslate="musicPlayerApp.album.home.title">Albums</span>
+<div class="album-page container-fluid">
+  <div class="album-header-card">
+    <h2 id="page-heading" data-cy="AlbumHeading" class="page-title">
+      <span jhiTranslate="musicPlayerApp.album.home.title">Albums</span>
+    </h2>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading()">
-        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
-        <span jhiTranslate="musicPlayerApp.album.home.refreshListLabel">Refrescar lista</span>
+    <div class="header-actions">
+      <button class="btn btn-refresh" (click)="load()" [disabled]="isLoading()">
+        <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="musicPlayerApp.album.home.refreshListLabel"> Refrescar lista </span>
       </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-album"
-        [routerLink]="['/album/new']"
-      >
-        <fa-icon icon="plus" />
-        <span jhiTranslate="musicPlayerApp.album.home.createLabel">Crear nuevo Album</span>
+      <button id="jh-create-entity" data-cy="entityCreateButton" class="btn btn-create" [routerLink]="['/album/new']">
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="musicPlayerApp.album.home.createLabel"> Crear nuevo Album </span>
       </button>
     </div>
-  </h2>
+  </div>
 
-  <jhi-alert-error />
-
-  <jhi-alert />
+  <jhi-alert-error></jhi-alert-error>
+  <jhi-alert></jhi-alert>
 
   @if (albums().length === 0) {
-    <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="musicPlayerApp.album.home.notFound">Ningún Albums encontrado</span>
+    <div class="empty-state">
+      <span jhiTranslate="musicPlayerApp.album.home.notFound"> Ningún Albums encontrado </span>
     </div>
   } @else {
-    <div class="table-responsive table-entities" id="entities">
-      <table class="table table-striped" aria-describedby="page-heading">
+    <div class="table-wrapper">
+      <table class="table album-table" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="global.field.id">ID</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="title">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.title">Title</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="coverImage">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.coverImage">Cover Image</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="releaseDate">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.releaseDate">Release Date</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="albumType">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.albumType">Album Type</span>
-
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="artist.id">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.artist">Artist</span>
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="genre.id">
-              <div class="d-flex">
-                <span jhiTranslate="musicPlayerApp.album.genre">Genre</span>
-                <fa-icon class="p-1" icon="sort" />
-              </div>
-            </th>
-            <th scope="col"></th>
+            <th scope="col" jhiSortBy="id">ID</th>
+            <th scope="col" jhiSortBy="title">Title</th>
+            <th scope="col" jhiSortBy="coverImage">Cover</th>
+            <th scope="col" jhiSortBy="releaseDate">Release Date</th>
+            <th scope="col" jhiSortBy="albumType">Type</th>
+            <th scope="col" jhiSortBy="artist.id">Artist</th>
+            <th scope="col" jhiSortBy="genre.id">Genre</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
+
         <tbody>
           @for (album of albums(); track trackId(album)) {
             <tr data-cy="entityTable">
               <td>
-                <a [routerLink]="['/album', album.id, 'view']">{{ album.id }}</a>
+                <a [routerLink]="['/album', album.id, 'view']">
+                  {{ album.id }}
+                </a>
               </td>
+
               <td>{{ album.title }}</td>
-              <td>{{ album.coverImage }}</td>
-              <td>{{ album.releaseDate | formatMediumDate }}</td>
-              <td [jhiTranslate]="'musicPlayerApp.AlbumType.' + (album.albumType ?? 'null')">
-                {{ { null: '', ALBUM: 'ALBUM', SINGLE: 'SINGLE', EP: 'EP', PODCAST_SERIES: 'PODCAST_SERIES' }[album.albumType ?? 'null'] }}
+
+              <td class="truncate">
+                {{ album.coverImage }}
               </td>
+
+              <td>
+                {{ album.releaseDate | formatMediumDate }}
+              </td>
+
+              <td [jhiTranslate]="'musicPlayerApp.AlbumType.' + (album.albumType ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    ALBUM: 'ALBUM',
+                    SINGLE: 'SINGLE',
+                    EP: 'EP',
+                    PODCAST_SERIES: 'PODCAST_SERIES',
+                  }[album.albumType ?? 'null']
+                }}
+              </td>
+
               <td>
                 @if (album.artist) {
-                  <div>
-                    <a [routerLink]="['/artist', album.artist.id, 'view']">{{ album.artist.id }}</a>
-                  </div>
+                  <a [routerLink]="['/artist', album.artist.id, 'view']">
+                    {{ album.artist.id }}
+                  </a>
                 }
               </td>
+
               <td>
                 @if (album.genre) {
-                  <div>
-                    <a [routerLink]="['/genre', album.genre.id, 'view']">{{ album.genre.id }}</a>
-                  </div>
+                  <a [routerLink]="['/genre', album.genre.id, 'view']">
+                    {{ album.genre.id }}
+                  </a>
                 }
               </td>
-              <td class="text-end">
-                <div class="btn-group">
-                  <a [routerLink]="['/album', album.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+
+              <td>
+                <div class="action-buttons">
+                  <a [routerLink]="['/album', album.id, 'view']" class="btn btn-sm btn-view" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
                   </a>
 
-                  <a [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  <a [routerLink]="['/album', album.id, 'edit']" class="btn btn-sm btn-edit" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
                   </a>
 
-                  <button type="submit" (click)="delete(album)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  <button type="submit" (click)="delete(album)" class="btn btn-sm btn-delete" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
                   </button>
                 </div>
               </td>
@@ -133,23 +108,29 @@
       </table>
     </div>
   }
-  @if (albums().length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
-      </div>
 
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems()"
-          [page]="page()"
-          [pageSize]="itemsPerPage()"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
+  @if (albums().length > 0) {
+    <div class="pagination-box">
+      <div class="mb-3">
+        <jhi-item-count
+          [params]="{
+            page: page(),
+            totalItems: totalItems(),
+            itemsPerPage: itemsPerPage(),
+          }"
         />
       </div>
+
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [page]="page()"
+        [pageSize]="itemsPerPage()"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      >
+      </ngb-pagination>
     </div>
   }
 </div>

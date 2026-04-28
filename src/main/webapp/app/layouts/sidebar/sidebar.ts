@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { AccountService } from 'app/core/auth/account.service';
 import SidebarService from './sidebar.service';
 
 @Component({
@@ -11,4 +12,5 @@ import SidebarService from './sidebar.service';
 })
 export default class Sidebar {
   protected readonly sidebarService = inject(SidebarService);
+  protected readonly account = inject(AccountService).account;
 }

@@ -17,6 +17,20 @@ const routes: Routes = [
     outlet: 'navbar',
   },
   {
+    path: 'dashboard-editor',
+    loadComponent: () => import('./dashboard-editor/dashboard-editor'),
+    canActivate: [UserRouteAccessService],
+    data: { authorities: [Authority.USER] },
+    title: 'Panel Editor',
+  },
+  {
+    path: 'dashboard-admin',
+    loadComponent: () => import('./dashboard-admin/dashboard-admin'),
+    canActivate: [UserRouteAccessService],
+    data: { authorities: [Authority.ADMIN] },
+    title: 'Panel Administrador',
+  },
+  {
     path: 'admin',
     data: {
       authorities: [Authority.ADMIN],

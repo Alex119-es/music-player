@@ -2,7 +2,7 @@
 // Song List — Spotify-style track list
 // ============================================================
 
-$accent: #1db954;
+$accent: #38bdf8;
 $text-primary: #ffffff;
 $text-secondary: #b3b3b3;
 $text-subdued: #6a6a6a;
@@ -96,11 +96,11 @@ $grid: 48px 1fr 1fr 120px 100px 120px 48px;
     padding-left: 3px;
     cursor: pointer;
     transition: all $transition;
-    box-shadow: 0 8px 24px rgba(29, 185, 84, 0.4);
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
 
     &:hover {
       transform: scale(1.06);
-      background-color: #1ed760;
+      background-color: #7dd3fc;
     }
   }
 

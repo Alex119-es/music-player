@@ -140,4 +140,11 @@ export class Album implements OnInit {
       queryParams: queryParamsObj,
     });
   }
+
+  playAlbum(album: IAlbum): void {
+    // TODO: Implementar funcionalidad de reproducción
+    // Por ahora navega a la vista del álbum
+    console.log('Reproducir álbum:', album.title);
+    this.router.navigate(['/album', album.id, 'view']);
+  }
 }

@@ -111,20 +111,49 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
-                  <a [routerLink]="['/album', album.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
-                  </a>
-
-                  <a [routerLink]="['/album', album.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(album)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  <button
+                    type="button"
+                    class="btn btn-link btn-sm p-2"
+                    (click)="playAlbum(album)"
+                    [attr.aria-label]="'Reproducir ' + album.title"
+                    title="Reproducir"
+                  >
+                    <fa-icon icon="play" class="text-success" />
                   </button>
+
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-link btn-sm p-2"
+                      type="button"
+                      id="dropdownAlbum{{ album.id }}"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      title="Más opciones"
+                    >
+                      <fa-icon icon="ellipsis-v" class="text-muted" />
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" [attr.aria-labelledby]="'dropdownAlbum' + album.id">
+                      <li>
+                        <a [routerLink]="['/album', album.id, 'view']" class="dropdown-item" data-cy="entityDetailsButton">
+                          <fa-icon icon="eye" [fixedWidth]="true" />
+                          <span jhiTranslate="entity.action.view">Ver detalles</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a [routerLink]="['/album', album.id, 'edit']" class="dropdown-item" data-cy="entityEditButton">
+                          <fa-icon icon="pencil-alt" [fixedWidth]="true" />
+                          <span jhiTranslate="entity.action.edit">Editar</span>
+                        </a>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li>
+                        <button type="button" (click)="delete(album)" class="dropdown-item text-danger" data-cy="entityDeleteButton">
+                          <fa-icon icon="trash" [fixedWidth]="true" />
+                          <span jhiTranslate="entity.action.delete">Eliminar</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </td>
             </tr>

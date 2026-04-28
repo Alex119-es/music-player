@@ -8,16 +8,20 @@ import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import { AccountService } from 'app/core/auth/account.service';
 import Footer from '../footer/footer';
 import PageRibbon from '../profiles/page-ribbon';
+import PlayerBar from '../player-bar/player-bar';
+import Sidebar from '../sidebar/sidebar';
+import SidebarService from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.html',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, Footer, PageRibbon],
+  imports: [RouterOutlet, Footer, PageRibbon, Sidebar, PlayerBar],
 })
 export default class Main implements OnInit {
-  private readonly renderer: Renderer2;
+  public readonly sidebarService = inject(SidebarService);
 
+  private readonly renderer: Renderer2;
   private readonly router = inject(Router);
   private readonly appPageTitleStrategy = inject(AppPageTitleStrategy);
   private readonly accountService = inject(AccountService);
@@ -29,7 +33,6 @@ export default class Main implements OnInit {
   }
 
   ngOnInit(): void {
-    // try to log in automatically
     this.accountService.identity().subscribe();
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {

@@ -1,23 +1,231 @@
-/* ==========================================================================
-Main page styles
-========================================================================== */
+// ============================================================
+// Home page — Streamify dark theme
+// ============================================================
 
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-  background-size: contain;
+$accent: #1db954;
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$text-subdued: #737373;
+
+.home-page {
+  padding-bottom: 2rem;
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (-moz-min-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-    background-size: contain;
+// ============================================================
+// Greeting
+// ============================================================
+
+.home-greeting {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: $text-primary;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+// ============================================================
+// Quick access grid
+// ============================================================
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.quick-access-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  text-decoration: none;
+  color: $text-primary;
+  font-weight: 700;
+  font-size: 0.9rem;
+  overflow: hidden;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: $text-primary;
+    text-decoration: none;
+  }
+
+  .quick-access-icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    background-color: var(--card-color, #450af5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+// ============================================================
+// Auth banner
+// ============================================================
+
+.home-auth-banner {
+  background: linear-gradient(to right, #1a1a2e, #16213e, #0f3460);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+
+  .home-auth-content {
+    max-width: 480px;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: $text-primary;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      color: $text-secondary;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .home-auth-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .btn-lg {
+      font-weight: 700;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+    }
+
+    .btn-outline-light {
+      color: $text-primary;
+      border-color: rgba(255, 255, 255, 0.5);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: $text-primary;
+        color: $text-primary;
+      }
+    }
+  }
+}
+
+// ============================================================
+// Sections
+// ============================================================
+
+.home-section {
+  margin-bottom: 2.5rem;
+}
+
+.home-section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $text-primary;
+  margin-bottom: 1rem;
+}
+
+// ============================================================
+// Explore grid
+// ============================================================
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.explore-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    filter: brightness(1.12);
+    text-decoration: none;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: $text-primary;
+    margin: 0 0 0.25rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+
+  .explore-icon {
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.3);
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+}
+
+// ============================================================
+// Activity row
+// ============================================================
+
+.activity-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.activity-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: $text-secondary;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: $text-primary;
+    text-decoration: none;
+  }
+
+  .activity-icon {
+    font-size: 1.1rem;
+    color: $accent;
   }
 }

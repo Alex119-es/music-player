@@ -4,10 +4,15 @@
   <router-outlet name="navbar" />
 </div>
 
-<div class="container-fluid">
-  <div class="card jh-card">
-    <router-outlet />
+<div class="jhi-app-layout">
+  <jhi-sidebar />
+  <div class="jhi-main-content" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
+    <div class="container-fluid">
+      <div class="jh-card">
+        <router-outlet />
+      </div>
+    </div>
   </div>
-
-  <jhi-footer />
 </div>
+
+<jhi-player-bar />

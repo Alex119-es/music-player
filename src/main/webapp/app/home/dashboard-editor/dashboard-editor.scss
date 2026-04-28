@@ -1,0 +1,107 @@
+:host {
+  display: block;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #121212;
+  color: white;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: 100%;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  color: #1db954;
+  margin-bottom: 30px;
+}
+
+.sidebar nav a {
+  color: #b3b3b3;
+  text-decoration: none;
+  margin: 10px 0;
+  display: block;
+}
+
+.sidebar nav a:hover {
+  color: white;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.topbar h1 {
+  font-size: 28px;
+}
+
+.topbar input {
+  padding: 12px 16px;
+  border-radius: 25px;
+  border: none;
+  width: 300px;
+  background: #2a2a2a;
+  color: white;
+  outline: none;
+}
+
+/* CARDS CONTAINER */
+.cards {
+  display: flex;
+  justify-content: center; /* centrado real */
+  align-items: stretch;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* CARD MEJORADA */
+.card {
+  background: #181818;
+  padding: 25px;
+  border-radius: 15px;
+  width: 220px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #282828;
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #b3b3b3;
+  font-size: 14px;
+}

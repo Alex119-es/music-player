@@ -12,6 +12,20 @@ const routes: Routes = [
     title: 'home.title',
   },
   {
+    path: 'dashboard-editor',
+    loadComponent: () => import('./home/dashboard-editor/dashboard-editor').then(m => m.default),
+    data: {
+      authorities: ['ROLE_EDITOR'],
+    },
+  },
+  {
+    path: 'dashboard-user',
+    loadComponent: () => import('./home/dashboard-user/dashboard-user').then(m => m.default),
+    data: {
+      authorities: ['ROLE_USER'],
+    },
+  },
+  {
     path: '',
     loadComponent: () => import('./layouts/navbar/navbar'),
     outlet: 'navbar',
@@ -24,6 +38,7 @@ const routes: Routes = [
     canActivate: [UserRouteAccessService],
     loadChildren: () => import('./admin/admin.routes'),
   },
+
   {
     path: 'account',
     loadChildren: () => import('./account/account.route'),

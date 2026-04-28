@@ -1,0 +1,132 @@
+:host {
+  display: block;
+  height: 100vh;
+  background: #121212;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: #000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  color: #1db954;
+  margin-bottom: 25px;
+  font-size: 22px;
+}
+
+/* LINKS SIDEBAR */
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #b3b3b3;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+
+  transition: 0.2s;
+}
+
+.sidebar a i {
+  width: 18px;
+  text-align: center;
+}
+
+/* hover estilo Spotify */
+.sidebar a:hover {
+  color: white;
+  background: #1a1a1a;
+}
+
+/* MAIN */
+.main {
+  margin-left: 240px;
+  padding: 20px;
+}
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search {
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  width: 250px;
+  outline: none;
+  background: #2a2a2a;
+  color: white;
+}
+
+.search::placeholder {
+  color: #aaa;
+}
+
+/* TITULO */
+.section-title {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* CARDS */
+.cards {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #181818;
+  padding: 15px;
+  border-radius: 10px;
+  width: 150px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #282828;
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* PLAYER */
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: #181818;
+  padding: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border-top: 1px solid #333;
+}

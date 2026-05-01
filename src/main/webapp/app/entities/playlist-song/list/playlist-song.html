@@ -7,16 +7,6 @@
         <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
         <span jhiTranslate="musicPlayerApp.playlistSong.home.refreshListLabel">Refrescar lista</span>
       </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-playlist-song"
-        [routerLink]="['/playlist-song/new']"
-      >
-        <fa-icon icon="plus" />
-        <span jhiTranslate="musicPlayerApp.playlistSong.home.createLabel">Crear nuevo Playlist Song</span>
-      </button>
     </div>
   </h2>
 
@@ -97,16 +87,6 @@
                     <fa-icon icon="eye" />
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
                   </a>
-
-                  <a [routerLink]="['/playlist-song', playlistSong.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(playlistSong)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times" />
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
-                  </button>
                 </div>
               </td>
             </tr>

@@ -21,7 +21,7 @@ import { PlaylistSongService } from '../service/playlist-song.service';
 @Component({
   selector: 'jhi-playlist-song',
   templateUrl: './playlist-song.html',
-  styleUrl: './playlist-song.scss',
+  styleUrls: ['./playlist-song.scss'],
   imports: [
     RouterLink,
     FormsModule,

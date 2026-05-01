@@ -2,7 +2,6 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="entity-list-hero">
     <div class="entity-list-hero-icon" style="background: linear-gradient(135deg, #e7611a, #f59b23)">
       <fa-icon icon="guitar" />
@@ -31,12 +30,10 @@
     <div class="artist-grid" id="entities">
       @for (artist of artists(); track trackId(artist)) {
         <div class="artist-card" ngbDropdown data-cy="entityTable">
-          <!-- Avatar -->
           <div class="artist-avatar">
             <fa-icon icon="user" />
           </div>
 
-          <!-- Info -->
           <a [routerLink]="['/artist', artist.id, 'view']" class="artist-name" style="text-decoration: none">
             {{ artist.name }}
           </a>
@@ -50,7 +47,6 @@
             </div>
           }
 
-          <!-- ••• menu -->
           <button class="artist-card-more" ngbDropdownToggle [id]="'artist-actions-' + artist.id" aria-label="Más opciones">•••</button>
           <ul ngbDropdownMenu [attr.aria-labelledby]="'artist-actions-' + artist.id">
             <li>
@@ -71,7 +67,6 @@
       }
     </div>
 
-    <!-- Pagination -->
     <div class="entity-list-pagination">
       <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
       <ngb-pagination

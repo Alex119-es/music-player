@@ -2,7 +2,6 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="song-list-header">
     <div class="song-list-hero">
       <div class="song-list-hero-icon">
@@ -21,7 +20,13 @@
       <button class="btn-icon-action" (click)="load()" [disabled]="isLoading()" title="Actualizar" aria-label="Actualizar">
         <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
       </button>
-      <a class="btn-icon-action btn-add" [routerLink]="['/song/new']" title="Agregar canción" aria-label="Agregar canción">
+      <a
+        class="btn-icon-action btn-add"
+        [routerLink]="['/song/new']"
+        title="Agregar canción"
+        aria-label="Agregar canción"
+        *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']"
+      >
         <fa-icon icon="plus" />
       </a>
     </div>
@@ -34,7 +39,6 @@
     </div>
   } @else {
     <div class="track-list" id="entities">
-      <!-- Column headers -->
       <div class="track-list-header" jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
         <div class="col-num">#</div>
         <div class="col-title" jhiSortBy="title">TÍTULO <fa-icon class="sort-icon" icon="sort" /></div>
@@ -46,10 +50,8 @@
       </div>
       <div class="track-list-divider"></div>
 
-      <!-- Track rows -->
       @for (song of songs(); track trackId(song); let i = $index) {
         <div class="track-row" data-cy="entityTable">
-          <!-- # / Play -->
           <div class="col-num">
             <span class="track-num">{{ i + 1 }}</span>
             <button class="track-play-btn" title="Reproducir" aria-label="Reproducir">
@@ -57,7 +59,6 @@
             </button>
           </div>
 
-          <!-- Cover + Title + Artist -->
           <div class="col-title">
             <div class="track-cover">
               @if (song.coverImage) {
@@ -79,7 +80,6 @@
             </div>
           </div>
 
-          <!-- Album -->
           <div class="col-album">
             @if (song.album) {
               <a [routerLink]="['/album', song.album.id, 'view']" class="track-link">Álbum #{{ song.album.id }}</a>
@@ -88,7 +88,6 @@
             }
           </div>
 
-          <!-- Genre -->
           <div class="col-genre">
             @if (song.genre) {
               <a [routerLink]="['/genre', song.genre.id, 'view']" class="track-link">{{ song.genre.id }}</a>
@@ -97,7 +96,6 @@
             }
           </div>
 
-          <!-- Release Date -->
           <div class="col-date">
             @if (song.releaseDate) {
               {{ song.releaseDate | formatMediumDate }}
@@ -106,7 +104,6 @@
             }
           </div>
 
-          <!-- Heart + Duration -->
           <div class="col-duration">
             <button class="track-like-btn" title="Me gusta" aria-label="Me gusta">
               <fa-icon icon="heart" />
@@ -114,7 +111,6 @@
             <span class="track-duration">{{ formatDuration(song.duration) }}</span>
           </div>
 
-          <!-- ••• context menu -->
           <div class="col-actions">
             <div ngbDropdown display="dynamic" placement="left-start">
               <button class="track-more-btn" ngbDropdownToggle [id]="'song-actions-' + song.id" aria-label="Más acciones">
@@ -126,12 +122,12 @@
                     <fa-icon icon="eye" [fixedWidth]="true" /> Ver detalles
                   </a>
                 </li>
-                <li>
+                <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
                   <a class="dropdown-item" [routerLink]="['/song', song.id, 'edit']">
                     <fa-icon icon="pencil-alt" [fixedWidth]="true" /> Editar
                   </a>
                 </li>
-                <li>
+                <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
                   <button class="dropdown-item text-danger" (click)="delete(song)">
                     <fa-icon icon="times" [fixedWidth]="true" /> Eliminar
                   </button>
@@ -144,7 +140,6 @@
     </div>
   }
 
-  <!-- Pagination -->
   @if (songs().length > 0) {
     <div class="song-list-pagination">
       <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />

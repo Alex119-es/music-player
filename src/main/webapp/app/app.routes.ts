@@ -8,12 +8,28 @@ import { errorRoute } from './layouts/error/error.route';
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./home/home'),
-    title: 'home.title',
+    loadComponent: () => import('./home/home').then(m => m.default),
+    pathMatch: 'full',
+  },
+  {
+    path: 'dashboard-editor',
+    loadComponent: () => import('./home/dashboard-editor/dashboard-editor').then(m => m.default),
+    data: {
+      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'dashboard-user',
+    loadComponent: () => import('./home/dashboard-user/dashboard-user').then(m => m.default),
+    data: {
+      authorities: [Authority.USER],
+    },
+    canActivate: [UserRouteAccessService],
   },
   {
     path: '',
-    loadComponent: () => import('./layouts/navbar/navbar'),
+    loadComponent: () => import('./layouts/navbar/navbar').then(m => m.Navbar),
     outlet: 'navbar',
   },
   {

@@ -2,7 +2,6 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="entity-list-hero">
     <div class="entity-list-hero-icon" style="background: linear-gradient(135deg, #1db954, #189b45)">
       <fa-icon icon="list" />
@@ -31,7 +30,6 @@
     <div class="playlist-grid" id="entities">
       @for (playlist of playlists(); track trackId(playlist)) {
         <div class="playlist-card" ngbDropdown data-cy="entityTable">
-          <!-- Cover -->
           <div class="playlist-cover">
             <fa-icon icon="music" />
             <button class="playlist-card-play" (click)="$event.stopPropagation()" aria-label="Reproducir">
@@ -39,7 +37,6 @@
             </button>
           </div>
 
-          <!-- Info -->
           <a [routerLink]="['/playlist', playlist.id, 'view']" class="playlist-name" style="text-decoration: none; display: block">
             {{ playlist.name }}
           </a>
@@ -54,7 +51,6 @@
             </span>
           </div>
 
-          <!-- ••• menu -->
           <button class="playlist-card-more" ngbDropdownToggle [id]="'playlist-actions-' + playlist.id" aria-label="Más opciones">
             •••
           </button>
@@ -70,8 +66,9 @@
               </a>
             </li>
             <li>
+              <hr class="dropdown-divider" />
               <button class="dropdown-item text-danger" (click)="delete(playlist)">
-                <fa-icon icon="times" [fixedWidth]="true" /> Eliminar
+                <fa-icon icon="trash" [fixedWidth]="true" /> Eliminar
               </button>
             </li>
           </ul>
@@ -79,7 +76,6 @@
       }
     </div>
 
-    <!-- Pagination -->
     <div class="entity-list-pagination">
       <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
       <ngb-pagination

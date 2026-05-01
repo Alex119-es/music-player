@@ -1,7 +1,3 @@
-// ============================================================
-// Player Bar — Spotify-style bottom music player
-// ============================================================
-
 $player-height: 90px;
 $accent: #38bdf8;
 $accent-hover: #7dd3fc;
@@ -26,10 +22,6 @@ $border: rgba(255, 255, 255, 0.1);
   z-index: 1040;
   user-select: none;
 }
-
-// ============================================================
-// Left — Now Playing
-// ============================================================
 
 .player-now-playing {
   display: flex;
@@ -89,10 +81,6 @@ $border: rgba(255, 255, 255, 0.1);
     }
   }
 }
-
-// ============================================================
-// Center — Controls
-// ============================================================
 
 .player-controls {
   display: flex;
@@ -156,7 +144,7 @@ $border: rgba(255, 255, 255, 0.1);
     background-color: $text-primary;
     color: #000000;
     font-size: 0.875rem;
-    padding-left: 2px; // visual center for play icon
+    padding-left: 2px;
 
     &:hover {
       background-color: $accent-hover;
@@ -180,10 +168,6 @@ $border: rgba(255, 255, 255, 0.1);
   }
 }
 
-// ============================================================
-// Progress row
-// ============================================================
-
 .player-progress-row {
   display: flex;
   align-items: center;
@@ -199,10 +183,6 @@ $border: rgba(255, 255, 255, 0.1);
   min-width: 2.5rem;
   text-align: center;
 }
-
-// ============================================================
-// Slider (shared by progress + volume)
-// ============================================================
 
 .progress-track,
 .volume-track {
@@ -247,10 +227,6 @@ $border: rgba(255, 255, 255, 0.1);
   }
 }
 
-// ============================================================
-// Right — Volume
-// ============================================================
-
 .player-right {
   display: flex;
   align-items: center;
@@ -262,10 +238,6 @@ $border: rgba(255, 255, 255, 0.1);
   width: 100px;
   flex: unset;
 }
-
-// ============================================================
-// Responsive
-// ============================================================
 
 @media screen and (max-width: 768px) {
   .player-bar {

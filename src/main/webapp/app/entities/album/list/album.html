@@ -2,36 +2,60 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="entity-list-hero">
     <div class="entity-list-hero-icon" style="background: linear-gradient(135deg, #e8115b, #8b0000)">
       <fa-icon icon="compact-disc" />
     </div>
     <div class="entity-list-hero-info">
-      <span class="entity-list-hero-type">Música</span>
-      <h1>Álbumes</h1>
-      <span class="entity-list-hero-count">{{ albums().length }} álbumes</span>
+      @if (upcomingOnly()) {
+        <span class="entity-list-hero-type">Próximos lanzamientos</span>
+        <h1>Próximos lanzamientos</h1>
+      } @else {
+        <span class="entity-list-hero-type">Música</span>
+        <h1>Álbumes</h1>
+      }
+      <span class="entity-list-hero-count">{{ visibleAlbums().length }} álbumes</span>
     </div>
   </div>
   <div class="entity-list-actions">
     <button class="btn-icon-action" (click)="load()" [disabled]="isLoading()" title="Actualizar" aria-label="Actualizar">
       <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
     </button>
-    <a class="btn-icon-action" routerLink="/album/new" title="Nuevo álbum" aria-label="Nuevo álbum">
+    @if (upcomingOnly()) {
+      <a class="btn-icon-action" routerLink="/album" title="Ver todos los álbumes" aria-label="Ver todos los álbumes">
+        <fa-icon icon="th-list" />
+      </a>
+    } @else {
+      <a
+        class="btn-icon-action"
+        [routerLink]="['/album']"
+        [queryParams]="{ upcoming: true }"
+        title="Próximos lanzamientos"
+        aria-label="Próximos lanzamientos"
+      >
+        <fa-icon icon="calendar-alt" />
+      </a>
+    }
+    <a
+      class="btn-icon-action"
+      routerLink="/album/new"
+      title="Nuevo álbum"
+      aria-label="Nuevo álbum"
+      *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']"
+    >
       <fa-icon icon="plus" />
     </a>
   </div>
 
-  @if (albums().length === 0) {
+  @if (visibleAlbums().length === 0) {
     <div class="entity-list-empty">
       <fa-icon icon="compact-disc" class="entity-list-empty-icon" />
       <p>No hay álbumes disponibles</p>
     </div>
   } @else {
     <div class="album-grid" id="entities">
-      @for (album of albums(); track trackId(album)) {
+      @for (album of visibleAlbums(); track trackId(album)) {
         <div class="album-card" ngbDropdown data-cy="entityTable">
-          <!-- Cover -->
           <div class="album-cover">
             <fa-icon icon="compact-disc" />
             <button class="album-card-play" (click)="playAlbum(album); $event.stopPropagation()" aria-label="Reproducir álbum">
@@ -39,7 +63,6 @@
             </button>
           </div>
 
-          <!-- Info -->
           <a [routerLink]="['/album', album.id, 'view']" class="album-title" style="text-decoration: none; display: block">
             {{ album.title }}
           </a>
@@ -57,19 +80,18 @@
             }
           </div>
 
-          <!-- ••• menu -->
           <button class="album-card-more" ngbDropdownToggle [id]="'album-actions-' + album.id" aria-label="Más opciones">•••</button>
           <ul ngbDropdownMenu [attr.aria-labelledby]="'album-actions-' + album.id">
             <li>
               <a class="dropdown-item" [routerLink]="['/album', album.id, 'view']"> <fa-icon icon="eye" [fixedWidth]="true" /> Ver </a>
             </li>
-            <li>
+            <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
               <a class="dropdown-item" [routerLink]="['/album', album.id, 'edit']">
                 <fa-icon icon="pencil-alt" [fixedWidth]="true" /> Editar
               </a>
             </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
+            <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
+              <hr class="dropdown-divider" />
               <button class="dropdown-item text-danger" (click)="delete(album)">
                 <fa-icon icon="trash" [fixedWidth]="true" /> Eliminar
               </button>
@@ -79,18 +101,19 @@
       }
     </div>
 
-    <!-- Pagination -->
-    <div class="entity-list-pagination">
-      <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
-      <ngb-pagination
-        [collectionSize]="totalItems()"
-        [page]="page()"
-        [pageSize]="itemsPerPage()"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      />
-    </div>
+    @if (!upcomingOnly()) {
+      <div class="entity-list-pagination">
+        <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
+        <ngb-pagination
+          [collectionSize]="totalItems()"
+          [page]="page()"
+          [pageSize]="itemsPerPage()"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        />
+      </div>
+    }
   }
 </div>

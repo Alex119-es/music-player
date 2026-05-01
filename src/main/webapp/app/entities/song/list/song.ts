@@ -15,6 +15,7 @@ import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/co
 import { DataUtils } from 'app/core/util/data-util.service';
 import { Alert } from 'app/shared/alert/alert';
 import { AlertError } from 'app/shared/alert/alert-error';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { TranslateDirective } from 'app/shared/language';
 import { ItemCount } from 'app/shared/pagination';
@@ -36,6 +37,7 @@ import { ISong } from '../song.model';
     NgbDropdownToggle,
     AlertError,
     Alert,
+    HasAnyAuthorityDirective,
     SortDirective,
     SortByDirective,
     TranslateDirective,

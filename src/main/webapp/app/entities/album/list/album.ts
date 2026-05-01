@@ -88,7 +88,6 @@ export class Album implements OnInit {
   delete(album: IAlbum): void {
     const modalRef = this.modalService.open(AlbumDeleteDialog, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.album = album;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
@@ -147,9 +146,6 @@ export class Album implements OnInit {
   }
 
   playAlbum(album: IAlbum): void {
-    // TODO: Implementar funcionalidad de reproducción
-    // Por ahora navega a la vista del álbum
-    console.log('Reproducir álbum:', album.title);
     this.router.navigate(['/album', album.id, 'view']);
   }
 }

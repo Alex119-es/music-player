@@ -47,25 +47,19 @@ export class Navbar implements OnInit {
 
   readonly account = inject(AccountService).account;
 
-  // ✅ 🔥 NUEVO: ruta dinámica del home
-  readonly homeRoute = computed(() => {
+  readonly dashboardRoute = computed<string | null>(() => {
     const acc = this.account();
-
     if (!acc) {
-      return '/login';
+      return null;
     }
-
     const authorities = acc.authorities ?? [];
-
     if (authorities.includes('ROLE_EDITOR')) {
       return '/dashboard-editor';
     }
-
-    if (authorities.includes('ROLE_USER')) {
+    if (authorities.includes('ROLE_USER') && !authorities.includes('ROLE_ADMIN')) {
       return '/dashboard-user';
     }
-
-    return '/';
+    return null;
   });
 
   private readonly loginService = inject(LoginService);

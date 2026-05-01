@@ -2,7 +2,6 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="entity-list-hero">
     <div class="entity-list-hero-icon" style="background: linear-gradient(135deg, #450af5, #e8115b)">
       <fa-icon icon="heart" />
@@ -28,12 +27,10 @@
     <div id="entities">
       @for (like of likes(); track trackId(like)) {
         <div class="like-row" ngbDropdown data-cy="entityTable">
-          <!-- Icon -->
           <div class="like-row-icon">
             <fa-icon icon="heart" />
           </div>
 
-          <!-- Info -->
           <div class="like-row-info">
             @if (like.song) {
               <a [routerLink]="['/song', like.song.id, 'view']" class="like-row-song" style="text-decoration: none">
@@ -47,7 +44,6 @@
             }
           </div>
 
-          <!-- ••• menu -->
           <button class="like-row-more" ngbDropdownToggle [id]="'like-actions-' + like.id" aria-label="Más opciones">•••</button>
           <ul ngbDropdownMenu [attr.aria-labelledby]="'like-actions-' + like.id">
             <li>

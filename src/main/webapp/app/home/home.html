@@ -1,8 +1,6 @@
 <div class="home-page">
-  <!-- Greeting -->
   <h1 class="home-greeting">{{ greeting }}</h1>
 
-  <!-- Quick access grid -->
   <div class="quick-access-grid">
     <a routerLink="/song" class="quick-access-card" style="--card-color: #450af5">
       <div class="quick-access-icon">
@@ -42,7 +40,6 @@
     </a>
   </div>
 
-  <!-- Auth banner for guests -->
   @if (account() === null) {
     <div class="home-auth-banner">
       <div class="home-auth-content">
@@ -56,7 +53,6 @@
     </div>
   }
 
-  <!-- Explore section -->
   <section class="home-section">
     <h2 class="home-section-title">Explora Streamify</h2>
     <div class="explore-grid">
@@ -91,7 +87,6 @@
     </div>
   </section>
 
-  <!-- Activity section for logged-in users -->
   @if (account() !== null) {
     <section class="home-section">
       <h2 class="home-section-title">Tu actividad</h2>

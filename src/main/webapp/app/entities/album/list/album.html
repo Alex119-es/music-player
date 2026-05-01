@@ -2,7 +2,6 @@
   <jhi-alert-error />
   <jhi-alert />
 
-  <!-- Hero header -->
   <div class="entity-list-hero">
     <div class="entity-list-hero-icon" style="background: linear-gradient(135deg, #e8115b, #8b0000)">
       <fa-icon icon="compact-disc" />
@@ -31,7 +30,6 @@
     <div class="album-grid" id="entities">
       @for (album of albums(); track trackId(album)) {
         <div class="album-card" ngbDropdown data-cy="entityTable">
-          <!-- Cover -->
           <div class="album-cover">
             <fa-icon icon="compact-disc" />
             <button class="album-card-play" (click)="playAlbum(album); $event.stopPropagation()" aria-label="Reproducir álbum">
@@ -39,7 +37,6 @@
             </button>
           </div>
 
-          <!-- Info -->
           <a [routerLink]="['/album', album.id, 'view']" class="album-title" style="text-decoration: none; display: block">
             {{ album.title }}
           </a>
@@ -57,7 +54,6 @@
             }
           </div>
 
-          <!-- ••• menu -->
           <button class="album-card-more" ngbDropdownToggle [id]="'album-actions-' + album.id" aria-label="Más opciones">•••</button>
           <ul ngbDropdownMenu [attr.aria-labelledby]="'album-actions-' + album.id">
             <li>
@@ -79,7 +75,6 @@
       }
     </div>
 
-    <!-- Pagination -->
     <div class="entity-list-pagination">
       <jhi-item-count [params]="{ page: page(), totalItems: totalItems(), itemsPerPage: itemsPerPage() }" />
       <ngb-pagination

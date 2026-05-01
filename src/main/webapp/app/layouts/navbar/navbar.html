@@ -27,6 +27,17 @@
             </span>
           </a>
         </li>
+        @let dash = dashboardRoute();
+        @if (dash) {
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" [routerLink]="dash" (click)="collapseNavbar()">
+              <span>
+                <fa-icon icon="tachometer-alt" />
+                <span>Mi panel</span>
+              </span>
+            </a>
+          </li>
+        }
         @if (account() !== null) {
           <li
             ngbDropdown

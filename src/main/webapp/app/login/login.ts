@@ -29,7 +29,6 @@ export default class Login implements OnInit, AfterViewInit {
   private readonly router = inject(Router);
 
   ngOnInit(): void {
-    // if already authenticated then navigate to home page
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
         this.router.navigate(['']);
@@ -48,7 +47,9 @@ export default class Login implements OnInit, AfterViewInit {
 
         this.accountService.identity().subscribe(account => {
           const roles = account?.authorities ?? [];
-          if (roles.includes('ROLE_EDITOR')) {
+          if (roles.includes('ROLE_ADMIN')) {
+            this.router.navigate(['']);
+          } else if (roles.includes('ROLE_EDITOR')) {
             this.router.navigate(['/dashboard-editor']);
           } else {
             this.router.navigate(['/dashboard-user']);

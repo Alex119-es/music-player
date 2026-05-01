@@ -2,10 +2,6 @@
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
-// ============================================================
-// CSS custom properties — layout shell
-// ============================================================
-
 :root {
   --navbar-height: 64px;
   --player-bar-height: 90px;
@@ -21,10 +17,6 @@
   --text-subdued: #737373;
   --border-subtle: rgba(255, 255, 255, 0.1);
 }
-
-// ============================================================
-// Typography
-// ============================================================
 
 body,
 h1,
@@ -54,10 +46,6 @@ a {
     cursor: pointer;
   }
 }
-
-// ============================================================
-// Layout shell
-// ============================================================
 
 .jhi-app-layout {
   position: fixed;
@@ -99,10 +87,6 @@ a {
   }
 }
 
-// ============================================================
-// Cards
-// ============================================================
-
 .jh-card {
   background-color: transparent;
   border: none;
@@ -116,10 +100,6 @@ a {
   border-radius: 12px;
   color: var(--text-primary);
 }
-
-// ============================================================
-// Dropdowns
-// ============================================================
 
 a:not([href]):not([tabindex]):hover.dropdown-item {
   color: $dropdown-link-hover-color;
@@ -163,10 +143,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Forms
-// ============================================================
-
 .form-control {
   background-color: #2a2a2a;
   border-color: #3e3e3e;
@@ -196,10 +172,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
     box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
   }
 }
-
-// ============================================================
-// Buttons
-// ============================================================
 
 .btn-primary {
   background-color: var(--accent);
@@ -241,10 +213,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Tables
-// ============================================================
-
 .table {
   color: var(--text-secondary);
   border-color: var(--border-subtle);
@@ -268,10 +236,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
     color: var(--text-primary);
   }
 }
-
-// ============================================================
-// Alerts
-// ============================================================
 
 .alert {
   border-radius: 8px;
@@ -301,10 +265,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Pagination
-// ============================================================
-
 .page-link {
   background-color: transparent;
   border-color: var(--border-subtle);
@@ -333,10 +293,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   color: var(--text-subdued);
 }
 
-// ============================================================
-// Error highlight on input fields
-// ============================================================
-
 .ng-valid[required],
 .ng-valid.required {
   border-left: 5px solid var(--accent);
@@ -345,10 +301,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
 .ng-invalid:not(form) {
   border-left: 5px solid #e74c3c;
 }
-
-// ============================================================
-// Utility
-// ============================================================
 
 .error {
   color: white;
@@ -373,10 +325,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
 .footer {
   display: none;
 }
-
-// ============================================================
-// Alerts / toasts
-// ============================================================
 
 .alerts {
   .alert {
@@ -420,10 +368,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
     width: 50%;
   }
 }
-
-// ============================================================
-// Entity pages
-// ============================================================
 
 .table-entities thead th .d-flex > * {
   margin: auto 0;
@@ -484,10 +428,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
-
-// ============================================================
-// Entity pages — shared hero + card grid styles
-// ============================================================
 
 .entity-list-hero {
   display: flex;
@@ -587,10 +527,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
     margin: 0;
   }
 }
-
-// ============================================================
-// Genre card grid
-// ============================================================
 
 .genre-grid {
   display: grid;
@@ -702,10 +638,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Artist card grid
-// ============================================================
-
 .artist-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -810,10 +742,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
     }
   }
 }
-
-// ============================================================
-// Playlist card grid
-// ============================================================
 
 .playlist-grid {
   display: grid;
@@ -970,10 +898,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Album card grid
-// ============================================================
-
 .album-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1112,10 +1036,6 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   }
 }
 
-// ============================================================
-// Like / Liked Songs list
-// ============================================================
-
 .like-list-page {
   padding-bottom: 2rem;
 }
@@ -1202,62 +1122,12 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   color: var(--text-secondary);
   font-size: 0.875rem;
 
-  display: flex;
-  flex-direction: column;
+  ngb-pagination {
+    margin: 0;
+  }
 
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  padding: 1rem;
-  background: #121212 !important;
-}
-.sidebar-nav {
-  width: 260px;
-  height: 100vh;
-  position: fixed;
-  background: #121212;
-  border-right: 1px solid #282828;
-  padding: 1rem;
-  overflow-y: auto;
-}
-
-.sidebar-link {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  color: #b3b3b3;
-  border-radius: 6px;
-}
-
-.sidebar-link:hover {
-  background: #282828;
-  color: white;
-}
-
-.sidebar-title {
-  font-size: 12px;
-  color: #777;
-  text-transform: uppercase;
-  margin-top: 15px;
-  margin-bottom: 5px;
-}
-
-.sidebar-submenu {
-  list-style: none;
-  padding-left: 10px;
-}
-
-.sidebar-submenu li a {
-  display: block;
-  padding: 5px 0;
-  color: #b3b3b3;
-  text-decoration: none;
-}
-
-.sidebar-submenu li a:hover {
-  color: white;
-}
-.content {
-  margin-left: 260px;
+  jhi-item-count {
+    font-size: 0.8rem;
+    color: var(--text-subdued);
+  }
 }

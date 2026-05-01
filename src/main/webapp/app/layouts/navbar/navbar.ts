@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -20,6 +20,7 @@ import ActiveMenuDirective from './active-menu.directive';
 
 @Component({
   selector: 'jhi-navbar',
+  standalone: true,
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
   imports: [
@@ -37,13 +38,35 @@ import ActiveMenuDirective from './active-menu.directive';
     TranslateModule,
   ],
 })
-export default class Navbar implements OnInit {
+export class Navbar implements OnInit {
   readonly inProduction = signal(true);
   readonly isNavbarCollapsed = signal(true);
   readonly languages = LANGUAGES;
   readonly openAPIEnabled = signal(false);
   readonly version: string;
+
   readonly account = inject(AccountService).account;
+
+  // ✅ 🔥 NUEVO: ruta dinámica del home
+  readonly homeRoute = computed(() => {
+    const acc = this.account();
+
+    if (!acc) {
+      return '/login';
+    }
+
+    const authorities = acc.authorities ?? [];
+
+    if (authorities.includes('ROLE_EDITOR')) {
+      return '/dashboard-editor';
+    }
+
+    if (authorities.includes('ROLE_USER')) {
+      return '/dashboard-user';
+    }
+
+    return '/';
+  });
 
   private readonly loginService = inject(LoginService);
   private readonly translateService = inject(TranslateService);

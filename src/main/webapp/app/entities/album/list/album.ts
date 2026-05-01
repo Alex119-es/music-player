@@ -25,6 +25,7 @@ import { AlbumService } from '../service/album.service';
 @Component({
   selector: 'jhi-album',
   templateUrl: './album.html',
+  styleUrls: ['./album.scss'],
   imports: [
     RouterLink,
     FormsModule,

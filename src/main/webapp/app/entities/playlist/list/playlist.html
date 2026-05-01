@@ -16,6 +16,9 @@
     <button class="btn-icon-action" (click)="load()" [disabled]="isLoading()" title="Actualizar" aria-label="Actualizar">
       <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
     </button>
+    <a class="btn-icon-action" routerLink="/playlist/new" title="Nueva playlist" aria-label="Nueva playlist">
+      <fa-icon icon="plus" />
+    </a>
   </div>
 
   @if (playlists().length === 0) {
@@ -26,7 +29,7 @@
   } @else {
     <div class="playlist-grid" id="entities">
       @for (playlist of playlists(); track trackId(playlist)) {
-        <div class="playlist-card" data-cy="entityTable">
+        <div class="playlist-card" ngbDropdown data-cy="entityTable">
           <div class="playlist-cover">
             <fa-icon icon="music" />
             <button class="playlist-card-play" (click)="$event.stopPropagation()" aria-label="Reproducir">
@@ -47,6 +50,28 @@
               {{ playlist.isPublic ? 'Pública' : 'Privada' }}
             </span>
           </div>
+
+          <button class="playlist-card-more" ngbDropdownToggle [id]="'playlist-actions-' + playlist.id" aria-label="Más opciones">
+            •••
+          </button>
+          <ul ngbDropdownMenu [attr.aria-labelledby]="'playlist-actions-' + playlist.id">
+            <li>
+              <a class="dropdown-item" [routerLink]="['/playlist', playlist.id, 'view']">
+                <fa-icon icon="eye" [fixedWidth]="true" /> Ver
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/playlist', playlist.id, 'edit']">
+                <fa-icon icon="pencil-alt" [fixedWidth]="true" /> Editar
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+              <button class="dropdown-item text-danger" (click)="delete(playlist)">
+                <fa-icon icon="trash" [fixedWidth]="true" /> Eliminar
+              </button>
+            </li>
+          </ul>
         </div>
       }
     </div>

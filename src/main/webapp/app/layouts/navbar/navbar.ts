@@ -13,6 +13,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { LoginService } from 'app/login/login.service';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { Authority } from 'app/shared/jhipster/constants';
 import { TranslateDirective } from 'app/shared/language';
 import FindLanguageFromKeyPipe from 'app/shared/language/find-language-from-key.pipe';
 
@@ -53,10 +54,11 @@ export class Navbar implements OnInit {
       return null;
     }
     const authorities = acc.authorities ?? [];
-    if (authorities.includes('ROLE_EDITOR')) {
+    const canManage = [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST].some(role => authorities.includes(role));
+    if (canManage) {
       return '/dashboard-editor';
     }
-    if (authorities.includes('ROLE_USER') && !authorities.includes('ROLE_ADMIN')) {
+    if (authorities.includes(Authority.USER)) {
       return '/dashboard-user';
     }
     return null;

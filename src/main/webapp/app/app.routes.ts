@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'dashboard-editor',
     loadComponent: () => import('./home/dashboard-editor/dashboard-editor').then(m => m.default),
     data: {
-      authorities: ['ROLE_EDITOR'],
+      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
     },
     canActivate: [UserRouteAccessService],
   },
@@ -23,7 +23,7 @@ const routes: Routes = [
     path: 'dashboard-user',
     loadComponent: () => import('./home/dashboard-user/dashboard-user').then(m => m.default),
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: [Authority.USER],
     },
     canActivate: [UserRouteAccessService],
   },

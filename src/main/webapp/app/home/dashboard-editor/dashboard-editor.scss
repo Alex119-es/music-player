@@ -209,6 +209,17 @@
     font-size: 0.85rem;
     color: var(--text-subdued);
   }
+
+  .editor-section-link {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent-hover);
+    }
+  }
 }
 
 .editor-actions-grid {
@@ -359,4 +370,58 @@
     color: var(--text-subdued);
     margin-top: 0.15rem;
   }
+}
+
+.editor-release-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.editor-release-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+  }
+}
+
+.editor-release-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.editor-release-title {
+  font-weight: 600;
+}
+
+.editor-release-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.editor-release-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.editor-empty {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-subdued);
+  font-size: 0.9rem;
+  padding: 0.75rem 0;
 }

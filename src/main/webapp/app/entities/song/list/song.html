@@ -20,7 +20,13 @@
       <button class="btn-icon-action" (click)="load()" [disabled]="isLoading()" title="Actualizar" aria-label="Actualizar">
         <fa-icon icon="sync" [animation]="isLoading() ? 'spin' : undefined" />
       </button>
-      <a class="btn-icon-action btn-add" [routerLink]="['/song/new']" title="Agregar canción" aria-label="Agregar canción">
+      <a
+        class="btn-icon-action btn-add"
+        [routerLink]="['/song/new']"
+        title="Agregar canción"
+        aria-label="Agregar canción"
+        *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']"
+      >
         <fa-icon icon="plus" />
       </a>
     </div>
@@ -116,12 +122,12 @@
                     <fa-icon icon="eye" [fixedWidth]="true" /> Ver detalles
                   </a>
                 </li>
-                <li>
+                <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
                   <a class="dropdown-item" [routerLink]="['/song', song.id, 'edit']">
                     <fa-icon icon="pencil-alt" [fixedWidth]="true" /> Editar
                   </a>
                 </li>
-                <li>
+                <li *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_EDITOR', 'ROLE_ARTIST']">
                   <button class="dropdown-item text-danger" (click)="delete(song)">
                     <fa-icon icon="times" [fixedWidth]="true" /> Eliminar
                   </button>

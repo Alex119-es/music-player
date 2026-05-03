@@ -55,18 +55,32 @@ a {
   right: 0;
   display: flex;
   overflow: hidden;
+
+  &:has(.no-player) {
+    bottom: 0 !important;
+  }
 }
 
 .jhi-main-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-left: var(--sidebar-width);
-  transition: margin-left 0.3s ease;
   padding: 2rem 1.5rem;
+  .container,
+  .container-fluid,
+  .jh-card {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
   &.sidebar-collapsed {
     margin-left: var(--sidebar-collapsed-width);
+  }
+
+  &.no-sidebar {
+    margin-left: 0 !important;
   }
 
   &::-webkit-scrollbar {
@@ -563,30 +577,39 @@ a:not([href]):not([tabindex]):hover.dropdown-item {
   &-color-0 {
     background: linear-gradient(135deg, #450af5, #c4efd9);
   }
+
   &-color-1 {
     background: linear-gradient(135deg, #e8115b, #f59b23);
   }
+
   &-color-2 {
     background: linear-gradient(135deg, #1db954, #189b45);
   }
+
   &-color-3 {
     background: linear-gradient(135deg, #8d67ab, #6c4a8a);
   }
+
   &-color-4 {
     background: linear-gradient(135deg, #e7611a, #ff8c00);
   }
+
   &-color-5 {
     background: linear-gradient(135deg, #477d95, #1db954);
   }
+
   &-color-6 {
     background: linear-gradient(135deg, #148a08, #1db954);
   }
+
   &-color-7 {
     background: linear-gradient(135deg, #e61e32, #8b0000);
   }
+
   &-color-8 {
     background: linear-gradient(135deg, #0d4ea6, #5179c8);
   }
+
   &-color-9 {
     background: linear-gradient(135deg, #f037a5, #9900ff);
   }

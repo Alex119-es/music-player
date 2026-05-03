@@ -5,8 +5,16 @@
 </div>
 
 <div class="jhi-app-layout">
-  <jhi-sidebar />
-  <div class="jhi-main-content" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
+  @if (canShowSidebar()) {
+    <jhi-sidebar />
+  }
+
+  <div
+    class="jhi-main-content"
+    [class.sidebar-collapsed]="sidebarService.isCollapsed()"
+    [class.no-sidebar]="!canShowSidebar()"
+    [class.no-player]="!canShowPlayerBar()"
+  >
     <div class="container-fluid">
       <div class="jh-card">
         <router-outlet />
@@ -15,4 +23,6 @@
   </div>
 </div>
 
-<jhi-player-bar />
+@if (canShowPlayerBar()) {
+  <jhi-player-bar />
+}

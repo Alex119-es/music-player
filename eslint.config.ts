@@ -1,6 +1,7 @@
 import eslint from '@eslint/js';
 import angular from 'angular-eslint';
 import { defineConfig } from 'eslint/config';
+import prettier from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 // For a detailed explanation, visit: https://github.com/angular-eslint/angular-eslint/blob/main/docs/CONFIGURING_FLAT_CONFIG.md
@@ -125,4 +126,7 @@ export default defineConfig(
     },
   },
   // jhipster-needle-eslint-add-config - JHipster will add additional config here
+  {
+    extends: [prettier],
+  },
 );

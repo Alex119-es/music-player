@@ -16,6 +16,7 @@
 *.df            text
 *.ejs           text
 *.html          text
+src/main/webapp/404.html text eol=lf
 *.java          text
 *.js            text
 *.json          text

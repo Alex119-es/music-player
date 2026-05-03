@@ -14,7 +14,13 @@
       </div>
     </div>
     <div class="song-list-actions">
-      <button class="btn-play-all" title="Reproducir todo" aria-label="Reproducir todo">
+      <button
+        class="btn-play-all"
+        (click)="playAll()"
+        [disabled]="songs().length === 0"
+        title="Reproducir todo"
+        aria-label="Reproducir todo"
+      >
         <fa-icon icon="play" />
       </button>
       <button class="btn-icon-action" (click)="load()" [disabled]="isLoading()" title="Actualizar" aria-label="Actualizar">
@@ -54,8 +60,14 @@
         <div class="track-row" data-cy="entityTable">
           <div class="col-num">
             <span class="track-num">{{ i + 1 }}</span>
-            <button class="track-play-btn" title="Reproducir" aria-label="Reproducir">
-              <fa-icon icon="play" />
+            <button
+              class="track-play-btn"
+              (click)="play(song)"
+              [disabled]="!song.fileUrl"
+              [title]="song.fileUrl ? 'Reproducir' : 'Sin archivo de audio'"
+              aria-label="Reproducir"
+            >
+              <fa-icon [icon]="isCurrentPlaying(song) ? 'pause' : 'play'" />
             </button>
           </div>
 
@@ -66,8 +78,8 @@
               } @else {
                 <fa-icon icon="music" class="track-cover-placeholder" />
               }
-              <button class="track-cover-play" aria-label="Reproducir">
-                <fa-icon icon="play" />
+              <button class="track-cover-play" (click)="play(song)" [disabled]="!song.fileUrl" aria-label="Reproducir">
+                <fa-icon [icon]="isCurrentPlaying(song) ? 'pause' : 'play'" />
               </button>
             </div>
             <div class="track-info">

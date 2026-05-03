@@ -1,53 +1,44 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { RouterLink } from '@angular/router';
+
+import { PlayerService } from 'app/core/player/player.service';
 
 @Component({
   selector: 'jhi-player-bar',
   templateUrl: './player-bar.html',
   styleUrl: './player-bar.scss',
-  imports: [FaIconComponent, RouterLink],
+  imports: [FaIconComponent],
 })
-export default class PlayerBar {
-  readonly isPlaying = signal(false);
-  readonly isShuffle = signal(false);
-  readonly isRepeat = signal(false);
-  readonly volume = signal(70);
-  readonly progress = signal(0);
-  readonly isMuted = signal(false);
+export default class PlayerBar implements AfterViewInit {
+  @ViewChild('audio', { static: true }) audioRef!: ElementRef<HTMLAudioElement>;
 
-  readonly volumeIcon = computed(() => {
-    if (this.isMuted() || this.volume() === 0) return 'volume-mute';
-    if (this.volume() < 40) return 'volume-down';
-    return 'volume-up';
-  });
+  readonly player = inject(PlayerService);
 
-  togglePlay(): void {
-    this.isPlaying.update(v => !v);
+  ngAfterViewInit(): void {
+    this.player.attachAudio(this.audioRef.nativeElement);
   }
 
-  toggleShuffle(): void {
-    this.isShuffle.update(v => !v);
+  formatTime(seconds: number): string {
+    if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+    const total = Math.floor(seconds);
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
   }
 
-  toggleRepeat(): void {
-    this.isRepeat.update(v => !v);
-  }
-
-  toggleMute(): void {
-    this.isMuted.update(v => !v);
-  }
-
-  setVolume(event: Event): void {
+  onSeekInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.volume.set(Number(input.value));
-    if (Number(input.value) > 0) {
-      this.isMuted.set(false);
-    }
+    this.player.seek(Number(input.value));
   }
 
-  setProgress(event: Event): void {
+  onVolumeInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.progress.set(Number(input.value));
+    this.player.setVolume(Number(input.value));
+  }
+
+  progressPercent(): number {
+    const dur = this.player.duration();
+    if (!dur) return 0;
+    return (this.player.progress() / dur) * 100;
   }
 }

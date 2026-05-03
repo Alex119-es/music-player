@@ -12,6 +12,7 @@ import { Subscription, combineLatest, filter, tap } from 'rxjs';
 
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
+import { PlayerService } from 'app/core/player/player.service';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { Alert } from 'app/shared/alert/alert';
 import { AlertError } from 'app/shared/alert/alert-error';
@@ -66,6 +67,7 @@ export class Song implements OnInit {
   protected readonly sortService = inject(SortService);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
+  protected readonly playerService = inject(PlayerService);
 
   constructor() {
     effect(() => {
@@ -80,6 +82,29 @@ export class Song implements OnInit {
   }
 
   trackId = (item: ISong): number => this.songService.getSongIdentifier(item);
+
+  play(song: ISong): void {
+    if (this.isCurrent(song)) {
+      this.playerService.togglePlay();
+      return;
+    }
+    this.playerService.playSong(song, this.songs());
+  }
+
+  playAll(): void {
+    const list = this.songs();
+    if (list.length === 0) return;
+    const first = list.find(s => !!s.fileUrl) ?? list[0];
+    this.playerService.playSong(first, list);
+  }
+
+  isCurrent(song: ISong): boolean {
+    return this.playerService.currentSong()?.id === song.id;
+  }
+
+  isCurrentPlaying(song: ISong): boolean {
+    return this.isCurrent(song) && this.playerService.isPlaying();
+  }
 
   formatDuration(seconds: number | null | undefined): string {
     if (!seconds) return '—';

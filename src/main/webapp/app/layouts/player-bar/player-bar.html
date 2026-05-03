@@ -1,12 +1,36 @@
+@let song = player.currentSong();
+
+<audio
+  #audio
+  preload="metadata"
+  (play)="player.onAudioPlay()"
+  (pause)="player.onAudioPause()"
+  (timeupdate)="player.onTimeUpdate()"
+  (loadedmetadata)="player.onLoadedMetadata()"
+  (ended)="player.onEnded()"
+></audio>
+
 <div class="player-bar">
   <!-- Left: Now Playing -->
   <div class="player-now-playing">
     <div class="player-cover">
-      <fa-icon icon="music" class="player-cover-placeholder" />
+      @if (song?.coverImage) {
+        <img [src]="song!.coverImage" [alt]="song!.title" class="player-cover-img" />
+      } @else {
+        <fa-icon icon="music" class="player-cover-placeholder" />
+      }
     </div>
     <div class="player-song-info">
-      <span class="player-song-name">No hay canción</span>
-      <span class="player-artist-name">Selecciona una canción</span>
+      <span class="player-song-name">{{ song?.title ?? 'No hay canción' }}</span>
+      <span class="player-artist-name">
+        @if (song?.artistses && song!.artistses!.length > 0) {
+          Artista #{{ song!.artistses![0].id }}
+        } @else if (song) {
+          Artista desconocido
+        } @else {
+          Selecciona una canción
+        }
+      </span>
     </div>
     <button class="player-icon-btn like-btn" title="Me gusta" aria-label="Me gusta">
       <fa-icon icon="heart" />
@@ -18,30 +42,36 @@
     <div class="player-buttons">
       <button
         class="player-icon-btn secondary-btn"
-        [class.active]="isShuffle()"
-        (click)="toggleShuffle()"
+        [class.active]="player.isShuffle()"
+        (click)="player.toggleShuffle()"
         title="Aleatorio"
         aria-label="Aleatorio"
       >
         <fa-icon icon="random" />
       </button>
 
-      <button class="player-icon-btn secondary-btn" title="Anterior" aria-label="Anterior">
+      <button class="player-icon-btn secondary-btn" (click)="player.previous()" title="Anterior" aria-label="Anterior">
         <fa-icon icon="step-backward" />
       </button>
 
-      <button class="player-icon-btn play-pause-btn" (click)="togglePlay()" title="Reproducir/Pausar" aria-label="Reproducir/Pausar">
-        <fa-icon [icon]="isPlaying() ? 'pause' : 'play'" />
+      <button
+        class="player-icon-btn play-pause-btn"
+        (click)="player.togglePlay()"
+        [disabled]="!song"
+        title="Reproducir/Pausar"
+        aria-label="Reproducir/Pausar"
+      >
+        <fa-icon [icon]="player.isPlaying() ? 'pause' : 'play'" />
       </button>
 
-      <button class="player-icon-btn secondary-btn" title="Siguiente" aria-label="Siguiente">
+      <button class="player-icon-btn secondary-btn" (click)="player.next()" title="Siguiente" aria-label="Siguiente">
         <fa-icon icon="step-forward" />
       </button>
 
       <button
         class="player-icon-btn secondary-btn"
-        [class.active]="isRepeat()"
-        (click)="toggleRepeat()"
+        [class.active]="player.isRepeat()"
+        (click)="player.toggleRepeat()"
         title="Repetir"
         aria-label="Repetir"
       >
@@ -50,27 +80,29 @@
     </div>
 
     <div class="player-progress-row">
-      <span class="player-time">0:00</span>
+      <span class="player-time">{{ formatTime(player.progress()) }}</span>
       <div class="progress-track">
         <input
           type="range"
           class="player-slider progress-slider"
           min="0"
-          max="100"
-          [value]="progress()"
-          (input)="setProgress($event)"
+          [max]="player.duration() || 0"
+          step="0.1"
+          [value]="player.progress()"
+          (input)="onSeekInput($event)"
+          [disabled]="!song"
           aria-label="Progreso"
         />
-        <div class="progress-fill" [style.width.%]="progress()"></div>
+        <div class="progress-fill" [style.width.%]="progressPercent()"></div>
       </div>
-      <span class="player-time">0:00</span>
+      <span class="player-time">{{ formatTime(player.duration()) }}</span>
     </div>
   </div>
 
   <!-- Right: Volume & extra -->
   <div class="player-right">
-    <button class="player-icon-btn secondary-btn" (click)="toggleMute()" title="Silenciar" aria-label="Silenciar">
-      <fa-icon [icon]="volumeIcon()" />
+    <button class="player-icon-btn secondary-btn" (click)="player.toggleMute()" title="Silenciar" aria-label="Silenciar">
+      <fa-icon [icon]="player.volumeIcon()" />
     </button>
     <div class="volume-track">
       <input
@@ -78,11 +110,11 @@
         class="player-slider volume-slider"
         min="0"
         max="100"
-        [value]="isMuted() ? 0 : volume()"
-        (input)="setVolume($event)"
+        [value]="player.isMuted() ? 0 : player.volume()"
+        (input)="onVolumeInput($event)"
         aria-label="Volumen"
       />
-      <div class="volume-fill" [style.width.%]="isMuted() ? 0 : volume()"></div>
+      <div class="volume-fill" [style.width.%]="player.isMuted() ? 0 : player.volume()"></div>
     </div>
   </div>
 </div>

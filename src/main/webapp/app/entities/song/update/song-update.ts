@@ -144,7 +144,7 @@ export class SongUpdate implements OnInit {
       return;
     }
 
-    const maxSize = 15 * 1024 * 1024; // 15MB
+    const maxSize = 15 * 1024 * 1024;
 
     if (file.size > maxSize) {
       alert('El archivo es demasiado grande (máx 15MB)');
@@ -153,11 +153,16 @@ export class SongUpdate implements OnInit {
 
     this.selectedFile = file;
 
+    // 👇 ESTO ES LO QUE TE FALTA
+    this.editForm.patchValue({
+      fileUrl: file.name,
+    });
+
     const audio = new Audio();
     audio.src = URL.createObjectURL(file);
 
     audio.onloadedmetadata = () => {
-      const durationInSeconds = isNaN(audio.duration) ? 0 : audio.duration;
+      const durationInSeconds = audio.duration;
 
       this.editForm.patchValue({
         duration: Math.floor(durationInSeconds),
@@ -186,10 +191,11 @@ export class SongUpdate implements OnInit {
       return;
     }
 
-    const maxSize = 2 * 1024 * 1024;
+    const maxSize = 5 * 1024 * 1024;
 
+    //CAMBIAR POR DIALOG DE SWEETALERT2
     if (file.size > maxSize) {
-      alert('Máximo 2MB');
+      alert('Máximo 5MB');
       return;
     }
 

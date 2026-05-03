@@ -21,6 +21,7 @@ public class SongDTO implements Serializable {
     @Size(max = 150)
     private String title;
 
+    @Max(3600)
     private Integer duration;
 
     @NotNull
@@ -156,17 +157,17 @@ public class SongDTO implements Serializable {
     @Override
     public String toString() {
         return "SongDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", duration=" + getDuration() +
-            ", fileUrl='" + getFileUrl() + "'" +
-            ", coverImage='" + getCoverImage() + "'" +
-            ", lyrics='" + getLyrics() + "'" +
-            ", releaseDate='" + getReleaseDate() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", album=" + getAlbum() +
-            ", genre=" + getGenre() +
-            ", artistses=" + getArtistses() +
-            "}";
+                "id=" + getId() +
+                ", title='" + getTitle() + "'" +
+                ", duration=" + getDuration() +
+                ", fileUrl='" + getFileUrl() + "'" +
+                ", coverImage='" + getCoverImage() + "'" +
+                ", lyrics='" + getLyrics() + "'" +
+                ", releaseDate='" + getReleaseDate() + "'" +
+                ", createdAt='" + getCreatedAt() + "'" +
+                ", album=" + getAlbum() +
+                ", genre=" + getGenre() +
+                ", artistses=" + getArtistses() +
+                "}";
     }
 }

@@ -1,207 +1,112 @@
-// ============================================================
-// Home page — Streamify dark theme
-// ============================================================
-
-$accent: #1db954;
-$text-primary: #ffffff;
-$text-secondary: #b3b3b3;
-$text-subdued: #737373;
-
-.home-page {
-  padding-bottom: 2rem;
+.home-layout {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 6rem;
+  gap: 4rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.home-greeting {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: $text-primary;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
+/* fondo con glow */
+.home-layout::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25), transparent 70%);
+  top: -200px;
+  right: -200px;
+  filter: blur(40px);
+}
+
+.home-left {
+  flex: 1;
+  max-width: 600px;
+}
+
+.home-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.home-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: white;
+  margin: 1rem 0;
   line-height: 1.1;
 }
 
-.quick-access-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
-
-  @media (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.home-description {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
-.quick-access-card {
+.home-actions {
   display: flex;
-  align-items: center;
   gap: 1rem;
-  background-color: rgba(255, 255, 255, 0.07);
-  border-radius: 6px;
-  text-decoration: none;
-  color: $text-primary;
+}
+
+.home-button {
+  padding: 0.9rem 1.4rem;
+  border-radius: 9999px;
   font-weight: 700;
-  font-size: 0.9rem;
-  overflow: hidden;
-  transition: background-color 0.15s ease;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: $text-primary;
-    text-decoration: none;
-  }
-
-  .quick-access-icon {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    background-color: var(--card-color, #450af5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
-  }
+  text-decoration: none;
+  transition: 0.2s ease;
+  display: inline-block;
 }
 
-.home-auth-banner {
-  background: linear-gradient(to right, #1a1a2e, #16213e, #0f3460);
-  border-radius: 12px;
-  padding: 2.5rem;
-  margin-bottom: 2.5rem;
-
-  .home-auth-content {
-    max-width: 480px;
-
-    h2 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: $text-primary;
-      margin-bottom: 0.75rem;
-    }
-
-    p {
-      color: $text-secondary;
-      margin-bottom: 1.5rem;
-      font-size: 1rem;
-    }
-  }
-
-  .home-auth-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    .btn-lg {
-      font-weight: 700;
-      border-radius: 9999px;
-      padding: 0.75rem 2rem;
-    }
-
-    .btn-outline-light {
-      color: $text-primary;
-      border-color: rgba(255, 255, 255, 0.5);
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-color: $text-primary;
-        color: $text-primary;
-      }
-    }
-  }
+.home-button.primary {
+  background: var(--accent);
+  color: #000;
 }
 
-.home-section {
-  margin-bottom: 2.5rem;
+.home-button.primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
 }
 
-.home-section-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: $text-primary;
-  margin-bottom: 1rem;
+.home-button.secondary {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
-.explore-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-
-  @media (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
+.home-button.secondary:hover {
+  border-color: white;
+  transform: translateY(-2px);
 }
 
-.explore-card {
-  border-radius: 12px;
-  padding: 1.5rem;
+/* derecha visual */
+.home-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
   position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  cursor: pointer;
-  transition: filter 0.15s ease;
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  &:hover {
-    filter: brightness(1.12);
-    text-decoration: none;
-  }
-
-  h3 {
-    font-size: 1rem;
-    font-weight: 800;
-    color: $text-primary;
-    margin: 0 0 0.25rem;
-  }
-
-  p {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0;
-  }
-
-  .explore-icon {
-    font-size: 2.5rem;
-    color: rgba(255, 255, 255, 0.3);
-    align-self: flex-end;
-    margin-top: 0.5rem;
-  }
 }
 
-.activity-row {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+.home-card {
+  width: 320px;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 2;
 }
-
-.activity-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.07);
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  text-decoration: none;
-  color: $text-secondary;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: $text-primary;
-    text-decoration: none;
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.4;
   }
-
-  .activity-icon {
-    font-size: 1.1rem;
-    color: $accent;
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
   }
 }

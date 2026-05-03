@@ -1,109 +1,24 @@
-<div class="home-page">
-  <h1 class="home-greeting">{{ greeting }}</h1>
+<div class="home-layout">
+  <div class="home-left">
+    <span class="home-eyebrow">WISAFY</span>
 
-  <div class="quick-access-grid">
-    <a routerLink="/song" class="quick-access-card" style="--card-color: #450af5">
-      <div class="quick-access-icon">
-        <fa-icon icon="music" />
-      </div>
-      <span>Canciones</span>
-    </a>
-    <a routerLink="/album" class="quick-access-card" style="--card-color: #e8115b">
-      <div class="quick-access-icon">
-        <fa-icon icon="compact-disc" />
-      </div>
-      <span>Álbumes</span>
-    </a>
-    <a routerLink="/artist" class="quick-access-card" style="--card-color: #e7611a">
-      <div class="quick-access-icon">
-        <fa-icon icon="guitar" />
-      </div>
-      <span>Artistas</span>
-    </a>
-    <a routerLink="/playlist" class="quick-access-card" style="--card-color: #1db954">
-      <div class="quick-access-icon">
-        <fa-icon icon="list" />
-      </div>
-      <span>Playlists</span>
-    </a>
-    <a routerLink="/genre" class="quick-access-card" style="--card-color: #8d67ab">
-      <div class="quick-access-icon">
-        <fa-icon icon="fire" />
-      </div>
-      <span>Géneros</span>
-    </a>
-    <a routerLink="/like" class="quick-access-card" style="--card-color: #477d95">
-      <div class="quick-access-icon">
-        <fa-icon icon="heart" />
-      </div>
-      <span>Me gusta</span>
-    </a>
+    <h1 class="home-title">
+      Música sin límites.<br />
+      Descubre, escucha y crea.
+    </h1>
+
+    <p class="home-description">
+      Explora millones de canciones, sigue a tus artistas favoritos y crea playlists personalizadas con una experiencia fluida y moderna.
+    </p>
+
+    <div class="home-actions">
+      <a routerLink="/login" class="home-button primary"> Iniciar sesión </a>
+
+      <a routerLink="/" class="home-button secondary"> Explorar música </a>
+    </div>
   </div>
 
-  @if (account() === null) {
-    <div class="home-auth-banner">
-      <div class="home-auth-content">
-        <h2>Escucha música sin límites</h2>
-        <p>Inicia sesión para acceder a tu biblioteca, crear playlists y más.</p>
-        <div class="home-auth-actions">
-          <button class="btn btn-primary btn-lg" (click)="login()">Iniciar sesión</button>
-          <a routerLink="/account/register" class="btn btn-outline-light btn-lg">Crear cuenta</a>
-        </div>
-      </div>
-    </div>
-  }
-
-  <section class="home-section">
-    <h2 class="home-section-title">Explora Streamify</h2>
-    <div class="explore-grid">
-      <a routerLink="/song" class="explore-card" style="background: linear-gradient(135deg, #450af5, #c4efd9)">
-        <div>
-          <h3>Todas las Canciones</h3>
-          <p>Descubre nuestra biblioteca musical</p>
-        </div>
-        <fa-icon icon="music" class="explore-icon" />
-      </a>
-      <a routerLink="/artist" class="explore-card" style="background: linear-gradient(135deg, #e8115b, #f59b23)">
-        <div>
-          <h3>Artistas</h3>
-          <p>Descubre nuevos artistas</p>
-        </div>
-        <fa-icon icon="guitar" class="explore-icon" />
-      </a>
-      <a routerLink="/album" class="explore-card" style="background: linear-gradient(135deg, #1db954, #189b45)">
-        <div>
-          <h3>Álbumes</h3>
-          <p>Explora discografías completas</p>
-        </div>
-        <fa-icon icon="compact-disc" class="explore-icon" />
-      </a>
-      <a routerLink="/genre" class="explore-card" style="background: linear-gradient(135deg, #8d67ab, #6c4a8a)">
-        <div>
-          <h3>Géneros</h3>
-          <p>Filtra por tu estilo favorito</p>
-        </div>
-        <fa-icon icon="fire" class="explore-icon" />
-      </a>
-    </div>
-  </section>
-
-  @if (account() !== null) {
-    <section class="home-section">
-      <h2 class="home-section-title">Tu actividad</h2>
-      <div class="activity-row">
-        <a routerLink="/like" class="activity-card">
-          <fa-icon icon="heart" class="activity-icon" />
-          <span>Canciones que te gustan</span>
-        </a>
-        <a routerLink="/playlist" class="activity-card">
-          <fa-icon icon="list" class="activity-icon" />
-          <span>Mis Playlists</span>
-        </a>
-        <a routerLink="/play" class="activity-card">
-          <fa-icon icon="chart-bar" class="activity-icon" />
-          <span>Historial</span>
-        </a>
-      </div>
-    </section>
-  }
+  <div class="home-right">
+    <div class="home-glow"></div>
+  </div>
 </div>

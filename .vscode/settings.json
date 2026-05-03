@@ -1,3 +1,7 @@
 {
-  "eslint.enable": false
+  "eslint.enable": false,
+  "editor.renderValidationDecorations": "off",
+  "scm.diffDecorations": "none",
+  "git.decorations.enabled": false,
+  "errorLens.enabled": false
 }

@@ -28,6 +28,8 @@ import { SongFormGroup, SongFormService } from './song-form.service';
 @Component({
   selector: 'jhi-song-update',
   templateUrl: './song-update.html',
+  styleUrl: './song-update.scss',
+
   imports: [TranslateDirective, TranslateModule, FontAwesomeModule, AlertError, ReactiveFormsModule, NgbInputDatepicker],
 })
 export class SongUpdate implements OnInit {
@@ -46,6 +48,10 @@ export class SongUpdate implements OnInit {
   protected genreService = inject(GenreService);
   protected artistService = inject(ArtistService);
   protected activatedRoute = inject(ActivatedRoute);
+  // Validación de archivos
+  selectedFile: File | null = null;
+  selectedCover: File | null = null;
+  coverPreviewUrl: string | null = null;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: SongFormGroup = this.songFormService.createSongFormGroup();
@@ -112,7 +118,75 @@ export class SongUpdate implements OnInit {
   protected onSaveError(): void {
     // Api for inheritance.
   }
+  // Método para manejar la selección de archivos y su tamaño
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
+    if (!input.files || input.files.length === 0) {
+      this.selectedFile = null;
+      return;
+    }
+
+    const file = input.files[0];
+
+    const allowedTypes = ['audio/mpeg', 'audio/wav'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Solo se permiten archivos MP3 o WAV');
+      return;
+    }
+
+    const maxSize = 15 * 1024 * 1024; // 15MB
+
+    if (file.size > maxSize) {
+      alert('El archivo es demasiado grande (máx 15MB)');
+      return;
+    }
+
+    this.selectedFile = file;
+  }
+  // Método para manejar la selección de la portada
+
+  //Metodo para validar cover_image
+  onCoverSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      this.selectedCover = null;
+      this.coverPreviewUrl = null;
+      return;
+    }
+
+    const file = input.files[0];
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Formato no permitido');
+      return;
+    }
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+      alert('Máximo 2MB');
+      return;
+    }
+
+    const img = new Image();
+
+    img.onload = () => {
+      if (img.width < 300 || img.height < 300) {
+        alert('Resolución mínima 300x300');
+        return;
+      }
+
+      this.selectedCover = file;
+      this.coverPreviewUrl = URL.createObjectURL(file);
+    };
+
+    img.src = URL.createObjectURL(file);
+  }
   protected onSaveFinalize(): void {
     this.isSaving.set(false);
   }

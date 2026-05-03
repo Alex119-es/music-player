@@ -1,0 +1,79 @@
+.song-editor {
+  display: grid;
+  grid-template-columns: 260px 1.2fr 1fr;
+  gap: 3rem;
+  width: 100%;
+  align-items: start;
+}
+
+.song-editor-left,
+.song-editor-main,
+.song-editor-right {
+  padding: 1rem;
+}
+
+.cover-box {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.cover-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.song-editor-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.audio-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.duration-field {
+  width: 110px;
+}
+
+.audio-field {
+  flex: 1;
+}
+
+.artists-field select {
+  max-height: 90px;
+  font-size: 0.85rem;
+}
+
+.song-editor-right textarea {
+  min-height: 450px;
+  resize: none;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.55rem;
+  border-radius: 8px;
+}

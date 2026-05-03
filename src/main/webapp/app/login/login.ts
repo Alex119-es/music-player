@@ -50,7 +50,7 @@ export default class Login implements OnInit, AfterViewInit {
         this.accountService.identity().subscribe(account => {
           const roles = account?.authorities ?? [];
           if (roles.includes('ROLE_ADMIN')) {
-            this.router.navigate(['']);
+            this.router.navigate(['/dashboard-admin']);
           } else if (roles.includes('ROLE_EDITOR')) {
             this.router.navigate(['/dashboard-editor']);
           } else {

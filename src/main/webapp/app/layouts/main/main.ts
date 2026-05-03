@@ -46,8 +46,7 @@ export default class Main implements OnInit {
     if (!userAccount || isPublicPage) {
       return false;
     }
-
-    return userAccount.authorities.includes(Authority.ADMIN) || userAccount.authorities.includes(Authority.USER);
+    return userAccount.authorities.includes(Authority.USER);
   });
 
   public readonly canShowPlayerBar = computed(() => {

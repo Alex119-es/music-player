@@ -19,21 +19,13 @@
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed()">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-            <span>
-              <fa-icon icon="home" />
-              <span jhiTranslate="global.menu.home">Inicio</span>
-            </span>
-          </a>
-        </li>
         @let dash = dashboardRoute();
         @if (dash) {
           <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link" [routerLink]="dash" (click)="collapseNavbar()">
               <span>
-                <fa-icon icon="tachometer-alt" />
-                <span>Mi panel</span>
+                <fa-icon icon="home" />
+                <span jhiTranslate="global.menu.home">Inicio</span>
               </span>
             </a>
           </li>

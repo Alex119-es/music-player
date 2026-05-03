@@ -11,41 +11,41 @@ const routes: Routes = [
     loadComponent: () => import('./home/home').then(m => m.default),
     pathMatch: 'full',
   },
+
   {
-    path: 'dashboard-editor',
-    loadComponent: () => import('./home/dashboard-editor/dashboard-editor').then(m => m.default),
-    data: {
-      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
-    },
-    canActivate: [UserRouteAccessService],
+    path: 'login',
+    loadComponent: () => import('./login/login').then(m => m.default),
+    title: 'login.title',
   },
+
   {
     path: 'dashboard-user',
     loadComponent: () => import('./home/dashboard-user/dashboard-user').then(m => m.default),
+    canActivate: [UserRouteAccessService],
     data: {
       authorities: [Authority.USER],
     },
-    canActivate: [UserRouteAccessService],
   },
-  {
-    path: '',
-    loadComponent: () => import('./layouts/navbar/navbar').then(m => m.Navbar),
-    outlet: 'navbar',
-  },
+
   {
     path: 'dashboard-editor',
-    loadComponent: () => import('./dashboard-editor/dashboard-editor'),
+    loadComponent: () => import('./home/dashboard-editor/dashboard-editor').then(m => m.default),
     canActivate: [UserRouteAccessService],
-    data: { authorities: [Authority.USER] },
-    title: 'Panel Editor',
+    data: {
+      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
+    },
   },
+
   {
     path: 'dashboard-admin',
-    loadComponent: () => import('./dashboard-admin/dashboard-admin'),
+    loadComponent: () => import('./dashboard-admin/dashboard-admin').then(m => m.default),
     canActivate: [UserRouteAccessService],
-    data: { authorities: [Authority.ADMIN] },
+    data: {
+      authorities: [Authority.ADMIN],
+    },
     title: 'Panel Administrador',
   },
+
   {
     path: 'admin',
     data: {
@@ -54,19 +54,23 @@ const routes: Routes = [
     canActivate: [UserRouteAccessService],
     loadChildren: () => import('./admin/admin.routes'),
   },
+
   {
     path: 'account',
     loadChildren: () => import('./account/account.route'),
   },
-  {
-    path: 'login',
-    loadComponent: () => import('./login/login'),
-    title: 'login.title',
-  },
+
   {
     path: '',
     loadChildren: () => import('./entities/entity.routes'),
   },
+
+  {
+    path: '',
+    loadComponent: () => import('./layouts/navbar/navbar').then(m => m.Navbar),
+    outlet: 'navbar',
+  },
+
   ...errorRoute,
 ];
 

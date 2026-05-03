@@ -11,46 +11,6 @@
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="adm-stats">
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon adm-stat-icon--blue">
-        <fa-icon icon="users" />
-      </div>
-      <div class="adm-stat-info">
-        <span class="adm-stat-label">Usuarios</span>
-        <span class="adm-stat-value">—</span>
-      </div>
-    </div>
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon adm-stat-icon--sky">
-        <fa-icon icon="music" />
-      </div>
-      <div class="adm-stat-info">
-        <span class="adm-stat-label">Canciones</span>
-        <span class="adm-stat-value">—</span>
-      </div>
-    </div>
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon adm-stat-icon--purple">
-        <fa-icon icon="compact-disc" />
-      </div>
-      <div class="adm-stat-info">
-        <span class="adm-stat-label">Álbumes</span>
-        <span class="adm-stat-value">—</span>
-      </div>
-    </div>
-    <div class="adm-stat-card">
-      <div class="adm-stat-icon adm-stat-icon--green">
-        <fa-icon icon="chart-bar" />
-      </div>
-      <div class="adm-stat-info">
-        <span class="adm-stat-label">Reproducciones</span>
-        <span class="adm-stat-value">—</span>
-      </div>
-    </div>
-  </div>
-
   <!-- Content grid -->
   <div class="adm-grid">
     <!-- Users panel -->
@@ -120,6 +80,32 @@
       </div>
     </div>
 
+    <!-- Activity panel -->
+    <div class="adm-panel adm-panel--accent">
+      <div class="adm-panel-head">
+        <h2 class="adm-panel-title">
+          <fa-icon icon="play" class="adm-panel-icon" />
+          Actividad reciente
+        </h2>
+      </div>
+      <div class="adm-panel-body">
+        <div class="adm-nav-list">
+          <a routerLink="/play" class="adm-nav-item">
+            <fa-icon icon="play" />
+            <span>Historial de reproducciones</span>
+          </a>
+          <a routerLink="/like" class="adm-nav-item">
+            <fa-icon icon="heart" />
+            <span>Likes de usuarios</span>
+          </a>
+          <a routerLink="/playlist-song" class="adm-nav-item">
+            <fa-icon icon="list" />
+            <span>Canciones en playlists</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- System panel -->
     <div class="adm-panel">
       <div class="adm-panel-head">
@@ -145,32 +131,6 @@
           <a routerLink="/admin/logs" class="adm-nav-item">
             <fa-icon icon="tasks" />
             <span>Logs</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Activity panel -->
-    <div class="adm-panel adm-panel--accent">
-      <div class="adm-panel-head">
-        <h2 class="adm-panel-title">
-          <fa-icon icon="play" class="adm-panel-icon" />
-          Actividad reciente
-        </h2>
-      </div>
-      <div class="adm-panel-body">
-        <div class="adm-nav-list">
-          <a routerLink="/play" class="adm-nav-item">
-            <fa-icon icon="play" />
-            <span>Historial de reproducciones</span>
-          </a>
-          <a routerLink="/like" class="adm-nav-item">
-            <fa-icon icon="heart" />
-            <span>Likes de usuarios</span>
-          </a>
-          <a routerLink="/playlist-song" class="adm-nav-item">
-            <fa-icon icon="list" />
-            <span>Canciones en playlists</span>
           </a>
         </div>
       </div>

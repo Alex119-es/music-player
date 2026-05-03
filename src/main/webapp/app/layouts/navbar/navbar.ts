@@ -53,14 +53,21 @@ export class Navbar implements OnInit {
     if (!acc) {
       return null;
     }
+
     const authorities = acc.authorities ?? [];
-    const canManage = [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST].some(role => authorities.includes(role));
-    if (canManage) {
+
+    if (authorities.includes(Authority.ADMIN)) {
+      return '/dashboard-admin';
+    }
+
+    if (authorities.includes(Authority.EDITOR) || authorities.includes(Authority.ARTIST)) {
       return '/dashboard-editor';
     }
+
     if (authorities.includes(Authority.USER)) {
       return '/dashboard-user';
     }
+
     return null;
   });
 

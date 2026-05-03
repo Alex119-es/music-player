@@ -1,24 +1,42 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 2rem;
+  background: #0f172a;
+}
+
+/* CARD PRINCIPAL */
 .song-editor {
   display: grid;
   grid-template-columns: 260px 1.2fr 1fr;
-  gap: 3rem;
-  width: 100%;
-  align-items: start;
+  gap: 2rem;
+
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
+/* COLUMNAS */
 .song-editor-left,
 .song-editor-main,
 .song-editor-right {
-  padding: 1rem;
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 1.2rem;
+  border: 1px solid #334155;
 }
 
+/* COVER */
 .cover-box {
   width: 100%;
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   background: #0f172a;
   margin-bottom: 1rem;
+  border: 1px solid #334155;
 }
 
 .cover-box img {
@@ -30,50 +48,91 @@
 .cover-placeholder {
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   color: #64748b;
+  font-weight: 600;
 }
 
-:host {
-  display: block;
-  width: 100%;
-}
-
+/* CAMPOS */
 .song-editor-main {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .audio-row {
   display: flex;
   gap: 1rem;
-  align-items: flex-end;
-}
-
-.duration-field {
-  width: 110px;
+  align-items: end;
 }
 
 .audio-field {
   flex: 1;
 }
 
-.artists-field select {
-  max-height: 90px;
-  font-size: 0.85rem;
+.duration-field {
+  width: 120px;
+}
+
+.artists-field {
+  margin-top: 0.8rem;
+}
+
+/* LETRA */
+.song-editor-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .song-editor-right textarea {
-  min-height: 450px;
+  min-height: 460px;
   resize: none;
 }
 
+/* INPUTS */
 input,
 select,
 textarea {
   width: 100%;
-  padding: 0.55rem;
-  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: white;
+  box-sizing: border-box;
+  transition: 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* LABELS */
+label {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .song-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .song-editor-right textarea {
+    min-height: 300px;
+  }
 }

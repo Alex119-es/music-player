@@ -28,18 +28,18 @@
     </div>
 
     <div class="audio-row">
-      <div class="duration-field">
-        <label>Duración</label>
-        <input type="number" formControlName="duration" />
-      </div>
-
       <div class="audio-field">
         <label>Audio</label>
         <input type="file" (change)="onFileSelected($event)" accept=".mp3,.wav" />
       </div>
+
+      <div class="duration-field">
+        <label>Duración</label>
+        <input type="number" formControlName="duration" />
+      </div>
     </div>
 
-    <div class="field">
+    <div class="field artists-field">
       <label>Artistas</label>
       <input type="text" formControlName="artistsText" />
     </div>

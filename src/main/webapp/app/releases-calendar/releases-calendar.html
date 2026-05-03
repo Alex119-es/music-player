@@ -1,0 +1,83 @@
+<div class="releases-calendar">
+  <header class="rc-header">
+    <div class="rc-header-text">
+      <span class="rc-eyebrow">Calendario</span>
+      <h1>Próximos lanzamientos</h1>
+      <p class="rc-subtitle">
+        @if (upcomingCount() === 0) {
+          No hay lanzamientos programados.
+        } @else if (upcomingCount() === 1) {
+          1 lanzamiento programado.
+        } @else {
+          {{ upcomingCount() }} lanzamientos programados.
+        }
+      </p>
+    </div>
+    <a routerLink="/album/new" class="rc-btn rc-btn-primary">
+      <fa-icon icon="plus" />
+      Nuevo lanzamiento
+    </a>
+  </header>
+
+  <div class="rc-toolbar">
+    <div class="rc-nav">
+      <button class="rc-nav-btn" (click)="prevMonth()" type="button" aria-label="Mes anterior">
+        <fa-icon icon="chevron-left" />
+      </button>
+      <h2 class="rc-month">{{ monthLabel() }}</h2>
+      <button class="rc-nav-btn" (click)="nextMonth()" type="button" aria-label="Mes siguiente">
+        <fa-icon icon="chevron-right" />
+      </button>
+    </div>
+    <button class="rc-today-btn" (click)="goToToday()" type="button">Hoy</button>
+  </div>
+
+  <div class="rc-weekdays">
+    @for (label of weekdayLabels; track label) {
+      <div class="rc-weekday">{{ label }}</div>
+    }
+  </div>
+
+  <div class="rc-grid" [class.is-loading]="isLoading()">
+    @for (cell of cells(); track trackCell($index, cell)) {
+      <div
+        class="rc-cell"
+        [class.out-of-month]="!cell.inMonth"
+        [class.today]="cell.isToday"
+        [class.past]="cell.isPast"
+        [class.has-events]="cell.albums.length > 0"
+      >
+        <div class="rc-cell-head">
+          <span class="rc-cell-day">{{ cell.date.date() }}</span>
+          @if (cell.albums.length > 0) {
+            <span class="rc-cell-count">{{ cell.albums.length }}</span>
+          }
+        </div>
+
+        @if (cell.albums.length > 0) {
+          <div class="rc-cell-body">
+            @for (album of cell.albums; track trackAlbum($index, album)) {
+              <a [routerLink]="['/album', album.id, 'view']" class="rc-album-pill" [title]="album.title">
+                @if (album.coverImage) {
+                  <img [src]="album.coverImage" alt="" class="rc-album-cover" />
+                } @else {
+                  <span class="rc-album-cover rc-album-cover-placeholder">
+                    <fa-icon icon="compact-disc" />
+                  </span>
+                }
+                <span class="rc-album-title">{{ album.title }}</span>
+              </a>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="rc-loading">
+      <fa-icon icon="sync" animation="spin" />
+      <span>Cargando lanzamientos…</span>
+    </div>
+  }
+</div>

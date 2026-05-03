@@ -85,7 +85,7 @@
   <section class="editor-section">
     <div class="editor-section-head">
       <h2>Próximos lanzamientos</h2>
-      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-section-link">Ver calendario</a>
+      <a routerLink="/releases-calendar" class="editor-section-link">Ver calendario</a>
     </div>
     @if (upcomingAlbums().length === 0) {
       <div class="editor-empty">
@@ -162,7 +162,7 @@
         <fa-icon icon="compact-disc" class="editor-action-icon" />
       </a>
 
-      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
+      <a routerLink="/releases-calendar" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
         <div class="editor-action-content">
           <span class="editor-action-eyebrow">Calendario</span>
           <h3>Próximos lanzamientos</h3>

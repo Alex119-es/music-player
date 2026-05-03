@@ -47,6 +47,16 @@ const routes: Routes = [
   },
 
   {
+    path: 'releases-calendar',
+    loadComponent: () => import('./releases-calendar/releases-calendar').then(m => m.default),
+    canActivate: [UserRouteAccessService],
+    data: {
+      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
+    },
+    title: 'Próximos lanzamientos',
+  },
+
+  {
     path: 'admin',
     data: {
       authorities: [Authority.ADMIN],

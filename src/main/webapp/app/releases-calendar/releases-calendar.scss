@@ -1,0 +1,315 @@
+$accent: #1db954;
+$accent-soft: #4dd185;
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$text-subdued: #737373;
+$surface: rgba(255, 255, 255, 0.05);
+$surface-hover: rgba(255, 255, 255, 0.09);
+$border: rgba(255, 255, 255, 0.08);
+
+.releases-calendar {
+  padding: 1.5rem 0 3rem;
+  color: $text-primary;
+}
+
+.rc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rc-eyebrow {
+  display: inline-block;
+  color: $accent-soft;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  margin-bottom: 0.5rem;
+}
+
+.rc-header h1 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.rc-subtitle {
+  color: $text-secondary;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.rc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    text-decoration: none;
+  }
+}
+
+.rc-btn-primary {
+  background-color: $accent;
+  color: #0d1117;
+
+  &:hover {
+    background-color: $accent-soft;
+    color: #0d1117;
+  }
+}
+
+.rc-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.rc-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rc-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: $surface;
+  border: 1px solid $border;
+  color: $text-primary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: $surface-hover;
+  }
+}
+
+.rc-month {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0;
+  min-width: 220px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.rc-today-btn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 9999px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: $text-primary;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background-color: $surface-hover;
+    border-color: $text-primary;
+  }
+}
+
+.rc-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.rc-weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: $text-subdued;
+  text-transform: uppercase;
+}
+
+.rc-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  transition: opacity 0.15s ease;
+
+  &.is-loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.rc-cell {
+  background-color: $surface;
+  border: 1px solid $border;
+  border-radius: 8px;
+  min-height: 110px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+
+  &.out-of-month {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.04);
+
+    .rc-cell-day {
+      color: $text-subdued;
+      opacity: 0.55;
+    }
+  }
+
+  &.past .rc-cell-day {
+    color: $text-secondary;
+  }
+
+  &.today {
+    border-color: $accent;
+    background-color: rgba(29, 185, 84, 0.08);
+
+    .rc-cell-day {
+      color: $accent-soft;
+    }
+  }
+
+  &.has-events {
+    border-color: rgba(29, 185, 84, 0.45);
+  }
+}
+
+.rc-cell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.rc-cell-day {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.rc-cell-count {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background-color: $accent;
+  color: #0d1117;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+}
+
+.rc-cell-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  overflow: hidden;
+}
+
+.rc-album-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.07);
+  text-decoration: none;
+  color: $text-primary;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background-color 0.12s ease;
+
+  &:hover {
+    background-color: rgba(29, 185, 84, 0.18);
+    color: $text-primary;
+    text-decoration: none;
+  }
+}
+
+.rc-album-cover {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 3px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #1db954, #189b45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.7rem;
+}
+
+.rc-album-cover-placeholder {
+  background: linear-gradient(135deg, #1db954, #189b45);
+}
+
+.rc-album-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.rc-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  color: $text-secondary;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .rc-cell {
+    min-height: 90px;
+  }
+  .rc-album-title {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .rc-month {
+    min-width: 140px;
+    font-size: 1.1rem;
+  }
+  .rc-cell {
+    min-height: 70px;
+    padding: 0.35rem;
+  }
+  .rc-album-cover {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+  }
+}

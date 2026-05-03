@@ -118,6 +118,14 @@ export class SongUpdate implements OnInit {
   protected onSaveError(): void {
     // Api for inheritance.
   }
+  formatDuration(seconds: number): string {
+    if (seconds == null) return '0:00';
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
   // Método para manejar la selección de archivos y su tamaño
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -144,8 +152,20 @@ export class SongUpdate implements OnInit {
     }
 
     this.selectedFile = file;
+
+    const audio = new Audio();
+    audio.src = URL.createObjectURL(file);
+
+    audio.onloadedmetadata = () => {
+      const durationInSeconds = isNaN(audio.duration) ? 0 : audio.duration;
+
+      this.editForm.patchValue({
+        duration: Math.floor(durationInSeconds),
+      });
+
+      URL.revokeObjectURL(audio.src);
+    };
   }
-  // Método para manejar la selección de la portada
 
   //Metodo para validar cover_image
   onCoverSelected(event: Event): void {

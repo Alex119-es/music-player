@@ -5,7 +5,24 @@
   background: #0f172a;
 }
 
-/* CARD PRINCIPAL */
+.editor-header {
+  margin-bottom: 1.5rem;
+  padding: 0 0.3rem;
+}
+
+.editor-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+}
+
+.editor-header p {
+  margin: 0.35rem 0 0 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
 .song-editor {
   display: grid;
   grid-template-columns: 260px 1.2fr 1fr;
@@ -18,7 +35,6 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* COLUMNAS */
 .song-editor-left,
 .song-editor-main,
 .song-editor-right {
@@ -28,7 +44,6 @@
   border: 1px solid #334155;
 }
 
-/* COVER */
 .cover-box {
   width: 100%;
   aspect-ratio: 1;
@@ -54,7 +69,6 @@
   font-weight: 600;
 }
 
-/* CAMPOS */
 .song-editor-main {
   display: flex;
   flex-direction: column;
@@ -97,7 +111,6 @@
   resize: none;
 }
 
-/* INPUTS */
 input,
 select,
 textarea {
@@ -119,14 +132,12 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* LABELS */
 label {
   color: #cbd5e1;
   font-size: 0.9rem;
   font-weight: 600;
 }
 
-/* RESPONSIVE */
 @media (max-width: 1200px) {
   .song-editor {
     grid-template-columns: 1fr;

@@ -38,7 +38,7 @@ const routes: Routes = [
 
   {
     path: 'dashboard-admin',
-    loadComponent: () => import('./dashboard-admin/dashboard-admin').then(m => m.default),
+    loadComponent: () => import('./home/dashboard-admin/dashboard-admin').then(m => m.default),
     canActivate: [UserRouteAccessService],
     data: {
       authorities: [Authority.ADMIN],

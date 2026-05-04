@@ -2,9 +2,11 @@ package com.musicplayer.service.impl;
 
 import com.musicplayer.domain.Album;
 import com.musicplayer.repository.AlbumRepository;
+import com.musicplayer.repository.ArtistRepository;
 import com.musicplayer.service.AlbumService;
 import com.musicplayer.service.dto.AlbumDTO;
 import com.musicplayer.service.mapper.AlbumMapper;
+import com.musicplayer.web.rest.AlbumResource;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,13 @@ public class AlbumServiceImpl implements AlbumService {
     private static final Logger LOG = LoggerFactory.getLogger(AlbumServiceImpl.class);
 
     private final AlbumRepository albumRepository;
+    private final ArtistRepository artistRepository;
 
     private final AlbumMapper albumMapper;
 
-    public AlbumServiceImpl(AlbumRepository albumRepository, AlbumMapper albumMapper) {
+    public AlbumServiceImpl(AlbumRepository albumRepository, AlbumMapper albumMapper, ArtistRepository artistRepository) {
         this.albumRepository = albumRepository;
+        this.artistRepository = artistRepository;
         this.albumMapper = albumMapper;
     }
 
@@ -35,6 +39,15 @@ public class AlbumServiceImpl implements AlbumService {
     public AlbumDTO save(AlbumDTO albumDTO) {
         LOG.debug("Request to save Album : {}", albumDTO);
         Album album = albumMapper.toEntity(albumDTO);
+        // Forzar que Hibernate use una referencia en lugar de cargar la entidad
+        if (albumDTO.getArtist() != null && albumDTO.getArtist().getId() != null) {
+            album.setArtist(
+                albumRepository
+                    .findById(albumDTO.getId())
+                    .map(Album::getArtist)
+                    .orElse(artistRepository.getReferenceById(albumDTO.getArtist().getId()))
+            );
+        }
         album = albumRepository.save(album);
         return albumMapper.toDto(album);
     }
@@ -80,5 +93,12 @@ public class AlbumServiceImpl implements AlbumService {
     public void delete(Long id) {
         LOG.debug("Request to delete Album : {}", id);
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AlbumDTO> findAllByCurrentUser(String login, Pageable pageable) {
+        LOG.debug("Request to get Albums for user : {}", login);
+        return albumRepository.findAllByArtistUserLogin(login, pageable).map(albumMapper::toDto);
     }
 }

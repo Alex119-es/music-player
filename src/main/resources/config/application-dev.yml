@@ -21,6 +21,10 @@ logging:
     com.musicplayer: DEBUG
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   devtools:
     restart:
       enabled: true
@@ -111,3 +115,6 @@ jhipster:
 # ===================================================================
 
 # application:
+app:
+  upload:
+    dir: uploads

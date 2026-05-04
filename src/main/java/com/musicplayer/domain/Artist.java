@@ -59,6 +59,23 @@ public class Artist implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public Artist user(User user) {
+        this.setUser(user);
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return this.id;
     }

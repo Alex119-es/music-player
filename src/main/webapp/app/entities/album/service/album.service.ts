@@ -41,6 +41,21 @@ export class AlbumsService {
   );
   protected readonly applicationConfigService = inject(ApplicationConfigService);
   protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/albums');
+  // Para obtener los albumes del usuario actual, se utiliza por el login del usuario.
+  protected readonly myResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/my');
+
+  // Recurso para obtener los álbumes del usuario actual
+  readonly myAlbumsResource = httpResource<RestAlbum[]>(() => {
+    const params = this.albumsParams();
+    if (!params) {
+      return undefined;
+    }
+    return { url: this.myResourceUrl, params };
+  });
+
+  readonly myAlbums = computed(() =>
+    (this.myAlbumsResource.hasValue() ? this.myAlbumsResource.value() : []).map(item => this.convertValueFromServer(item)),
+  );
 
   protected convertValueFromServer(restAlbum: RestAlbum): IAlbum {
     return {
@@ -76,7 +91,9 @@ export class AlbumService extends AlbumsService {
   find(id: number): Observable<IAlbum> {
     return this.http.get<RestAlbum>(`${this.resourceUrl}/${encodeURIComponent(id)}`).pipe(map(res => this.convertResponseFromServer(res)));
   }
-
+  uploadImage(formData: FormData): Observable<{ url: string }> {
+    return this.http.post<{ url: string }>('/api/upload/image', formData);
+  }
   query(req?: any): Observable<HttpResponse<IAlbum[]>> {
     const options = createRequestOption(req);
     return this.http

@@ -205,4 +205,24 @@ public class AlbumResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /albums/my} : get all albums of the current logged artist.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of Albums in body.
+     */
+    @GetMapping("/my")
+    public ResponseEntity<List<AlbumDTO>> getMyAlbums(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get Albums of current user");
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
+            new BadRequestAlertException("Usuario no autenticado", ENTITY_NAME, "usernotfound")
+        );
+
+        Page<AlbumDTO> page = albumService.findAllByCurrentUser(login, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

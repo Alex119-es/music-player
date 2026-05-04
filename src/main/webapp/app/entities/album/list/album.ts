@@ -69,23 +69,22 @@ export class Album implements OnInit {
   readonly router = inject(Router);
   protected readonly albumService = inject(AlbumService);
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  readonly isLoading = this.albumService.albumsResource.isLoading;
+  readonly isLoading = this.albumService.myAlbumsResource.isLoading;
   protected readonly activatedRoute = inject(ActivatedRoute);
   protected readonly sortService = inject(SortService);
   protected modalService = inject(NgbModal);
 
   constructor() {
     effect(() => {
-      const headers = this.albumService.albumsResource.headers();
+      const headers = this.albumService.myAlbumsResource.headers();
       if (headers) {
         this.fillComponentAttributesFromResponseHeader(headers);
       }
     });
     effect(() => {
-      this.albums.set(this.fillComponentAttributesFromResponseBody([...this.albumService.albums()]));
+      this.albums.set(this.fillComponentAttributesFromResponseBody([...this.albumService.myAlbums()]));
     });
   }
-
   trackId = (item: IAlbum): number => this.albumService.getAlbumIdentifier(item);
 
   ngOnInit(): void {

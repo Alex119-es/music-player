@@ -83,8 +83,9 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ArtistDTO> findByUserLogin(String login) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUserLogin'");
+        LOG.debug("Request to get Artist by user login : {}", login);
+        return artistRepository.findByUserLogin(login).map(artistMapper::toDto);
     }
 }

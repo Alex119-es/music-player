@@ -55,4 +55,6 @@ public interface AlbumService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<AlbumDTO> findAllByCurrentUser(String login, Pageable pageable);
 }

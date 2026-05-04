@@ -105,11 +105,32 @@ export class AlbumUpdate implements OnInit {
   }
   save(): void {
     this.isSaving.set(true);
-    const album = this.albumFormService.getAlbum(this.editForm);
-    if (album.id === null) {
-      this.subscribeToSaveResponse(this.albumService.create(album));
+
+    if (this.selectedCover) {
+      const formData = new FormData();
+      formData.append('file', this.selectedCover);
+
+      this.albumService.uploadImage(formData).subscribe({
+        next: response => {
+          this.editForm.patchValue({ coverImage: response.url });
+          const album = this.albumFormService.getAlbum(this.editForm);
+          if (album.id === null) {
+            this.subscribeToSaveResponse(this.albumService.create(album));
+          } else {
+            this.subscribeToSaveResponse(this.albumService.update(album));
+          }
+        },
+        error: () => {
+          this.isSaving.set(false);
+        },
+      });
     } else {
-      this.subscribeToSaveResponse(this.albumService.update(album));
+      const album = this.albumFormService.getAlbum(this.editForm);
+      if (album.id === null) {
+        this.subscribeToSaveResponse(this.albumService.create(album));
+      } else {
+        this.subscribeToSaveResponse(this.albumService.update(album));
+      }
     }
   }
 

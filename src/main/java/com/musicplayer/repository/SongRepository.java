@@ -27,4 +27,6 @@ public interface SongRepository extends SongRepositoryWithBagRelationships, JpaR
     default Page<Song> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    List<Song> findByAlbumId(Long albumId);
 }

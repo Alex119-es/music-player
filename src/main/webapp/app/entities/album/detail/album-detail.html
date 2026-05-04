@@ -1,64 +1,85 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (album(); as albumRef) {
-      <div>
-        <h2 data-cy="albumDetailsHeading"><span jhiTranslate="musicPlayerApp.album.detail.title">Album</span></h2>
+<div class="album-detail-container">
+  <jhi-alert-error />
+  <jhi-alert />
 
-        <hr />
-
-        <jhi-alert-error />
-
-        <jhi-alert />
-
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ albumRef.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.title">Title</span></dt>
-          <dd>
-            <span>{{ albumRef.title }}</span>
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.coverImage">Cover Image</span></dt>
-          <dd>
-            <span>{{ albumRef.coverImage }}</span>
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.releaseDate">Release Date</span></dt>
-          <dd>
-            <span>{{ albumRef.releaseDate | formatMediumDate }}</span>
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.albumType">Album Type</span></dt>
-          <dd>
-            <span [jhiTranslate]="'musicPlayerApp.AlbumType.' + (albumRef.albumType ?? 'null')">{{
-              { null: '', ALBUM: 'ALBUM', SINGLE: 'SINGLE', EP: 'EP', PODCAST_SERIES: 'PODCAST_SERIES' }[albumRef.albumType ?? 'null']
-            }}</span>
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.artist">Artist</span></dt>
-          <dd>
-            @if (album()!.artist) {
-              <div>
-                <a [routerLink]="['/artist', album()!.artist?.id, 'view']">{{ albumRef.artist?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="musicPlayerApp.album.genre">Genre</span></dt>
-          <dd>
-            @if (album()!.genre) {
-              <div>
-                <a [routerLink]="['/genre', album()!.genre?.id, 'view']">{{ albumRef.genre?.id }}</a>
-              </div>
-            }
-          </dd>
-        </dl>
-
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left" />&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
-        </button>
-
-        <button type="button" [routerLink]="['/album', albumRef.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt" />&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
-        </button>
+  @if (album()) {
+    <div class="album-detail-hero">
+      <div class="album-detail-cover">
+        @if (album()!.coverImage) {
+          <img [src]="album()!.coverImage" alt="Cover" />
+        } @else {
+          <div class="album-detail-cover-placeholder">
+            <fa-icon icon="compact-disc" />
+          </div>
+        }
       </div>
-    }
-  </div>
+      <div class="album-detail-info">
+        <span class="album-detail-type">{{ album()!.albumType ?? 'ALBUM' }}</span>
+        <h1 class="album-detail-title">{{ album()!.title }}</h1>
+        @if (album()!.releaseDate) {
+          <span class="album-detail-date">{{ album()!.releaseDate | formatMediumDate }}</span>
+        }
+        <div class="album-detail-actions">
+          <button class="btn-back" (click)="previousState()"><fa-icon icon="arrow-left" /> Volver</button>
+          <a class="btn-edit" [routerLink]="['/album', album()!.id, 'edit']"> <fa-icon icon="pencil-alt" /> Editar álbum </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="album-detail-songs">
+      <div class="album-detail-songs-header">
+        <h2>Canciones</h2>
+        <button class="btn-add-song" (click)="toggleAddPanel()"><fa-icon icon="plus" /> Añadir canción</button>
+      </div>
+
+      @if (showAddPanel()) {
+        <div class="add-song-panel">
+          <input type="text" class="search-input" placeholder="Buscar canciones..." [value]="searchTerm()" (input)="onSearch($event)" />
+          <div class="available-songs-list">
+            @if (availableSongs().length === 0) {
+              <p class="no-songs">No hay canciones disponibles para añadir</p>
+            } @else {
+              @for (song of availableSongs(); track song.id) {
+                <div class="available-song-item">
+                  <div class="available-song-info">
+                    <span class="available-song-title">{{ song.title }}</span>
+                    @if (song.duration) {
+                      <span class="available-song-duration">{{ formatDuration(song.duration) }}</span>
+                    }
+                  </div>
+                  <button class="btn-add-to-album" (click)="addSongToAlbum(song)">
+                    <fa-icon icon="plus" />
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
+
+      @if (albumSongs().length === 0) {
+        <div class="no-songs-message">
+          <fa-icon icon="music" />
+          <p>Este álbum no tiene canciones todavía</p>
+        </div>
+      } @else {
+        <div class="songs-list">
+          @for (song of albumSongs(); track song.id; let i = $index) {
+            <div class="song-row">
+              <span class="song-number">{{ i + 1 }}</span>
+              <div class="song-info">
+                <span class="song-title">{{ song.title }}</span>
+                @if (song.duration) {
+                  <span class="song-duration">{{ formatDuration(song.duration) }}</span>
+                }
+              </div>
+              <button class="btn-remove-song" (click)="removeSongFromAlbum(song)" title="Quitar del álbum">
+                <fa-icon icon="times" />
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
 </div>

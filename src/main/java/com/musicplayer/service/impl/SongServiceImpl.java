@@ -5,6 +5,7 @@ import com.musicplayer.repository.SongRepository;
 import com.musicplayer.service.SongService;
 import com.musicplayer.service.dto.SongDTO;
 import com.musicplayer.service.mapper.SongMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,5 +85,12 @@ public class SongServiceImpl implements SongService {
     public void delete(Long id) {
         LOG.debug("Request to delete Song : {}", id);
         songRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SongDTO> findByAlbumId(Long albumId) {
+        LOG.debug("Request to get Songs by Album : {}", albumId);
+        return songRepository.findByAlbumId(albumId).stream().map(songMapper::toDto).collect(java.util.stream.Collectors.toList());
     }
 }

@@ -49,37 +49,35 @@
   </section>
   <section class="editor-section">
     <div class="editor-section-head">
-      <h2>Atajos rápidos</h2>
-      <span class="editor-section-sub">Acciones que usas todos los días</span>
+      <h2>Tus tareas</h2>
+      <span class="editor-section-sub">Ve directamente a lo que necesitas gestionar</span>
     </div>
-    <div class="editor-quick-row">
-      <a routerLink="/song/new" class="editor-quick-card">
-        <fa-icon icon="plus" class="editor-quick-icon" />
-        <div>
-          <span class="editor-quick-title">Subir canción</span>
-          <span class="editor-quick-sub">Añade un tema nuevo a tu catálogo</span>
+    <div class="editor-actions-grid">
+      <a routerLink="/song" class="editor-action-card" style="--card-from: #450af5; --card-to: #1db954">
+        <div class="editor-action-content">
+          <span class="editor-action-eyebrow">Tu música</span>
+          <h3>Mis canciones</h3>
+          <p>Edita títulos, duraciones, géneros y portadas.</p>
         </div>
+        <fa-icon icon="music" class="editor-action-icon" />
       </a>
-      <a routerLink="/album/new" class="editor-quick-card">
-        <fa-icon icon="compact-disc" class="editor-quick-icon" />
-        <div>
-          <span class="editor-quick-title">Crear álbum</span>
-          <span class="editor-quick-sub">Agrupa tus canciones en un proyecto</span>
+
+      <a routerLink="/album" class="editor-action-card" style="--card-from: #e8115b; --card-to: #f59b23">
+        <div class="editor-action-content">
+          <span class="editor-action-eyebrow">Discografía</span>
+          <h3>Mis álbumes</h3>
+          <p>Crea, ordena y publica tus álbumes y EPs.</p>
         </div>
+        <fa-icon icon="compact-disc" class="editor-action-icon" />
       </a>
-      <a routerLink="/playlist/new" class="editor-quick-card">
-        <fa-icon icon="list" class="editor-quick-icon" />
-        <div>
-          <span class="editor-quick-title">Nueva playlist</span>
-          <span class="editor-quick-sub">Selección curada para tus oyentes</span>
+
+      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
+        <div class="editor-action-content">
+          <span class="editor-action-eyebrow">Calendario</span>
+          <h3>Próximos lanzamientos</h3>
+          <p>Programa fechas de salida y prepara tu audiencia.</p>
         </div>
-      </a>
-      <a routerLink="/play" class="editor-quick-card">
-        <fa-icon icon="chart-bar" class="editor-quick-icon" />
-        <div>
-          <span class="editor-quick-title">Estadísticas</span>
-          <span class="editor-quick-sub">Mira el historial de reproducciones</span>
-        </div>
+        <fa-icon icon="calendar-alt" class="editor-action-icon" />
       </a>
     </div>
   </section>
@@ -137,40 +135,5 @@
         }
       </div>
     }
-  </section>
-
-  <section class="editor-section">
-    <div class="editor-section-head">
-      <h2>Tus tareas</h2>
-      <span class="editor-section-sub">Ve directamente a lo que necesitas gestionar</span>
-    </div>
-    <div class="editor-actions-grid">
-      <a routerLink="/song" class="editor-action-card" style="--card-from: #450af5; --card-to: #1db954">
-        <div class="editor-action-content">
-          <span class="editor-action-eyebrow">Tu música</span>
-          <h3>Mis canciones</h3>
-          <p>Edita títulos, duraciones, géneros y portadas.</p>
-        </div>
-        <fa-icon icon="music" class="editor-action-icon" />
-      </a>
-
-      <a routerLink="/album" class="editor-action-card" style="--card-from: #e8115b; --card-to: #f59b23">
-        <div class="editor-action-content">
-          <span class="editor-action-eyebrow">Discografía</span>
-          <h3>Mis álbumes</h3>
-          <p>Crea, ordena y publica tus álbumes y EPs.</p>
-        </div>
-        <fa-icon icon="compact-disc" class="editor-action-icon" />
-      </a>
-
-      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
-        <div class="editor-action-content">
-          <span class="editor-action-eyebrow">Calendario</span>
-          <h3>Próximos lanzamientos</h3>
-          <p>Programa fechas de salida y prepara tu audiencia.</p>
-        </div>
-        <fa-icon icon="calendar-alt" class="editor-action-icon" />
-      </a>
-    </div>
   </section>
 </div>

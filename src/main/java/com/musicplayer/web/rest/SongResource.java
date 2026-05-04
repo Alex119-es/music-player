@@ -51,7 +51,9 @@ public class SongResource {
      * {@code POST  /songs} : Create a new song.
      *
      * @param songDTO the songDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new songDTO, or with status {@code 400 (Bad Request)} if the song has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new songDTO, or with status {@code 400 (Bad Request)} if the
+     *         song has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
@@ -69,11 +71,13 @@ public class SongResource {
     /**
      * {@code PUT  /songs/:id} : Updates an existing song.
      *
-     * @param id the id of the songDTO to save.
+     * @param id      the id of the songDTO to save.
      * @param songDTO the songDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated songDTO,
-     * or with status {@code 400 (Bad Request)} if the songDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the songDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated songDTO,
+     *         or with status {@code 400 (Bad Request)} if the songDTO is not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the songDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
@@ -100,14 +104,17 @@ public class SongResource {
     }
 
     /**
-     * {@code PATCH  /songs/:id} : Partial updates given fields of an existing song, field will ignore if it is null
+     * {@code PATCH  /songs/:id} : Partial updates given fields of an existing song,
+     * field will ignore if it is null
      *
-     * @param id the id of the songDTO to save.
+     * @param id      the id of the songDTO to save.
      * @param songDTO the songDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated songDTO,
-     * or with status {@code 400 (Bad Request)} if the songDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the songDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the songDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated songDTO,
+     *         or with status {@code 400 (Bad Request)} if the songDTO is not valid,
+     *         or with status {@code 404 (Not Found)} if the songDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the songDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -138,9 +145,11 @@ public class SongResource {
     /**
      * {@code GET  /songs} : get all the Songs.
      *
-     * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of Songs in body.
+     * @param pageable  the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is
+     *                  applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of Songs in body.
      */
     @GetMapping("")
     public ResponseEntity<List<SongDTO>> getAllSongs(
@@ -162,7 +171,8 @@ public class SongResource {
      * {@code GET  /songs/:id} : get the "id" song.
      *
      * @param id the id of the songDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the songDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the songDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<SongDTO> getSong(@PathVariable("id") Long id) {
@@ -184,5 +194,12 @@ public class SongResource {
         return ResponseEntity.noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/by-album/{albumId}")
+    public ResponseEntity<List<SongDTO>> getSongsByAlbum(@PathVariable Long albumId) {
+        LOG.debug("REST request to get Songs by Album : {}", albumId);
+        List<SongDTO> songs = songService.findByAlbumId(albumId);
+        return ResponseEntity.ok(songs);
     }
 }

@@ -25,7 +25,6 @@ public class AlbumDTO implements Serializable {
 
     private AlbumType albumType;
 
-    @NotNull
     private ArtistDTO artist;
 
     private GenreDTO genre;

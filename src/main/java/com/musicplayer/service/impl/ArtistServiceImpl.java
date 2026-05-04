@@ -81,4 +81,10 @@ public class ArtistServiceImpl implements ArtistService {
         LOG.debug("Request to delete Artist : {}", id);
         artistRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<ArtistDTO> findByUserLogin(String login) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByUserLogin'");
+    }
 }

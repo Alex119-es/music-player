@@ -48,6 +48,8 @@ public interface ArtistService {
      * @return the entity.
      */
     Optional<ArtistDTO> findOne(Long id);
+    // Metodo para obtener el artista asociado al usuario logueado
+    Optional<ArtistDTO> findByUserLogin(String login);
 
     /**
      * Delete the "id" artist.

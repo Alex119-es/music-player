@@ -1,8 +1,11 @@
 package com.musicplayer.web.rest;
 
 import com.musicplayer.repository.AlbumRepository;
+import com.musicplayer.security.SecurityUtils;
 import com.musicplayer.service.AlbumService;
+import com.musicplayer.service.ArtistService;
 import com.musicplayer.service.dto.AlbumDTO;
+import com.musicplayer.service.dto.ArtistDTO;
 import com.musicplayer.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,26 +44,43 @@ public class AlbumResource {
     private final AlbumService albumService;
 
     private final AlbumRepository albumRepository;
+    private final ArtistService artistService;
 
-    public AlbumResource(AlbumService albumService, AlbumRepository albumRepository) {
+    public AlbumResource(AlbumService albumService, AlbumRepository albumRepository, ArtistService artistService) {
         this.albumService = albumService;
         this.albumRepository = albumRepository;
+        this.artistService = artistService;
     }
 
     /**
      * {@code POST  /albums} : Create a new album.
      *
      * @param albumDTO the albumDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new albumDTO, or with status {@code 400 (Bad Request)} if the album has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new albumDTO, or with status {@code 400 (Bad Request)} if
+     *         the album has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
     public ResponseEntity<AlbumDTO> createAlbum(@Valid @RequestBody AlbumDTO albumDTO) throws URISyntaxException {
         LOG.debug("REST request to save Album : {}", albumDTO);
+
         if (albumDTO.getId() != null) {
             throw new BadRequestAlertException("A new album cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
+            new BadRequestAlertException("Usuario no autenticado", ENTITY_NAME, "usernotfound")
+        );
+
+        ArtistDTO artistDTO = artistService
+            .findByUserLogin(login)
+            .orElseThrow(() -> new BadRequestAlertException("Artista no encontrado", ENTITY_NAME, "artistnotfound"));
+
+        albumDTO.setArtist(artistDTO);
+
         albumDTO = albumService.save(albumDTO);
+
         return ResponseEntity.created(new URI("/api/albums/" + albumDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, albumDTO.getId().toString()))
             .body(albumDTO);
@@ -69,11 +89,14 @@ public class AlbumResource {
     /**
      * {@code PUT  /albums/:id} : Updates an existing album.
      *
-     * @param id the id of the albumDTO to save.
+     * @param id       the id of the albumDTO to save.
      * @param albumDTO the albumDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated albumDTO,
-     * or with status {@code 400 (Bad Request)} if the albumDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the albumDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated albumDTO,
+     *         or with status {@code 400 (Bad Request)} if the albumDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the albumDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
@@ -100,14 +123,18 @@ public class AlbumResource {
     }
 
     /**
-     * {@code PATCH  /albums/:id} : Partial updates given fields of an existing album, field will ignore if it is null
+     * {@code PATCH  /albums/:id} : Partial updates given fields of an existing
+     * album, field will ignore if it is null
      *
-     * @param id the id of the albumDTO to save.
+     * @param id       the id of the albumDTO to save.
      * @param albumDTO the albumDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated albumDTO,
-     * or with status {@code 400 (Bad Request)} if the albumDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the albumDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the albumDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated albumDTO,
+     *         or with status {@code 400 (Bad Request)} if the albumDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the albumDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the albumDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -139,7 +166,8 @@ public class AlbumResource {
      * {@code GET  /albums} : get all the Albums.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of Albums in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of Albums in body.
      */
     @GetMapping("")
     public ResponseEntity<List<AlbumDTO>> getAllAlbums(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
@@ -153,7 +181,8 @@ public class AlbumResource {
      * {@code GET  /albums/:id} : get the "id" album.
      *
      * @param id the id of the albumDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the albumDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the albumDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<AlbumDTO> getAlbum(@PathVariable("id") Long id) {

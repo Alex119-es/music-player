@@ -1,6 +1,7 @@
 package com.musicplayer.web.rest;
 
 import com.musicplayer.repository.ArtistRepository;
+import com.musicplayer.security.SecurityUtils;
 import com.musicplayer.service.ArtistService;
 import com.musicplayer.service.dto.ArtistDTO;
 import com.musicplayer.web.rest.errors.BadRequestAlertException;
@@ -51,7 +52,9 @@ public class ArtistResource {
      * {@code POST  /artists} : Create a new artist.
      *
      * @param artistDTO the artistDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new artistDTO, or with status {@code 400 (Bad Request)} if the artist has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new artistDTO, or with status {@code 400 (Bad Request)} if
+     *         the artist has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
@@ -69,11 +72,14 @@ public class ArtistResource {
     /**
      * {@code PUT  /artists/:id} : Updates an existing artist.
      *
-     * @param id the id of the artistDTO to save.
+     * @param id        the id of the artistDTO to save.
      * @param artistDTO the artistDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated artistDTO,
-     * or with status {@code 400 (Bad Request)} if the artistDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the artistDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated artistDTO,
+     *         or with status {@code 400 (Bad Request)} if the artistDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the artistDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
@@ -100,14 +106,18 @@ public class ArtistResource {
     }
 
     /**
-     * {@code PATCH  /artists/:id} : Partial updates given fields of an existing artist, field will ignore if it is null
+     * {@code PATCH  /artists/:id} : Partial updates given fields of an existing
+     * artist, field will ignore if it is null
      *
-     * @param id the id of the artistDTO to save.
+     * @param id        the id of the artistDTO to save.
      * @param artistDTO the artistDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated artistDTO,
-     * or with status {@code 400 (Bad Request)} if the artistDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the artistDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the artistDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated artistDTO,
+     *         or with status {@code 400 (Bad Request)} if the artistDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the artistDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the artistDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
@@ -139,7 +149,8 @@ public class ArtistResource {
      * {@code GET  /artists} : get all the Artists.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of Artists in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of Artists in body.
      */
     @GetMapping("")
     public ResponseEntity<List<ArtistDTO>> getAllArtists(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
@@ -153,13 +164,22 @@ public class ArtistResource {
      * {@code GET  /artists/:id} : get the "id" artist.
      *
      * @param id the id of the artistDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the artistDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the artistDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<ArtistDTO> getArtist(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Artist : {}", id);
         Optional<ArtistDTO> artistDTO = artistService.findOne(id);
         return ResponseUtil.wrapOrNotFound(artistDTO);
+    }
+
+    // Metodo para obtener el artista asociado al usuario logueado - Fran
+    @GetMapping("/me")
+    public ResponseEntity<ArtistDTO> getMyArtist() {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
+
+        return artistService.findByUserLogin(login).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     /**

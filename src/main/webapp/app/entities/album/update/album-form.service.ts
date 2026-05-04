@@ -22,7 +22,6 @@ type AlbumFormGroupContent = {
   coverImage: FormControl<IAlbum['coverImage']>;
   releaseDate: FormControl<IAlbum['releaseDate']>;
   albumType: FormControl<IAlbum['albumType']>;
-  artist: FormControl<IAlbum['artist']>;
   genre: FormControl<IAlbum['genre']>;
 };
 
@@ -35,6 +34,7 @@ export class AlbumFormService {
       ...this.getFormDefaults(),
       ...(album ?? { id: null }),
     };
+
     return new FormGroup<AlbumFormGroupContent>({
       id: new FormControl(
         { value: albumRawValue.id, disabled: true },
@@ -43,18 +43,22 @@ export class AlbumFormService {
           validators: [Validators.required],
         },
       ),
+
       title: new FormControl(albumRawValue.title, {
         validators: [Validators.required, Validators.maxLength(150)],
       }),
+
       coverImage: new FormControl(albumRawValue.coverImage, {
         validators: [Validators.maxLength(255)],
       }),
+
       releaseDate: new FormControl(albumRawValue.releaseDate),
+
       albumType: new FormControl(albumRawValue.albumType),
-      artist: new FormControl(albumRawValue.artist, {
+
+      genre: new FormControl(albumRawValue.genre, {
         validators: [Validators.required],
       }),
-      genre: new FormControl(albumRawValue.genre),
     });
   }
 
@@ -63,7 +67,11 @@ export class AlbumFormService {
   }
 
   resetForm(form: AlbumFormGroup, album: AlbumFormGroupInput): void {
-    const albumRawValue = { ...this.getFormDefaults(), ...album };
+    const albumRawValue = {
+      ...this.getFormDefaults(),
+      ...album,
+    };
+
     form.reset({
       ...albumRawValue,
       id: { value: albumRawValue.id, disabled: true },

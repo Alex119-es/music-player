@@ -30,7 +30,7 @@ public class FileUploadResource {
             }
 
             // Crear directorio si no existe
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Path.of(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }

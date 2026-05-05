@@ -9,9 +9,18 @@ import AlbumResolve from './route/album-routing-resolve.service';
 const albumRoute: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     loadComponent: () => import('./list/album').then(m => m.Album),
     data: {
       defaultSort: `id,${ASC}`,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'coming',
+    loadComponent: () => import('./coming/album-coming').then(m => m.AlbumUpcoming),
+    data: {
+      authorities: [Authority.ADMIN, Authority.EDITOR, Authority.ARTIST],
     },
     canActivate: [UserRouteAccessService],
   },

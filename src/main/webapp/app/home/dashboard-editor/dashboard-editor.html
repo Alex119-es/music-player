@@ -71,7 +71,7 @@
         <fa-icon icon="compact-disc" class="editor-action-icon" />
       </a>
 
-      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
+      <a routerLink="/album/coming" class="editor-action-card" style="--card-from: #0d4ea6; --card-to: #5179c8">
         <div class="editor-action-content">
           <span class="editor-action-eyebrow">Calendario</span>
           <h3>Próximos lanzamientos</h3>
@@ -84,7 +84,7 @@
   <section class="editor-section">
     <div class="editor-section-head">
       <h2>Próximos lanzamientos</h2>
-      <a routerLink="/album" [queryParams]="{ upcoming: true }" class="editor-section-link">Ver calendario</a>
+      <a routerLink="/album/ucoming" class="editor-section-link">Gestionar</a>
     </div>
     @if (upcomingAlbums().length === 0) {
       <div class="editor-empty">
@@ -97,7 +97,7 @@
           <a [routerLink]="['/album', album.id, 'view']" class="editor-release-card">
             <div class="editor-release-info">
               <span class="editor-release-title">{{ album.title }}</span>
-              <span class="editor-release-sub">Álbum #{{ album.id }}</span>
+              <span class="editor-release-sub">{{ album.albumType ?? 'ALBUM' }}</span>
             </div>
             <span class="editor-release-date">{{ album.releaseDate | formatMediumDate }}</span>
           </a>

@@ -26,13 +26,7 @@
         <fa-icon icon="th-list" />
       </a>
     } @else {
-      <a
-        class="btn-icon-action"
-        [routerLink]="['/album']"
-        [queryParams]="{ upcoming: true }"
-        title="Próximos lanzamientos"
-        aria-label="Próximos lanzamientos"
-      >
+      <a class="btn-icon-action" [routerLink]="['/album/upcoming']" title="Próximos lanzamientos" aria-label="Próximos lanzamientos">
         <fa-icon icon="calendar-alt" />
       </a>
     }

@@ -1,12 +1,15 @@
 package com.musicplayer.service.impl;
 
 import com.musicplayer.domain.Album;
+import com.musicplayer.domain.Artist;
 import com.musicplayer.repository.AlbumRepository;
 import com.musicplayer.repository.ArtistRepository;
+import com.musicplayer.security.SecurityUtils;
 import com.musicplayer.service.AlbumService;
 import com.musicplayer.service.dto.AlbumDTO;
 import com.musicplayer.service.mapper.AlbumMapper;
 import com.musicplayer.web.rest.AlbumResource;
+import com.musicplayer.web.rest.errors.BadRequestAlertException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,17 +41,21 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public AlbumDTO save(AlbumDTO albumDTO) {
         LOG.debug("Request to save Album : {}", albumDTO);
+
         Album album = albumMapper.toEntity(albumDTO);
-        // Forzar que Hibernate use una referencia en lugar de cargar la entidad
-        if (albumDTO.getArtist() != null && albumDTO.getArtist().getId() != null) {
-            album.setArtist(
-                albumRepository
-                    .findById(albumDTO.getId())
-                    .map(Album::getArtist)
-                    .orElse(artistRepository.getReferenceById(albumDTO.getArtist().getId()))
-            );
-        }
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
+            new BadRequestAlertException("Usuario no autenticado", "album", "usernotfound")
+        );
+
+        Artist artist = artistRepository
+            .findByUserLogin(login)
+            .orElseThrow(() -> new BadRequestAlertException("Artista no encontrado", "album", "artistnotfound"));
+
+        album.setArtist(artist);
+
         album = albumRepository.save(album);
+
         return albumMapper.toDto(album);
     }
 

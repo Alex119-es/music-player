@@ -69,16 +69,6 @@ public class AlbumResource {
             throw new BadRequestAlertException("A new album cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
-            new BadRequestAlertException("Usuario no autenticado", ENTITY_NAME, "usernotfound")
-        );
-
-        ArtistDTO artistDTO = artistService
-            .findByUserLogin(login)
-            .orElseThrow(() -> new BadRequestAlertException("Artista no encontrado", ENTITY_NAME, "artistnotfound"));
-
-        albumDTO.setArtist(artistDTO);
-
         albumDTO = albumService.save(albumDTO);
 
         return ResponseEntity.created(new URI("/api/albums/" + albumDTO.getId()))

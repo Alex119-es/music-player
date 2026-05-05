@@ -5,8 +5,10 @@ import com.musicplayer.repository.SongRepository;
 import com.musicplayer.service.SongService;
 import com.musicplayer.service.dto.SongDTO;
 import com.musicplayer.service.mapper.SongMapper;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -92,5 +94,36 @@ public class SongServiceImpl implements SongService {
     public List<SongDTO> findByAlbumId(Long albumId) {
         LOG.debug("Request to get Songs by Album : {}", albumId);
         return songRepository.findByAlbumId(albumId).stream().map(songMapper::toDto).collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SongDTO> findPublicSongs() {
+        LOG.debug("Request to get public Songs");
+        return songRepository.findPublicSongs(LocalDate.now()).stream().map(songMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SongDTO> findPublicSongsByAlbumId(Long albumId) {
+        LOG.debug("Request to get public Songs for Album : {}", albumId);
+        return songRepository
+            .findPublicSongsByAlbumId(albumId, LocalDate.now())
+            .stream()
+            .map(songMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public SongDTO toggleActive(Long id) {
+        LOG.debug("Request to toggle active Song : {}", id);
+        return songRepository
+            .findById(id)
+            .map(song -> {
+                song.setActive(!Boolean.TRUE.equals(song.getActive()));
+                return songRepository.save(song);
+            })
+            .map(songMapper::toDto)
+            .orElseThrow(() -> new RuntimeException("Song not found: " + id));
     }
 }

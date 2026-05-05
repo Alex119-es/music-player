@@ -69,8 +69,9 @@ export class AlbumDetail implements OnInit {
 
     const updated: ISong = { ...song, album: { id: album.id } };
     this.songService.update(updated).subscribe({
-      next: () => {
-        this.albumSongs.update(songs => [...songs, updated]);
+      next: savedSong => {
+        this.albumSongs.update(songs => [...songs, savedSong]);
+        this.allMySongs.update(songs => songs.filter(s => s.id !== song.id));
       },
       error: err => console.error('Error añadiendo canción', err),
     });
@@ -79,10 +80,20 @@ export class AlbumDetail implements OnInit {
   removeSongFromAlbum(song: ISong): void {
     const updated: ISong = { ...song, album: null };
     this.songService.update(updated).subscribe({
-      next: () => {
+      next: savedSong => {
         this.albumSongs.update(songs => songs.filter(s => s.id !== song.id));
+        this.allMySongs.update(songs => [...songs, savedSong]);
       },
       error: err => console.error('Error quitando canción', err),
+    });
+  }
+
+  toggleSongActive(song: ISong): void {
+    this.songService.toggleActive(song.id).subscribe({
+      next: updatedSong => {
+        this.albumSongs.update(songs => songs.map(s => (s.id === updatedSong.id ? updatedSong : s)));
+      },
+      error: err => console.error('Error cambiando estado de canción', err),
     });
   }
 

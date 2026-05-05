@@ -202,4 +202,26 @@ public class SongResource {
         List<SongDTO> songs = songService.findByAlbumId(albumId);
         return ResponseEntity.ok(songs);
     }
+
+    // Vista pública — solo canciones activas y con fecha pasada/sin fecha
+    @GetMapping("/public")
+    public ResponseEntity<List<SongDTO>> getPublicSongs() {
+        LOG.debug("REST request to get public Songs");
+        return ResponseEntity.ok(songService.findPublicSongs());
+    }
+
+    // Canciones de un álbum para vista pública
+    @GetMapping("/public/by-album/{albumId}")
+    public ResponseEntity<List<SongDTO>> getPublicSongsByAlbum(@PathVariable Long albumId) {
+        LOG.debug("REST request to get public Songs for Album : {}", albumId);
+        return ResponseEntity.ok(songService.findPublicSongsByAlbumId(albumId));
+    }
+
+    // Toggle activo/inactivo — solo para artista/admin
+    @PatchMapping("/{id}/toggle-active")
+    public ResponseEntity<SongDTO> toggleActive(@PathVariable Long id) {
+        LOG.debug("REST request to toggle active Song : {}", id);
+        SongDTO result = songService.toggleActive(id);
+        return ResponseEntity.ok(result);
+    }
 }

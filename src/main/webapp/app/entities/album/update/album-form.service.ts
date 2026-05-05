@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { IAlbum, NewAlbum } from '../album.model';
+import { IArtist } from 'app/entities/artist/artist.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -23,6 +24,7 @@ type AlbumFormGroupContent = {
   releaseDate: FormControl<IAlbum['releaseDate']>;
   albumType: FormControl<IAlbum['albumType']>;
   genre: FormControl<IAlbum['genre']>;
+  artist: FormControl<IArtist | NewAlbum['artist']>;
 };
 
 export type AlbumFormGroup = FormGroup<AlbumFormGroupContent>;
@@ -56,9 +58,8 @@ export class AlbumFormService {
 
       albumType: new FormControl(albumRawValue.albumType),
 
-      genre: new FormControl(albumRawValue.genre, {
-        validators: [Validators.required],
-      }),
+      artist: new FormControl(albumRawValue.artist),
+      genre: new FormControl(albumRawValue.genre),
     });
   }
 

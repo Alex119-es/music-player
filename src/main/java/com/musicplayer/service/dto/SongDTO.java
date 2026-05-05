@@ -42,6 +42,16 @@ public class SongDTO implements Serializable {
 
     private GenreDTO genre;
 
+    private Boolean active = true;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     private Set<ArtistDTO> artistses = new HashSet<>();
 
     public Long getId() {
@@ -168,6 +178,8 @@ public class SongDTO implements Serializable {
                 ", album=" + getAlbum() +
                 ", genre=" + getGenre() +
                 ", artistses=" + getArtistses() +
+                ", active='" + getActive() + "'" +
+
                 "}";
     }
 }

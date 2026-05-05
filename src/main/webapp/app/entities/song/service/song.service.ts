@@ -117,7 +117,11 @@ export class SongService extends SongsService {
     }
     return songCollection;
   }
-
+  toggleActive(id: number): Observable<ISong> {
+    return this.http
+      .patch<RestSong>(`${this.resourceUrl}/${encodeURIComponent(id)}/toggle-active`, {})
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
   protected convertValueFromClient<T extends ISong | NewSong | PartialUpdateSong>(song: T): RestOf<T> {
     return {
       ...song,

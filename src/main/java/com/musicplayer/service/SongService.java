@@ -66,4 +66,13 @@ public interface SongService {
     void delete(Long id);
 
     List<SongDTO> findByAlbumId(Long albumId);
+
+    // Para la vista pública
+    List<SongDTO> findPublicSongs();
+
+    // Para el detalle de un álbum en vista pública
+    List<SongDTO> findPublicSongsByAlbumId(Long albumId);
+
+    // Toggle activo/inactivo
+    SongDTO toggleActive(Long id);
 }

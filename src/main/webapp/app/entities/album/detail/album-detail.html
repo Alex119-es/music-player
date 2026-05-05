@@ -13,14 +13,18 @@
           </div>
         }
       </div>
+
       <div class="album-detail-info">
         <span class="album-detail-type">{{ album()!.albumType ?? 'ALBUM' }}</span>
         <h1 class="album-detail-title">{{ album()!.title }}</h1>
+
         @if (album()!.releaseDate) {
           <span class="album-detail-date">{{ album()!.releaseDate | formatMediumDate }}</span>
         }
+
         <div class="album-detail-actions">
           <button class="btn-back" (click)="previousState()"><fa-icon icon="arrow-left" /> Volver</button>
+
           <a class="btn-edit" [routerLink]="['/album', album()!.id, 'edit']"> <fa-icon icon="pencil-alt" /> Editar álbum </a>
         </div>
       </div>
@@ -35,6 +39,7 @@
       @if (showAddPanel()) {
         <div class="add-song-panel">
           <input type="text" class="search-input" placeholder="Buscar canciones..." [value]="searchTerm()" (input)="onSearch($event)" />
+
           <div class="available-songs-list">
             @if (availableSongs().length === 0) {
               <p class="no-songs">No hay canciones disponibles para añadir</p>
@@ -43,10 +48,12 @@
                 <div class="available-song-item">
                   <div class="available-song-info">
                     <span class="available-song-title">{{ song.title }}</span>
+
                     @if (song.duration) {
                       <span class="available-song-duration">{{ formatDuration(song.duration) }}</span>
                     }
                   </div>
+
                   <button class="btn-add-to-album" (click)="addSongToAlbum(song)">
                     <fa-icon icon="plus" />
                   </button>
@@ -65,17 +72,36 @@
       } @else {
         <div class="songs-list">
           @for (song of albumSongs(); track song.id; let i = $index) {
-            <div class="song-row">
+            <div class="song-row" [class.song-inactive]="!song.active">
               <span class="song-number">{{ i + 1 }}</span>
+
               <div class="song-info">
                 <span class="song-title">{{ song.title }}</span>
+
+                @if (!song.active) {
+                  <span class="song-hidden-badge">Oculta</span>
+                }
+
                 @if (song.duration) {
                   <span class="song-duration">{{ formatDuration(song.duration) }}</span>
                 }
               </div>
-              <button class="btn-remove-song" (click)="removeSongFromAlbum(song)" title="Quitar del álbum">
-                <fa-icon icon="times" />
-              </button>
+
+              <div class="song-actions">
+                <button
+                  class="btn-toggle-active"
+                  [class.btn-active]="song.active"
+                  [class.btn-inactive]="!song.active"
+                  (click)="toggleSongActive(song)"
+                  [title]="song.active ? 'Ocultar canción' : 'Publicar canción'"
+                >
+                  <fa-icon [icon]="song.active ? 'eye' : 'eye-slash'" />
+                </button>
+
+                <button class="btn-remove-song" (click)="removeSongFromAlbum(song)" title="Quitar del álbum">
+                  <fa-icon icon="times" />
+                </button>
+              </div>
             </div>
           }
         </div>

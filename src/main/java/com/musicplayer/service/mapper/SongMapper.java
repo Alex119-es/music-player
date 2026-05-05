@@ -17,7 +17,7 @@ public interface SongMapper extends EntityMapper<SongDTO, Song> {
     // ========= ENTITY -> DTO =========
     @Mapping(target = "album", source = "album")
     @Mapping(target = "genre", source = "genre")
-    @Mapping(target = "artist", source = "artist")
+    //@Mapping(target = "artist", source = "artist")
     @Mapping(target = "artistses", source = "artistses")
     SongDTO toDto(Song song);
 

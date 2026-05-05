@@ -1,7 +1,12 @@
 package com.musicplayer.web.rest;
 
 import com.musicplayer.repository.SongRepository;
+import com.musicplayer.security.SecurityUtils;
+import com.musicplayer.security.SecurityUtils;
+import com.musicplayer.service.ArtistService;
 import com.musicplayer.service.SongService;
+import com.musicplayer.service.dto.ArtistDTO;
+import com.musicplayer.service.dto.ArtistDTO;
 import com.musicplayer.service.dto.SongDTO;
 import com.musicplayer.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -27,6 +32,7 @@ import tech.jhipster.web.util.ResponseUtil;
 /**
  * REST controller for managing {@link com.musicplayer.domain.Song}.
  */
+
 @RestController
 @RequestMapping("/api/songs")
 public class SongResource {
@@ -41,10 +47,12 @@ public class SongResource {
     private final SongService songService;
 
     private final SongRepository songRepository;
+    private final ArtistService artistService;
 
-    public SongResource(SongService songService, SongRepository songRepository) {
+    public SongResource(SongService songService, SongRepository songRepository, ArtistService artistService) {
         this.songService = songService;
         this.songRepository = songRepository;
+        this.artistService = artistService;
     }
 
     /**
@@ -59,10 +67,23 @@ public class SongResource {
     @PostMapping("")
     public ResponseEntity<SongDTO> createSong(@Valid @RequestBody SongDTO songDTO) throws URISyntaxException {
         LOG.debug("REST request to save Song : {}", songDTO);
+
         if (songDTO.getId() != null) {
             throw new BadRequestAlertException("A new song cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
+            new BadRequestAlertException("Usuario no autenticado", ENTITY_NAME, "usernotfound")
+        );
+
+        ArtistDTO artistDTO = artistService
+            .findByUserLogin(login)
+            .orElseThrow(() -> new BadRequestAlertException("Artista no encontrado", ENTITY_NAME, "artistnotfound"));
+
+        songDTO.setArtist(artistDTO);
+
         songDTO = songService.save(songDTO);
+
         return ResponseEntity.created(new URI("/api/songs/" + songDTO.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, songDTO.getId().toString()))
             .body(songDTO);

@@ -42,6 +42,8 @@ public class SongDTO implements Serializable {
 
     private GenreDTO genre;
 
+    private ArtistDTO artist;
+
     private Boolean active = true;
 
     public Boolean getActive() {
@@ -120,6 +122,14 @@ public class SongDTO implements Serializable {
 
     public AlbumDTO getAlbum() {
         return album;
+    }
+
+    public ArtistDTO getArtist() {
+        return artist;
+    }
+
+    public void setArtist(ArtistDTO artist) {
+        this.artist = artist;
     }
 
     public void setAlbum(AlbumDTO album) {

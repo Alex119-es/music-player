@@ -63,6 +63,9 @@ public class Song implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Genre genre;
 
+    @ManyToOne
+    private Artist artist;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "rel_song__artists",

@@ -86,33 +86,34 @@ public class FileUploadResource {
 
     @GetMapping("/stream/{filename}")
     public ResponseEntity<Resource> streamAudio(@PathVariable String filename) throws IOException {
-        try {
-            Path filePath = Path.of(uploadDir).resolve(filename).normalize();
+        Path uploadPath = Path.of(uploadDir).toAbsolutePath().normalize();
+        Path filePath = uploadPath.resolve(filename).normalize();
 
-            // Seguridad: evitar path traversal
-            if (!filePath.startsWith(Path.of(uploadDir).toAbsolutePath())) {
-                return ResponseEntity.badRequest().build();
-            }
+        System.out.println("UPLOAD PATH: " + uploadPath);
+        System.out.println("FILE PATH: " + filePath);
+        System.out.println("EXISTS: " + Files.exists(filePath));
 
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            String contentType = Files.probeContentType(filePath);
-            if (contentType == null) contentType = "audio/mpeg";
-
-            LOG.debug("Streaming audio: {}", filename);
-
-            return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
-                .header(HttpHeaders.ACCEPT_RANGES, "bytes")
-                .body(resource);
-        } catch (IOException e) {
-            LOG.error("Error al streamear audio: {}", filename, e);
-            return ResponseEntity.internalServerError().build();
+        // Seguridad
+        if (!filePath.startsWith(uploadPath)) {
+            return ResponseEntity.badRequest().build();
         }
+
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String contentType = Files.probeContentType(filePath);
+
+        if (contentType == null) {
+            contentType = "audio/mpeg";
+        }
+
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(contentType))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+            .header(HttpHeaders.ACCEPT_RANGES, "bytes")
+            .body(resource);
     }
 }

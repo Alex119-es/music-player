@@ -108,7 +108,9 @@ export class PlayerService {
 
   private loadAndPlay(song: ISong): void {
     this.currentSong.set(song);
-    this.audio.src = (song as any).audioUrl ?? '';
+    const fileUrl = song.fileUrl ?? '';
+    // Si ya es una ruta completa, úsala; si no, construye la URL de stream
+    this.audio.src = fileUrl.startsWith('/') ? fileUrl : `/api/upload/stream/${encodeURIComponent(fileUrl)}`;
     this.audio.load();
     this.audio.play().catch(console.error);
   }

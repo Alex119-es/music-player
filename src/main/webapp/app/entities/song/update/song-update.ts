@@ -155,7 +155,7 @@ export class SongUpdate implements OnInit {
     }
 
     const file = input.files[0];
-    const allowedTypes = ['audio/mpeg', 'audio/wav'];
+    const allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/x-mpeg', 'audio/mpeg3'];
     if (!allowedTypes.includes(file.type)) {
       alert('Solo se permiten archivos MP3 o WAV');
       return;

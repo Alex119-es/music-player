@@ -16,10 +16,10 @@ import org.mapstruct.*;
 public interface SongMapper extends EntityMapper<SongDTO, Song> {
     @Mapping(target = "album", source = "album")
     @Mapping(target = "genre", source = "genre")
-    @Mapping(target = "artistses", ignore = true)
+    @Mapping(target = "artistses", source = "artistses")
     SongDTO toDto(Song song);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "artistses", ignore = true)
+    @Mapping(target = "artist", ignore = true) // 🔥 IMPORTANTE
     Song toEntity(SongDTO songDTO);
 }

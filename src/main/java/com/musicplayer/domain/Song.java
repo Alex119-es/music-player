@@ -113,6 +113,10 @@ public class Song implements Serializable {
         return this;
     }
 
+    public Artist getArtist() {
+        return this.artist;
+    }
+
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
@@ -235,6 +239,10 @@ public class Song implements Serializable {
     public Song artistses(Set<Artist> artists) {
         this.setArtistses(artists);
         return this;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public Song addArtists(Artist artist) {

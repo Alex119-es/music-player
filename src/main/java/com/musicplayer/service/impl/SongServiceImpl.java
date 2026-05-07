@@ -47,11 +47,10 @@ public class SongServiceImpl implements SongService {
 
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("No user logged"));
 
-        Artist artist = artistRepository
-            .findByUserLogin(login)
-            .orElseThrow(() -> new RuntimeException("Artist not found for user: " + login));
+        Artist artist = artistRepository.findByUserLogin(login).orElseThrow(() -> new RuntimeException("Artist not found"));
 
-        song.setArtistses(Set.of(artist));
+        // 🔥 ESTO ES LO IMPORTANTE
+        song.setArtist(artist);
 
         song = songRepository.save(song);
 

@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { SongService } from 'app/entities/song/service/song.service';
 import { ISong } from 'app/entities/song/song.model';
+import { PlayerService } from '../player-bar/player.service';
 
 @Component({
   selector: 'jhi-search',
@@ -14,6 +15,7 @@ import { ISong } from 'app/entities/song/song.model';
 export default class SearchComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly songService = inject(SongService);
+  readonly player = inject(PlayerService); // público para usarlo en el HTML
 
   readonly query = signal('');
   readonly songs = signal<ISong[]>([]);
@@ -26,6 +28,10 @@ export default class SearchComponent {
       if (q.trim()) this.search(q.trim());
       else this.songs.set([]);
     });
+  }
+
+  playSong(song: ISong): void {
+    this.player.playSong(song, this.songs());
   }
 
   private search(q: string): void {

@@ -7,6 +7,10 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,30 +27,23 @@ public class FileUploadResource {
     @PostMapping("/image")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            // Validar tipo
             String contentType = file.getContentType();
             if (contentType == null || !contentType.startsWith("image/")) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Solo se permiten imágenes"));
             }
 
-            // Crear directorio si no existe
             Path uploadPath = Path.of(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
 
-            // Generar nombre único
             String extension =
                 file.getOriginalFilename() != null
                     ? file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))
                     : ".jpg";
             String filename = UUID.randomUUID().toString() + extension;
 
-            // Guardar fichero
             Path filePath = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // Devolver URL
             String url = "/uploads/" + filename;
             LOG.debug("Imagen guardada: {}", url);
 
@@ -54,6 +51,68 @@ public class FileUploadResource {
         } catch (IOException e) {
             LOG.error("Error al guardar imagen", e);
             return ResponseEntity.internalServerError().body(Map.of("error", "Error al guardar la imagen"));
+        }
+    }
+
+    @PostMapping("/audio")
+    public ResponseEntity<Map<String, String>> uploadAudio(@RequestParam("file") MultipartFile file) {
+        try {
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("audio/")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Solo se permiten archivos de audio"));
+            }
+
+            Path uploadPath = Path.of(uploadDir);
+            if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
+
+            String extension =
+                file.getOriginalFilename() != null
+                    ? file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))
+                    : ".mp3";
+            String filename = UUID.randomUUID().toString() + extension;
+
+            Path filePath = uploadPath.resolve(filename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            String url = "/uploads/" + filename;
+            LOG.debug("Audio guardado: {}", url);
+
+            return ResponseEntity.ok(Map.of("url", url, "filename", filename));
+        } catch (IOException e) {
+            LOG.error("Error al guardar audio", e);
+            return ResponseEntity.internalServerError().body(Map.of("error", "Error al guardar el audio"));
+        }
+    }
+
+    @GetMapping("/stream/{filename}")
+    public ResponseEntity<Resource> streamAudio(@PathVariable String filename) throws IOException {
+        try {
+            Path filePath = Path.of(uploadDir).resolve(filename).normalize();
+
+            // Seguridad: evitar path traversal
+            if (!filePath.startsWith(Path.of(uploadDir).toAbsolutePath())) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) contentType = "audio/mpeg";
+
+            LOG.debug("Streaming audio: {}", filename);
+
+            return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                .header(HttpHeaders.ACCEPT_RANGES, "bytes")
+                .body(resource);
+        } catch (IOException e) {
+            LOG.error("Error al streamear audio: {}", filename, e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

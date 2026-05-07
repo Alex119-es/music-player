@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -39,7 +39,7 @@ export class SongUpdate implements OnInit {
   albumsSharedCollection = signal<IAlbum[]>([]);
   genresSharedCollection = signal<IGenre[]>([]);
   artistsSharedCollection = signal<IArtist[]>([]);
-
+  protected http = inject(HttpClient);
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
   protected songService = inject(SongService);
@@ -96,6 +96,28 @@ export class SongUpdate implements OnInit {
 
   save(): void {
     this.isSaving.set(true);
+
+    if (this.selectedFile) {
+      // Primero sube el audio, luego guarda
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      this.http.post<{ url: string; filename: string }>('/api/upload/audio', formData).subscribe({
+        next: res => {
+          // Guarda el filename (UUID) en fileUrl
+          this.editForm.patchValue({ fileUrl: res.filename });
+          this.saveSong();
+        },
+        error: () => {
+          alert('Error al subir el archivo de audio');
+          this.isSaving.set(false);
+        },
+      });
+    } else {
+      this.saveSong();
+    }
+  }
+  private saveSong(): void {
     const song = this.songFormService.getSong(this.editForm);
     if (song.id === null) {
       this.subscribeToSaveResponse(this.songService.create(song));
@@ -103,7 +125,6 @@ export class SongUpdate implements OnInit {
       this.subscribeToSaveResponse(this.songService.update(song));
     }
   }
-
   protected subscribeToSaveResponse(result: Observable<ISong | null>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -126,26 +147,21 @@ export class SongUpdate implements OnInit {
 
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
-  // Método para manejar la selección de archivos y su tamaño
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (!input.files || input.files.length === 0) {
       this.selectedFile = null;
       return;
     }
 
     const file = input.files[0];
-
     const allowedTypes = ['audio/mpeg', 'audio/wav'];
-
     if (!allowedTypes.includes(file.type)) {
       alert('Solo se permiten archivos MP3 o WAV');
       return;
     }
 
     const maxSize = 15 * 1024 * 1024;
-
     if (file.size > maxSize) {
       alert('El archivo es demasiado grande (máx 15MB)');
       return;
@@ -153,26 +169,14 @@ export class SongUpdate implements OnInit {
 
     this.selectedFile = file;
 
-    // 👇 ESTO ES LO QUE TE FALTA
-    this.editForm.patchValue({
-      fileUrl: file.name,
-    });
-
     const audio = new Audio();
     audio.src = URL.createObjectURL(file);
-
     audio.onloadedmetadata = () => {
-      const durationInSeconds = audio.duration;
-
-      this.editForm.patchValue({
-        duration: Math.floor(durationInSeconds),
-      });
-
+      this.editForm.patchValue({ duration: Math.floor(audio.duration) });
       URL.revokeObjectURL(audio.src);
     };
   }
 
-  //Metodo para validar cover_image
   onCoverSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 

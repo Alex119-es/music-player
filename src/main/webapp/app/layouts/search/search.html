@@ -40,8 +40,8 @@
 
           <span class="song-duration">{{ song.duration }}s</span>
 
-          <button class="play-btn" aria-label="Reproducir">
-            <fa-icon icon="play"></fa-icon>
+          <button class="play-btn" (click)="playSong(song)" aria-label="Reproducir">
+            <fa-icon [icon]="player.currentSong()?.id === song.id && player.isPlaying() ? 'pause' : 'play'"></fa-icon>
           </button>
         </div>
       }

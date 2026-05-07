@@ -72,9 +72,7 @@ export class SongFormService {
 
       duration: new FormControl(songRawValue.duration),
 
-      fileUrl: new FormControl(songRawValue.fileUrl, {
-        validators: [Validators.required, Validators.maxLength(255)],
-      }),
+      fileUrl: new FormControl(songRawValue.fileUrl),
 
       coverImage: new FormControl(songRawValue.coverImage, {
         validators: [Validators.maxLength(255)],

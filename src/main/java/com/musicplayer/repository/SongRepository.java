@@ -40,4 +40,7 @@ public interface SongRepository extends SongRepositoryWithBagRelationships, JpaR
     // Canciones públicas de un álbum concreto
     @Query("SELECT s FROM Song s WHERE s.album.id = :albumId AND s.active = true AND (s.releaseDate IS NULL OR s.releaseDate <= :today)")
     List<Song> findPublicSongsByAlbumId(@Param("albumId") Long albumId, @Param("today") LocalDate today);
+
+    @Query("SELECT s FROM Song s WHERE s.artist.user.login = :login")
+    Page<Song> findByArtistLogin(@Param("login") String login, Pageable pageable);
 }

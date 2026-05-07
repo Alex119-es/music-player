@@ -32,24 +32,23 @@ export default class DashboardEditorComponent implements OnInit {
   ngOnInit(): void {
     this.loadOverview();
   }
-
   private loadOverview(): void {
     this.isLoading.set(true);
-    this.albumService.query({ sort: 'releaseDate,asc', size: 200 }).subscribe({
-      next: res => {
-        const albums = res.body ?? [];
-        const today = dayjs().startOf('day');
-        const upcoming = albums.filter(album => album.releaseDate && album.releaseDate.isAfter(today));
-        this.albumsCount.set(albums.length);
-        this.upcomingCount.set(upcoming.length);
-        this.upcomingAlbums.set(upcoming.slice(0, 5));
-      },
-      error: () => {
-        this.albumsCount.set(0);
-        this.upcomingCount.set(0);
-        this.upcomingAlbums.set([]);
-      },
+
+    this.albumService.albumsParams.set({
+      sort: 'releaseDate,asc',
+      size: 200,
     });
+
+    const albums = this.albumService.myAlbums();
+
+    const today = dayjs().startOf('day');
+
+    const upcoming = albums.filter(album => album.releaseDate && dayjs(album.releaseDate).isAfter(today));
+
+    this.albumsCount.set(albums.length);
+    this.upcomingCount.set(upcoming.length);
+    this.upcomingAlbums.set(upcoming.slice(0, 5));
 
     this.songService.query({ sort: 'createdAt,desc', size: 200 }).subscribe({
       next: res => {

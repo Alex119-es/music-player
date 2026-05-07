@@ -49,7 +49,6 @@ public class SongServiceImpl implements SongService {
 
         Artist artist = artistRepository.findByUserLogin(login).orElseThrow(() -> new RuntimeException("Artist not found"));
 
-        // 🔥 ESTO ES LO IMPORTANTE
         song.setArtist(artist);
 
         song = songRepository.save(song);
@@ -140,5 +139,13 @@ public class SongServiceImpl implements SongService {
             })
             .map(songMapper::toDto)
             .orElseThrow(() -> new RuntimeException("Song not found: " + id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findMySongs(Pageable pageable) {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("No user logged"));
+
+        return songRepository.findByArtistLogin(login, pageable).map(songMapper::toDto);
     }
 }

@@ -245,4 +245,15 @@ public class SongResource {
         SongDTO result = songService.toggleActive(id);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/my-songs")
+    public ResponseEntity<List<SongDTO>> getMySongs(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        LOG.debug("REST request to get Songs of logged artist");
+
+        Page<SongDTO> page = songService.findMySongs(pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

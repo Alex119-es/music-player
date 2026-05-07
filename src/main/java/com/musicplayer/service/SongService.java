@@ -75,4 +75,6 @@ public interface SongService {
 
     // Toggle activo/inactivo
     SongDTO toggleActive(Long id);
+
+    Page<SongDTO> findMySongs(Pageable pageable);
 }

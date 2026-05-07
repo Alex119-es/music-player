@@ -26,6 +26,7 @@ export type PartialUpdateRestSong = RestOf<PartialUpdateSong>;
 @Injectable()
 export class SongsService {
   readonly songsParams = signal<Record<string, string | number | boolean | readonly (string | number | boolean)[]> | undefined>(undefined);
+
   readonly songsResource = httpResource<RestSong[]>(() => {
     const params = this.songsParams();
     if (!params) {
@@ -33,15 +34,14 @@ export class SongsService {
     }
     return { url: this.resourceUrl, params };
   });
-  /**
-   * This signal holds the list of song that have been fetched. It is updated when the songsResource emits a new value.
-   * In case of error while fetching the songs, the signal is set to an empty array.
-   */
+
   readonly songs = computed(() =>
     (this.songsResource.hasValue() ? this.songsResource.value() : []).map(item => this.convertValueFromServer(item)),
   );
+
   protected readonly applicationConfigService = inject(ApplicationConfigService);
-  protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/songs');
+
+  protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/songs/my-songs');
 
   protected convertValueFromServer(restSong: RestSong): ISong {
     return {
@@ -58,36 +58,39 @@ export class SongService extends SongsService {
 
   create(song: NewSong): Observable<ISong> {
     const copy = this.convertValueFromClient(song);
-    return this.http.post<RestSong>(this.resourceUrl, copy).pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http.post<RestSong>(this.resourceUrl.replace('/my-songs', ''), copy).pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(song: ISong): Observable<ISong> {
     const copy = this.convertValueFromClient(song);
     return this.http
-      .put<RestSong>(`${this.resourceUrl}/${encodeURIComponent(this.getSongIdentifier(song))}`, copy)
+      .put<RestSong>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(this.getSongIdentifier(song))}`, copy)
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(song: PartialUpdateSong): Observable<ISong> {
     const copy = this.convertValueFromClient(song);
     return this.http
-      .patch<RestSong>(`${this.resourceUrl}/${encodeURIComponent(this.getSongIdentifier(song))}`, copy)
+      .patch<RestSong>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(this.getSongIdentifier(song))}`, copy)
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<ISong> {
-    return this.http.get<RestSong>(`${this.resourceUrl}/${encodeURIComponent(id)}`).pipe(map(res => this.convertResponseFromServer(res)));
+    return this.http
+      .get<RestSong>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(id)}`)
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<HttpResponse<ISong[]>> {
     const options = createRequestOption(req);
+
     return this.http
       .get<RestSong[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => res.clone({ body: this.convertResponseArrayFromServer(res.body!) })));
   }
 
   delete(id: number): Observable<undefined> {
-    return this.http.delete<undefined>(`${this.resourceUrl}/${encodeURIComponent(id)}`);
+    return this.http.delete<undefined>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(id)}`);
   }
 
   getSongIdentifier(song: Pick<ISong, 'id'>): number {
@@ -103,8 +106,10 @@ export class SongService extends SongsService {
     ...songsToCheck: (Type | null | undefined)[]
   ): Type[] {
     const songs: Type[] = songsToCheck.filter(isPresent);
+
     if (songs.length > 0) {
       const songCollectionIdentifiers = songCollection.map(songItem => this.getSongIdentifier(songItem));
+
       const songsToAdd = songs.filter(songItem => {
         const songIdentifier = this.getSongIdentifier(songItem);
         if (songCollectionIdentifiers.includes(songIdentifier)) {
@@ -113,15 +118,19 @@ export class SongService extends SongsService {
         songCollectionIdentifiers.push(songIdentifier);
         return true;
       });
+
       return [...songsToAdd, ...songCollection];
     }
+
     return songCollection;
   }
+
   toggleActive(id: number): Observable<ISong> {
     return this.http
-      .patch<RestSong>(`${this.resourceUrl}/${encodeURIComponent(id)}/toggle-active`, {})
+      .patch<RestSong>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(id)}/toggle-active`, {})
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
+
   protected convertValueFromClient<T extends ISong | NewSong | PartialUpdateSong>(song: T): RestOf<T> {
     return {
       ...song,

@@ -1,13 +1,17 @@
 package com.musicplayer.service.impl;
 
+import com.musicplayer.domain.Artist;
 import com.musicplayer.domain.Song;
+import com.musicplayer.repository.ArtistRepository;
 import com.musicplayer.repository.SongRepository;
+import com.musicplayer.security.SecurityUtils;
 import com.musicplayer.service.SongService;
 import com.musicplayer.service.dto.SongDTO;
 import com.musicplayer.service.mapper.SongMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +33,28 @@ public class SongServiceImpl implements SongService {
 
     private final SongMapper songMapper;
 
-    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper) {
+    private final ArtistRepository artistRepository;
+
+    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, ArtistRepository artistRepository) {
         this.songRepository = songRepository;
         this.songMapper = songMapper;
+        this.artistRepository = artistRepository;
     }
 
     @Override
     public SongDTO save(SongDTO songDTO) {
-        LOG.debug("Request to save Song : {}", songDTO);
         Song song = songMapper.toEntity(songDTO);
+
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("No user logged"));
+
+        Artist artist = artistRepository
+            .findByUserLogin(login)
+            .orElseThrow(() -> new RuntimeException("Artist not found for user: " + login));
+
+        song.setArtistses(Set.of(artist));
+
         song = songRepository.save(song);
+
         return songMapper.toDto(song);
     }
 

@@ -175,11 +175,14 @@ public class SongResource {
     @GetMapping("")
     public ResponseEntity<List<SongDTO>> getAllSongs(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload,
+        @RequestParam(name = "title.contains", required = false) String titleContains
     ) {
         LOG.debug("REST request to get a page of Songs");
         Page<SongDTO> page;
-        if (eagerload) {
+        if (titleContains != null && !titleContains.isBlank()) {
+            page = songService.findByTitleContaining(titleContains, pageable);
+        } else if (eagerload) {
             page = songService.findAllWithEagerRelationships(pageable);
         } else {
             page = songService.findAll(pageable);

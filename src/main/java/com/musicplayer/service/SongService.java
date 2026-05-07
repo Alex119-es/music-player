@@ -77,4 +77,6 @@ public interface SongService {
     SongDTO toggleActive(Long id);
 
     Page<SongDTO> findMySongs(Pageable pageable);
+
+    Page<SongDTO> findByTitleContaining(String title, Pageable pageable);
 }

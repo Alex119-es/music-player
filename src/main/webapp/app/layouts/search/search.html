@@ -1,0 +1,50 @@
+<div class="search-page">
+  <div class="search-header">
+    <h2 class="search-title">
+      Resultados para <span class="query-highlight">"{{ query() }}"</span>
+    </h2>
+  </div>
+
+  @if (isLoading()) {
+    <div class="search-state">
+      <fa-icon icon="spinner" class="state-icon spinning"></fa-icon>
+      <p>Buscando...</p>
+    </div>
+  } @else if (songs().length === 0 && query().length > 0) {
+    <div class="search-state">
+      <fa-icon icon="music" class="state-icon"></fa-icon>
+      <p>
+        No se encontraron canciones para <strong>"{{ query() }}"</strong>
+      </p>
+    </div>
+  } @else {
+    <p class="results-count">{{ songs().length }} canciones encontradas</p>
+
+    <div class="songs-list">
+      @for (song of songs(); track song.id; let i = $index) {
+        <div class="song-row">
+          <span class="song-index">{{ i + 1 }}</span>
+
+          <div class="song-cover">
+            @if (song.coverImage) {
+              <img [src]="song.coverImage" alt="Cover" />
+            } @else {
+              <fa-icon icon="music"></fa-icon>
+            }
+          </div>
+
+          <div class="song-info">
+            <span class="song-title">{{ song.title }}</span>
+            <span class="song-artist">{{ song.releaseDate?.year() }}</span>
+          </div>
+
+          <span class="song-duration">{{ song.duration }}s</span>
+
+          <button class="play-btn" aria-label="Reproducir">
+            <fa-icon icon="play"></fa-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,10 +1,36 @@
 <nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
   <div class="container-fluid">
+    <!-- Brand -->
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-      <fa-icon icon="music" class="navbar-brand-icon" />
+      <fa-icon icon="music" class="navbar-brand-icon"></fa-icon>
       <span class="navbar-brand-text">Streamify</span>
       <span class="navbar-version">{{ version }}</span>
     </a>
+
+    @if (account()?.authorities?.includes('ROLE_USER')) {
+      <div class="navbar-search mx-auto">
+        <div class="search-wrapper">
+          <fa-icon icon="search" class="search-icon" />
+
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Buscar canciones, artistas..."
+            [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)"
+            (keydown.enter)="onSearch()"
+            aria-label="Buscar"
+          />
+
+          @if (searchQuery().length > 0) {
+            <button class="search-clear" (click)="searchQuery.set(''); $event.stopPropagation()" aria-label="Limpiar">
+              <fa-icon icon="times" />
+            </button>
+          }
+        </div>
+      </div>
+    }
+
     <a
       class="navbar-toggler d-lg-none"
       href="javascript:void(0);"
@@ -13,10 +39,12 @@
       aria-controls="navbarResponsive"
       aria-expanded="false"
       aria-label="Toggle navigation"
-      (click)="isNavbarCollapsed.update(isNavbarCollapsed => !isNavbarCollapsed)"
+      (click)="isNavbarCollapsed.update(v => !v)"
     >
       <fa-icon icon="bars" />
     </a>
+
+    <!-- Nav links -->
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed()">
       <ul class="navbar-nav ms-auto">
         @let dash = dashboardRoute();
@@ -30,6 +58,7 @@
             </a>
           </li>
         }
+
         @if (account() !== null) {
           <li
             ngbDropdown
@@ -142,10 +171,10 @@
                   <span jhiTranslate="global.menu.entities.like">Like</span>
                 </a>
               </li>
-              <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>
           </li>
         }
+
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
@@ -186,7 +215,6 @@
                 <span jhiTranslate="userManagement.home.title">User Management</span>
               </a>
             </li>
-            <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
             <li>
               <a class="dropdown-item" routerLink="/admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
                 <fa-icon icon="tachometer-alt" [fixedWidth]="true" />
@@ -229,6 +257,7 @@
             }
           </ul>
         </li>
+
         @if (languages && languages.length > 1) {
           <li ngbDropdown class="nav-item dropdown pointer" display="dynamic">
             <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
@@ -252,6 +281,7 @@
             </ul>
           </li>
         }
+
         <li
           ngbDropdown
           class="nav-item dropdown pointer"

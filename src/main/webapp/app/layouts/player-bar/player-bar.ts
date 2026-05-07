@@ -1,53 +1,35 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { RouterLink } from '@angular/router';
+import { PlayerService } from './player.service';
+import { FormatDurationPipe } from './FormatDuration';
 
 @Component({
   selector: 'jhi-player-bar',
   templateUrl: './player-bar.html',
   styleUrl: './player-bar.scss',
-  imports: [FaIconComponent, RouterLink],
+  imports: [FaIconComponent, FormatDurationPipe],
 })
 export default class PlayerBar {
-  readonly isPlaying = signal(false);
-  readonly isShuffle = signal(false);
-  readonly isRepeat = signal(false);
-  readonly volume = signal(70);
-  readonly progress = signal(0);
-  readonly isMuted = signal(false);
-
-  readonly volumeIcon = computed(() => {
-    if (this.isMuted() || this.volume() === 0) return 'volume-mute';
-    if (this.volume() < 40) return 'volume-down';
-    return 'volume-up';
-  });
+  readonly player = inject(PlayerService);
 
   togglePlay(): void {
-    this.isPlaying.update(v => !v);
+    this.player.toggle();
   }
-
   toggleShuffle(): void {
-    this.isShuffle.update(v => !v);
+    this.player.toggleShuffle();
   }
-
   toggleRepeat(): void {
-    this.isRepeat.update(v => !v);
+    this.player.toggleRepeat();
   }
-
   toggleMute(): void {
-    this.isMuted.update(v => !v);
+    this.player.toggleMute();
   }
 
   setVolume(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.volume.set(Number(input.value));
-    if (Number(input.value) > 0) {
-      this.isMuted.set(false);
-    }
+    this.player.setVolume(Number((event.target as HTMLInputElement).value));
   }
 
   setProgress(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.progress.set(Number(input.value));
+    this.player.seek(Number((event.target as HTMLInputElement).value));
   }
 }

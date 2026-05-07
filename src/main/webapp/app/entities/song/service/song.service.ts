@@ -40,7 +40,7 @@ export class SongsService {
   );
 
   protected readonly applicationConfigService = inject(ApplicationConfigService);
-
+  protected readonly publicResourceUrl = this.applicationConfigService.getEndpointFor('api/songs');
   protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/songs/my-songs');
 
   protected convertValueFromServer(restSong: RestSong): ISong {
@@ -83,9 +83,8 @@ export class SongService extends SongsService {
 
   query(req?: any): Observable<HttpResponse<ISong[]>> {
     const options = createRequestOption(req);
-
     return this.http
-      .get<RestSong[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<RestSong[]>(this.publicResourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => res.clone({ body: this.convertResponseArrayFromServer(res.body!) })));
   }
 

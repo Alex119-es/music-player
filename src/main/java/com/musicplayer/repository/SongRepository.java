@@ -43,4 +43,6 @@ public interface SongRepository extends SongRepositoryWithBagRelationships, JpaR
 
     @Query("SELECT s FROM Song s WHERE s.artist.user.login = :login")
     Page<Song> findByArtistLogin(@Param("login") String login, Pageable pageable);
+
+    Page<Song> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }

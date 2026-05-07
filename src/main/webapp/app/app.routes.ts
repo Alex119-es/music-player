@@ -45,7 +45,12 @@ const routes: Routes = [
     },
     title: 'Panel Administrador',
   },
-
+  {
+    path: 'search',
+    loadComponent: () => import('./layouts/search/search'),
+    runGuardsAndResolvers: 'always',
+    title: 'Buscar',
+  },
   {
     path: 'admin',
     data: {

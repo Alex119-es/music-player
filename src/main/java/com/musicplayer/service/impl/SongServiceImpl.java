@@ -148,4 +148,9 @@ public class SongServiceImpl implements SongService {
 
         return songRepository.findByArtistLogin(login, pageable).map(songMapper::toDto);
     }
+
+    @Override
+    public Page<SongDTO> findByTitleContaining(String title, Pageable pageable) {
+        return songRepository.findByTitleContainingIgnoreCase(title, pageable).map(songMapper::toDto);
+    }
 }

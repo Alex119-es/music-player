@@ -25,37 +25,26 @@ export type PartialUpdateRestAlbum = RestOf<PartialUpdateAlbum>;
 @Injectable()
 export class AlbumsService {
   readonly albumsParams = signal<Record<string, string | number | boolean | readonly (string | number | boolean)[]> | undefined>(undefined);
+
+  protected readonly applicationConfigService = inject(ApplicationConfigService);
+  protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/albums');
+  protected readonly myResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/my');
+
   readonly albumsResource = httpResource<RestAlbum[]>(() => {
     const params = this.albumsParams();
-    if (!params) {
-      return undefined;
-    }
+    if (!params) return undefined;
     return { url: this.resourceUrl, params };
   });
-  /**
-   * This signal holds the list of album that have been fetched. It is updated when the albumsResource emits a new value.
-   * In case of error while fetching the albums, the signal is set to an empty array.
-   */
+
   readonly albums = computed(() =>
     (this.albumsResource.hasValue() ? this.albumsResource.value() : []).map(item => this.convertValueFromServer(item)),
   );
-  protected readonly applicationConfigService = inject(ApplicationConfigService);
-  protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/albums');
-  // Para obtener los albumes del usuario actual, se utiliza por el login del usuario.
-  protected readonly myResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/my');
 
-  // Recurso para obtener los álbumes del usuario actual
   readonly myAlbumsResource = httpResource<RestAlbum[]>(() => {
-    const params = this.albumsParams();
-    if (!params) {
-      return undefined;
-    }
-    return { url: this.myResourceUrl, params };
+    return { url: this.myResourceUrl };
   });
 
-  readonly myAlbums = computed(() =>
-    (this.myAlbumsResource.hasValue() ? this.myAlbumsResource.value() : []).map(item => this.convertValueFromServer(item)),
-  );
+  readonly myAlbums = computed(() => (this.myAlbumsResource.value() ?? []).map(item => this.convertValueFromServer(item)));
 
   protected convertValueFromServer(restAlbum: RestAlbum): IAlbum {
     return {

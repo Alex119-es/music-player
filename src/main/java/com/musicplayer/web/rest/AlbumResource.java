@@ -215,4 +215,22 @@ public class AlbumResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    @GetMapping("/public")
+    public ResponseEntity<List<AlbumDTO>> getPublicAlbums(Pageable pageable) {
+        LOG.debug("REST request to get public Albums");
+
+        Page<AlbumDTO> page = albumService.findPublicAlbums(pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<AlbumDTO>> getUpcomingAlbums() {
+        LOG.debug("REST request to get upcoming Albums");
+
+        return ResponseEntity.ok(albumService.findUpcomingAlbums());
+    }
 }

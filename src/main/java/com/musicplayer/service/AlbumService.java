@@ -1,6 +1,7 @@
 package com.musicplayer.service;
 
 import com.musicplayer.service.dto.AlbumDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,4 +58,8 @@ public interface AlbumService {
     void delete(Long id);
 
     Page<AlbumDTO> findAllByCurrentUser(String login, Pageable pageable);
+
+    Page<AlbumDTO> findPublicAlbums(Pageable pageable);
+
+    List<AlbumDTO> findUpcomingAlbums();
 }

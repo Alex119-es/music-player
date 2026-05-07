@@ -12,6 +12,7 @@ export interface IAlbum {
   albumType?: keyof typeof AlbumType | null;
   artist?: Pick<IArtist, 'id'> | null;
   genre?: Pick<IGenre, 'id'> | null;
+  active?: boolean;
 }
 
 export type NewAlbum = Omit<IAlbum, 'id'> & { id: null };

@@ -51,6 +51,9 @@ public class Album implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Genre genre;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -144,7 +147,21 @@ public class Album implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Album active(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -159,7 +176,8 @@ public class Album implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -167,11 +185,11 @@ public class Album implements Serializable {
     @Override
     public String toString() {
         return "Album{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", coverImage='" + getCoverImage() + "'" +
-            ", releaseDate='" + getReleaseDate() + "'" +
-            ", albumType='" + getAlbumType() + "'" +
-            "}";
+                "id=" + getId() +
+                ", title='" + getTitle() + "'" +
+                ", coverImage='" + getCoverImage() + "'" +
+                ", releaseDate='" + getReleaseDate() + "'" +
+                ", albumType='" + getAlbumType() + "'" +
+                "}";
     }
 }

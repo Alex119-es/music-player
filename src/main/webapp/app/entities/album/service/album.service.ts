@@ -136,4 +136,12 @@ export class AlbumService extends AlbumsService {
   protected convertResponseArrayFromServer(res: RestAlbum[]): IAlbum[] {
     return res.map(item => this.convertValueFromServer(item));
   }
+  getUpcoming(): Observable<IAlbum[]> {
+    return this.http.get<IAlbum[]>(this.resourceUrl + '/upcoming');
+  }
+  queryUpcoming(): Observable<HttpResponse<IAlbum[]>> {
+    return this.http.get<IAlbum[]>(this.applicationConfigService.getEndpointFor('api/albums/upcoming'), {
+      observe: 'response',
+    });
+  }
 }

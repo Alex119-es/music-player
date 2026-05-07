@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
@@ -15,43 +15,47 @@ import { AlbumService } from '../service/album.service';
   selector: 'jhi-album-coming',
   templateUrl: './album-coming.html',
   styleUrls: ['./album-coming.scss'],
-  imports: [RouterLink, FontAwesomeModule, FormsModule, NgbInputDatepicker, Alert, AlertError, FormatMediumDatePipe],
+  imports: [FontAwesomeModule, FormsModule, NgbInputDatepicker, Alert, AlertError, FormatMediumDatePipe],
 })
 export class AlbumUpcoming implements OnInit {
+  private readonly router = inject(Router);
+  private readonly albumService = inject(AlbumService);
+
+  // 🔥 TU LISTA REAL
   readonly myAlbums = signal<IAlbum[]>([]);
   readonly isLoading = signal(false);
+
   readonly editingAlbumId = signal<number | null>(null);
   readonly selectedDate = signal<NgbDateStruct | null>(null);
   readonly searchTerm = signal('');
 
   selectedDateModel: NgbDateStruct | null = null;
-  readonly today = dayjs().startOf('day');
-
-  readonly upcomingAlbums = computed(() => {
-    return this.myAlbums().filter(a => a.releaseDate && dayjs(a.releaseDate).isAfter(this.today));
-  });
-
-  readonly availableAlbums = computed(() => {
-    const term = this.searchTerm().toLowerCase();
-    const upcomingIds = new Set(this.upcomingAlbums().map(a => a.id));
-    return this.myAlbums().filter(a => !upcomingIds.has(a.id) && (!term || a.title?.toLowerCase().includes(term)));
-  });
-
-  private readonly albumService = inject(AlbumService);
 
   ngOnInit(): void {
-    this.loadMyAlbums();
+    this.loadUpcomingAlbums();
   }
 
+  // =========================
+  // 🔥 ESTO ES LO QUE FALTABA EN TU HTML
+  // =========================
+
+  readonly upcomingAlbums = computed(() => this.myAlbums().filter(a => a.releaseDate !== null && a.releaseDate !== undefined));
+
+  readonly availableAlbums = computed(() => this.myAlbums().filter(a => !a.releaseDate));
+
+  // =========================
+
   previousState(): void {
-    globalThis.history.back();
+    this.router.navigate(['/album']); // o history.back() si prefieres
   }
 
   startEditing(album: IAlbum): void {
     this.editingAlbumId.set(album.id);
+
     if (album.releaseDate) {
       const d = dayjs(album.releaseDate);
       const struct = { year: d.year(), month: d.month() + 1, day: d.date() };
+
       this.selectedDate.set(struct);
       this.selectedDateModel = struct;
     } else {
@@ -71,25 +75,31 @@ export class AlbumUpcoming implements OnInit {
     if (!date) return;
 
     const releaseDate = dayjs(`${date.year}-${date.month}-${date.day}`, 'YYYY-M-D');
-    const updated: IAlbum = { ...album, releaseDate };
+
+    const updated: IAlbum = {
+      ...album,
+      releaseDate,
+    };
 
     this.albumService.update(updated).subscribe({
       next: updatedAlbum => {
-        this.myAlbums.update(albums => albums.map(a => (a.id === updatedAlbum.id ? updatedAlbum : a)));
+        this.myAlbums.update(list => list.map(a => (a.id === updatedAlbum.id ? updatedAlbum : a)));
         this.editingAlbumId.set(null);
         this.selectedDate.set(null);
       },
-      error: err => console.error('Error actualizando fecha', err),
     });
   }
 
   removeFromUpcoming(album: IAlbum): void {
-    const updated: IAlbum = { ...album, releaseDate: null };
+    const updated: IAlbum = {
+      ...album,
+      releaseDate: null,
+    };
+
     this.albumService.update(updated).subscribe({
       next: updatedAlbum => {
-        this.myAlbums.update(albums => albums.map(a => (a.id === updatedAlbum.id ? updatedAlbum : a)));
+        this.myAlbums.update(list => list.map(a => (a.id === updatedAlbum.id ? updatedAlbum : a)));
       },
-      error: err => console.error('Error quitando fecha', err),
     });
   }
 
@@ -101,15 +111,13 @@ export class AlbumUpcoming implements OnInit {
     this.searchTerm.set((event.target as HTMLInputElement).value);
   }
 
-  daysUntil(date: dayjs.Dayjs): number {
-    return dayjs(date).diff(this.today, 'day');
-  }
-
-  private loadMyAlbums(): void {
+  private loadUpcomingAlbums(): void {
     this.isLoading.set(true);
-    this.albumService.query({ size: 200 }).subscribe({
+
+    this.albumService.getUpcoming().subscribe({
       next: res => {
-        this.myAlbums.set(res.body ?? []);
+        console.log('UPCOMING:', res);
+        this.myAlbums.set(res);
         this.isLoading.set(false);
       },
       error: () => this.isLoading.set(false),

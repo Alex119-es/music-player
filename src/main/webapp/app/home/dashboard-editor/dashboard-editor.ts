@@ -30,11 +30,9 @@ export default class DashboardEditorComponent implements OnInit {
   private readonly songService = inject(SongService);
 
   constructor() {
-    // effect() se ejecuta cada vez que myAlbums() cambia, incluyendo cuando llega la respuesta HTTP
     effect(() => {
       const albums = this.albumService.myAlbums();
 
-      // Mientras el resource esté cargando, no actualices todavía
       if (this.albumService.myAlbumsResource.isLoading()) return;
 
       const today = dayjs().startOf('day');
@@ -53,7 +51,7 @@ export default class DashboardEditorComponent implements OnInit {
   }
 
   private loadSongs(): void {
-    this.songService.query({ sort: 'createdAt,desc', size: 200 }).subscribe({
+    this.songService.queryMySongs({ sort: 'createdAt,desc', size: 200 }).subscribe({
       next: res => {
         const songs = res.body ?? [];
         this.songsCount.set(songs.length);

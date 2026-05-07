@@ -10,6 +10,8 @@ import com.musicplayer.service.dto.AlbumDTO;
 import com.musicplayer.service.mapper.AlbumMapper;
 import com.musicplayer.web.rest.AlbumResource;
 import com.musicplayer.web.rest.errors.BadRequestAlertException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,5 +109,25 @@ public class AlbumServiceImpl implements AlbumService {
     public Page<AlbumDTO> findAllByCurrentUser(String login, Pageable pageable) {
         LOG.debug("Request to get Albums for user : {}", login);
         return albumRepository.findAllByArtistUserLogin(login, pageable).map(albumMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AlbumDTO> findPublicAlbums(Pageable pageable) {
+        LOG.debug("Request to get public Albums");
+
+        LocalDate today = LocalDate.now();
+
+        return albumRepository.findPublicAlbums(today, pageable).map(albumMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AlbumDTO> findUpcomingAlbums() {
+        LOG.debug("Request to get upcoming Albums");
+
+        LocalDate today = LocalDate.now();
+
+        return albumRepository.findUpcomingAlbums(today).stream().map(albumMapper::toDto).toList();
     }
 }

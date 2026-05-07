@@ -28,6 +28,7 @@ public class AlbumDTO implements Serializable {
     private ArtistDTO artist;
 
     private GenreDTO genre;
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -85,6 +86,14 @@ public class AlbumDTO implements Serializable {
         this.genre = genre;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -110,13 +119,13 @@ public class AlbumDTO implements Serializable {
     @Override
     public String toString() {
         return "AlbumDTO{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", coverImage='" + getCoverImage() + "'" +
-            ", releaseDate='" + getReleaseDate() + "'" +
-            ", albumType='" + getAlbumType() + "'" +
-            ", artist=" + getArtist() +
-            ", genre=" + getGenre() +
-            "}";
+                "id=" + getId() +
+                ", title='" + getTitle() + "'" +
+                ", coverImage='" + getCoverImage() + "'" +
+                ", releaseDate='" + getReleaseDate() + "'" +
+                ", albumType='" + getAlbumType() + "'" +
+                ", artist=" + getArtist() +
+                ", genre=" + getGenre() +
+                "}";
     }
 }

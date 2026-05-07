@@ -87,7 +87,13 @@ export class SongService extends SongsService {
       .get<RestSong[]>(this.publicResourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => res.clone({ body: this.convertResponseArrayFromServer(res.body!) })));
   }
+  queryMySongs(req?: any): Observable<HttpResponse<ISong[]>> {
+    const options = createRequestOption(req);
 
+    return this.http
+      .get<RestSong[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => res.clone({ body: this.convertResponseArrayFromServer(res.body ?? []) })));
+  }
   delete(id: number): Observable<undefined> {
     return this.http.delete<undefined>(`${this.resourceUrl.replace('/my-songs', '')}/${encodeURIComponent(id)}`);
   }

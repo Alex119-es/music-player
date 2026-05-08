@@ -54,6 +54,8 @@ import {
   faVolumeMute,
   faVolumeUp,
   faWrench,
+  faClock,
+  faCalendarPlus,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -113,5 +115,7 @@ export const fontAwesomeIcons = [
   faVolumeMute,
   faVolumeUp,
   faWrench,
+  faClock,
+  faCalendarPlus,
   // jhipster-needle-add-icon-import
 ];

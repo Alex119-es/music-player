@@ -29,14 +29,15 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     @Query(
         """
-            SELECT a FROM Album a
-            WHERE a.active = true
-            AND a.releaseDate IS NOT NULL
-            AND a.releaseDate > :today
-            ORDER BY a.releaseDate ASC
+        SELECT a FROM Album a
+        WHERE a.active = false
+        AND a.artist.user.login = :login
+        ORDER BY a.id DESC
         """
     )
-    List<Album> findUpcomingAlbums(@Param("today") LocalDate today);
+    List<Album> findUpcomingAlbums(@Param("login") String login);
 
     List<Album> findByArtistUserLoginAndActiveTrueAndReleaseDateAfter(String login, LocalDate date);
+
+    List<Album> findByActiveFalseAndReleaseDateLessThanEqual(LocalDate date);
 }

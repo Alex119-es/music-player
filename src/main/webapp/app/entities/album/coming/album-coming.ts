@@ -110,7 +110,15 @@ export class AlbumUpcoming implements OnInit {
   onSearch(event: Event): void {
     this.searchTerm.set((event.target as HTMLInputElement).value);
   }
+  daysUntil(date: any): number {
+    if (!date) return 0;
 
+    const today = new Date();
+    const release = new Date(date);
+
+    const diff = release.getTime() - today.getTime();
+    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  }
   private loadUpcomingAlbums(): void {
     this.isLoading.set(true);
 

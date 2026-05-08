@@ -126,8 +126,10 @@ public class AlbumServiceImpl implements AlbumService {
     public List<AlbumDTO> findUpcomingAlbums() {
         LOG.debug("Request to get upcoming Albums");
 
-        LocalDate today = LocalDate.now();
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
+            new BadRequestAlertException("Usuario no autenticado", "album", "usernotfound")
+        );
 
-        return albumRepository.findUpcomingAlbums(today).stream().map(albumMapper::toDto).toList();
+        return albumRepository.findUpcomingAlbums(login).stream().map(albumMapper::toDto).toList();
     }
 }

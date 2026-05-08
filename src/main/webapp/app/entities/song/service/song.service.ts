@@ -26,13 +26,17 @@ export type PartialUpdateRestSong = RestOf<PartialUpdateSong>;
 @Injectable()
 export class SongsService {
   readonly songsParams = signal<Record<string, string | number | boolean | readonly (string | number | boolean)[]> | undefined>(undefined);
+  readonly isAdmin = signal(false);
 
   readonly songsResource = httpResource<RestSong[]>(() => {
     const params = this.songsParams();
-    if (!params) {
-      return undefined;
-    }
-    return { url: this.resourceUrl, params };
+
+    if (!params) return undefined;
+
+    return {
+      url: this.isAdmin() ? this.adminResourceUrl : this.resourceUrl,
+      params,
+    };
   });
 
   readonly songs = computed(() =>
@@ -42,6 +46,7 @@ export class SongsService {
   protected readonly applicationConfigService = inject(ApplicationConfigService);
   protected readonly publicResourceUrl = this.applicationConfigService.getEndpointFor('api/songs');
   protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/songs/my-songs');
+  protected readonly adminResourceUrl = this.applicationConfigService.getEndpointFor('api/songs/admin');
 
   protected convertValueFromServer(restSong: RestSong): ISong {
     return {
@@ -151,4 +156,13 @@ export class SongService extends SongsService {
   protected convertResponseArrayFromServer(res: RestSong[]): ISong[] {
     return res.map(item => this.convertValueFromServer(item));
   }
+  readonly adminSongsResource = httpResource<RestSong[]>(() => {
+    const params = this.songsParams();
+    if (!params) return undefined;
+    return { url: this.adminResourceUrl, params };
+  });
+
+  readonly adminSongs = computed(() =>
+    (this.adminSongsResource.hasValue() ? this.adminSongsResource.value() : []).map(item => this.convertValueFromServer(item)),
+  );
 }

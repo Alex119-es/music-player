@@ -65,7 +65,13 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers("/api/upload/**", "/uploads/**")
                     .permitAll()
+                    .requestMatchers("/api/authenticate", "/api/register", "/api/activate")
+                    .permitAll()
+                    .requestMatchers("/api/upload/**", "/uploads/**")
+                    .permitAll()
                     .requestMatchers("/api/admin/**")
+                    .hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers("/api/songs/admin/**")
                     .hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers("/api/**")
                     .authenticated();

@@ -27,13 +27,14 @@ export class AlbumsService {
   readonly albumsParams = signal<Record<string, string | number | boolean | readonly (string | number | boolean)[]> | undefined>(undefined);
 
   protected readonly applicationConfigService = inject(ApplicationConfigService);
-  protected readonly resourceUrl = this.applicationConfigService.getEndpointFor('api/albums');
+
   protected readonly myResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/my');
+  protected readonly adminResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/admin');
 
   readonly albumsResource = httpResource<RestAlbum[]>(() => {
     const params = this.albumsParams();
     if (!params) return undefined;
-    return { url: this.resourceUrl, params };
+    return { url: this.adminResourceUrl, params };
   });
 
   readonly albums = computed(() =>

@@ -23,6 +23,7 @@ import { SortByDirective, SortDirective, SortService, type SortState, sortStateS
 import { SongDeleteDialog } from '../delete/song-delete-dialog';
 import { SongService } from '../service/song.service';
 import { ISong } from '../song.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-song',
@@ -66,19 +67,26 @@ export class Song implements OnInit {
   protected readonly sortService = inject(SortService);
   protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
+  protected readonly accountService = inject(AccountService);
 
   constructor() {
+    effect(() => {
+      const isAdmin = this.accountService.hasAnyAuthority(['ROLE_ADMIN']);
+
+      this.songService.isAdmin.set(isAdmin);
+    });
+
     effect(() => {
       const headers = this.songService.songsResource.headers();
       if (headers) {
         this.fillComponentAttributesFromResponseHeader(headers);
       }
     });
+
     effect(() => {
       this.songs.set(this.fillComponentAttributesFromResponseBody([...this.songService.songs()]));
     });
   }
-
   trackId = (item: ISong): number => this.songService.getSongIdentifier(item);
 
   formatDuration(seconds: number | null | undefined): string {
@@ -145,15 +153,16 @@ export class Song implements OnInit {
 
   protected queryBackend(): void {
     const pageToLoad: number = this.page();
+
     const queryObject: any = {
       page: pageToLoad - 1,
       size: this.itemsPerPage(),
       eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
+
     this.songService.songsParams.set(queryObject);
   }
-
   protected handleNavigation(page: number, sortState: SortState): void {
     const queryParamsObj = {
       page,

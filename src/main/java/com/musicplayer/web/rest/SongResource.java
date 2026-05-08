@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -178,16 +179,28 @@ public class SongResource {
         @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload,
         @RequestParam(name = "title.contains", required = false) String titleContains
     ) {
-        LOG.debug("REST request to get a page of Songs");
+        LOG.debug("REST request to get Songs (role-based)");
+
+        boolean isAdmin = SecurityUtils.hasCurrentUserThisAuthority("ROLE_ADMIN");
+        boolean isEditor = SecurityUtils.hasCurrentUserThisAuthority("ROLE_EDITOR");
+
         Page<SongDTO> page;
-        if (titleContains != null && !titleContains.isBlank()) {
-            page = songService.findByTitleContaining(titleContains, pageable);
-        } else if (eagerload) {
-            page = songService.findAllWithEagerRelationships(pageable);
+
+        // 🟣 ADMIN / EDITOR → todo el contenido
+        if (isAdmin || isEditor) {
+            if (titleContains != null && !titleContains.isBlank()) {
+                page = songService.findByTitleContaining(titleContains, pageable);
+            } else if (eagerload) {
+                page = songService.findAllWithEagerRelationships(pageable);
+            } else {
+                page = songService.findAll(pageable);
+            }
         } else {
-            page = songService.findAll(pageable);
+            throw new BadRequestAlertException("No tienes permisos para acceder a este recurso", "song", "forbidden");
         }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -254,6 +267,19 @@ public class SongResource {
         LOG.debug("REST request to get Songs of logged artist");
 
         Page<SongDTO> page = songService.findMySongs(pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    // SOLO PARA ADMIN
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
+    @GetMapping("/admin")
+    public ResponseEntity<List<SongDTO>> getAllSongsAdmin(Pageable pageable) {
+        LOG.debug("REST request to get ALL Songs (admin)");
+
+        Page<SongDTO> page = songService.findAllWithEagerRelationships(pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 

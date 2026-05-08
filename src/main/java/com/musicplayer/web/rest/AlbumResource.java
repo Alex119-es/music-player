@@ -7,6 +7,7 @@ import com.musicplayer.service.ArtistService;
 import com.musicplayer.service.dto.AlbumDTO;
 import com.musicplayer.service.dto.ArtistDTO;
 import com.musicplayer.web.rest.errors.BadRequestAlertException;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -159,11 +161,13 @@ public class AlbumResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of Albums in body.
      */
-    @GetMapping("")
-    public ResponseEntity<List<AlbumDTO>> getAllAlbums(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        LOG.debug("REST request to get a page of Albums");
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<AlbumDTO>> getAllAlbumsAdmin(Pageable pageable) {
         Page<AlbumDTO> page = albumService.findAll(pageable);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -204,19 +208,19 @@ public class AlbumResource {
      *         of Albums in body.
      */
     @GetMapping("/my")
-    public ResponseEntity<List<AlbumDTO>> getMyAlbums(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        LOG.debug("REST request to get Albums of current user");
-
-        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() ->
-            new BadRequestAlertException("Usuario no autenticado", ENTITY_NAME, "usernotfound")
-        );
+    @PreAuthorize("hasAnyRole('EDITOR','ADMIN')")
+    public ResponseEntity<List<AlbumDTO>> getMyAlbums(Pageable pageable) {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow();
 
         Page<AlbumDTO> page = albumService.findAllByCurrentUser(login, pageable);
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     @GetMapping("/public")
+    @PermitAll
     public ResponseEntity<List<AlbumDTO>> getPublicAlbums(Pageable pageable) {
         LOG.debug("REST request to get public Albums");
 

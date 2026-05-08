@@ -31,7 +31,7 @@ export class AlbumsService {
   protected readonly myResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/my');
   protected readonly adminResourceUrl = this.applicationConfigService.getEndpointFor('api/albums/admin');
 
-  readonly isAdminOrEditor = computed(() => this.accountService.hasAnyAuthority(['ROLE_ADMIN', 'ROLE_EDITOR']));
+  readonly isAdminOrEditor = computed(() => this.accountService.hasAnyAuthority(['ROLE_ADMIN']));
 
   readonly albumsResource = httpResource<RestAlbum[]>(() => {
     const params = this.albumsParams();

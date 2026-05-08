@@ -105,8 +105,7 @@ export class Album implements OnInit {
     this.accountService.identity().subscribe(account => {
       const authorities = account?.authorities ?? [];
 
-      this.isAdmin.set(authorities.includes('ROLE_ADMIN') || authorities.includes('ROLE_EDITOR'));
-
+      this.isAdmin.set(authorities.includes('ROLE_ADMIN'));
       this.roleLoaded.set(true);
 
       this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])

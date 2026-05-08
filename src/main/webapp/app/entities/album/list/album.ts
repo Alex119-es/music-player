@@ -63,7 +63,8 @@ export class Album implements OnInit {
       return albums;
     }
     const today = dayjs().startOf('day');
-    return albums.filter(album => album.releaseDate && album.releaseDate.isAfter(today));
+
+    return albums.filter(album => album.releaseDate && dayjs(album.releaseDate).isAfter(today));
   });
 
   readonly router = inject(Router);

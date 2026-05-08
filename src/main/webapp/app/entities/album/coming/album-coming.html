@@ -57,8 +57,8 @@
                         ngbDatepicker
                         #dp="ngbDatepicker"
                         [(ngModel)]="selectedDateModel"
-                        (ngModelChange)="selectedDate.set($event)"
                         (click)="dp.open()"
+                        container="body"
                         readonly
                       />
                       <div class="date-picker-actions">
@@ -69,8 +69,8 @@
                   } @else {
                     <div class="upcoming-card-date">
                       <fa-icon icon="calendar" />
-                      <span>{{ album.releaseDate | formatMediumDate }}</span>
-                      <span class="days-badge">en {{ daysUntil(album.releaseDate!) }} días</span>
+                      <span>{{ album.releaseDate }}</span>
+                      <span class="days-badge">en {{ album.releaseDate ? daysUntil(album.releaseDate) : 0 }} días</span>
                     </div>
                   }
                 </div>
@@ -132,10 +132,11 @@
                     class="date-input"
                     placeholder="Selecciona una fecha"
                     ngbDatepicker
-                    #dp2="ngbDatepicker"
+                    #dp3="ngbDatepicker"
                     [(ngModel)]="selectedDateModel"
-                    (ngModelChange)="selectedDate.set($event)"
-                    (click)="dp2.open()"
+                    (ngModelChange)="onDateChange($event)"
+                    (click)="dp3.open()"
+                    container="body"
                     readonly
                   />
 

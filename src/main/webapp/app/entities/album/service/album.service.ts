@@ -44,13 +44,29 @@ export class AlbumsService {
     return { url: this.myResourceUrl };
   });
 
-  readonly myAlbums = computed(() => (this.myAlbumsResource.value() ?? []).map(item => this.convertValueFromServer(item)));
+  readonly myAlbums = computed(() => {
+    const data = this.myAlbumsResource.value();
 
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
+    return data.map(item => this.convertValueFromServer(item));
+  });
+  protected convertValueFromClient<T extends IAlbum | NewAlbum | PartialUpdateAlbum>(album: T): RestOf<T> {
+    return {
+      ...album,
+      releaseDate: album.releaseDate ? dayjs(album.releaseDate).toISOString() : null,
+    };
+  }
   protected convertValueFromServer(restAlbum: RestAlbum): IAlbum {
     return {
       ...restAlbum,
-      releaseDate: restAlbum.releaseDate ? dayjs(restAlbum.releaseDate) : undefined,
+      releaseDate: restAlbum.releaseDate ?? null,
     };
+  }
+  protected convertResponseArrayFromServer(res: RestAlbum[]): IAlbum[] {
+    return res.map(item => this.convertValueFromServer(item));
   }
 }
 
@@ -69,7 +85,9 @@ export class AlbumService extends AlbumsService {
       .put<RestAlbum>(`${this.resourceUrl}/${encodeURIComponent(this.getAlbumIdentifier(album))}`, copy)
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
-
+  protected convertResponseFromServer(res: RestAlbum): IAlbum {
+    return this.convertValueFromServer(res);
+  }
   partialUpdate(album: PartialUpdateAlbum): Observable<IAlbum> {
     const copy = this.convertValueFromClient(album);
     return this.http
@@ -125,17 +143,10 @@ export class AlbumService extends AlbumsService {
   protected convertValueFromClient<T extends IAlbum | NewAlbum | PartialUpdateAlbum>(album: T): RestOf<T> {
     return {
       ...album,
-      releaseDate: album.releaseDate?.format(DATE_FORMAT) ?? null,
+      releaseDate: album.releaseDate ?? null,
     };
   }
 
-  protected convertResponseFromServer(res: RestAlbum): IAlbum {
-    return this.convertValueFromServer(res);
-  }
-
-  protected convertResponseArrayFromServer(res: RestAlbum[]): IAlbum[] {
-    return res.map(item => this.convertValueFromServer(item));
-  }
   getUpcoming(): Observable<IAlbum[]> {
     return this.http.get<IAlbum[]>(this.resourceUrl + '/upcoming');
   }

@@ -21,40 +21,37 @@ export class AlbumUpcoming implements OnInit {
   private readonly router = inject(Router);
   private readonly albumService = inject(AlbumService);
 
-  // 🔥 TU LISTA REAL
   readonly myAlbums = signal<IAlbum[]>([]);
   readonly isLoading = signal(false);
 
   readonly editingAlbumId = signal<number | null>(null);
   readonly selectedDate = signal<NgbDateStruct | null>(null);
-  readonly searchTerm = signal('');
+  selectedDateModel: any = null;
 
-  selectedDateModel: NgbDateStruct | null = null;
+  readonly searchTerm = signal('');
 
   ngOnInit(): void {
     this.loadUpcomingAlbums();
   }
 
-  // =========================
-  // 🔥 ESTO ES LO QUE FALTABA EN TU HTML
-  // =========================
-
   readonly upcomingAlbums = computed(() => this.myAlbums().filter(a => a.releaseDate !== null && a.releaseDate !== undefined));
 
   readonly availableAlbums = computed(() => this.myAlbums().filter(a => !a.releaseDate));
 
-  // =========================
-
   previousState(): void {
-    this.router.navigate(['/album']); // o history.back() si prefieres
+    this.router.navigate(['/album']);
   }
 
   startEditing(album: IAlbum): void {
-    this.editingAlbumId.set(album.id);
+    this.editingAlbumId.set(album.id ?? null);
 
     if (album.releaseDate) {
       const d = dayjs(album.releaseDate);
-      const struct = { year: d.year(), month: d.month() + 1, day: d.date() };
+      const struct = {
+        year: d.year(),
+        month: d.month() + 1,
+        day: d.date(),
+      };
 
       this.selectedDate.set(struct);
       this.selectedDateModel = struct;
@@ -69,12 +66,37 @@ export class AlbumUpcoming implements OnInit {
     this.selectedDate.set(null);
     this.selectedDateModel = null;
   }
-
+  onDateChange(date: any): void {
+    console.log('Fecha seleccionada:', date);
+    this.selectedDateModel = date;
+  }
   saveReleaseDate(album: IAlbum): void {
-    const date = this.selectedDate();
-    if (!date) return;
+    console.log('saveReleaseDate llamado');
+    console.log('selectedDateModel:', this.selectedDateModel);
 
-    const releaseDate = dayjs(`${date.year}-${date.month}-${date.day}`, 'YYYY-M-D');
+    const date = this.selectedDateModel;
+    if (!date) {
+      console.log('No hay fecha, saliendo');
+      return;
+    }
+
+    let parsed: dayjs.Dayjs;
+
+    // El datepicker devuelve Dayjs en vez de NgbDateStruct
+    if (dayjs.isDayjs(date)) {
+      parsed = date;
+    } else {
+      const struct = date as unknown as NgbDateStruct;
+      parsed = dayjs(new Date(struct.year, struct.month - 1, struct.day));
+    }
+
+    if (!parsed.isValid()) {
+      console.log('Fecha inválida');
+      return;
+    }
+
+    const releaseDate = parsed.format('YYYY-MM-DD');
+    console.log('Enviando releaseDate:', releaseDate);
 
     const updated: IAlbum = {
       ...album,
@@ -82,18 +104,20 @@ export class AlbumUpcoming implements OnInit {
     };
 
     this.albumService.update(updated).subscribe({
-      next: updatedAlbum => {
-        this.myAlbums.update(list => list.map(a => (a.id === updatedAlbum.id ? updatedAlbum : a)));
-        this.editingAlbumId.set(null);
-        this.selectedDate.set(null);
+      next: res => {
+        console.log('Guardado correctamente:', res);
+        this.myAlbums.update(list => list.map(a => (a.id === res.id ? res : a)));
+        this.cancelEditing();
       },
+      error: err => console.error('Error al guardar:', err),
     });
   }
 
   removeFromUpcoming(album: IAlbum): void {
+    const { releaseDate: _, ...rest } = album;
     const updated: IAlbum = {
-      ...album,
-      releaseDate: null,
+      ...rest,
+      releaseDate: undefined,
     };
 
     this.albumService.update(updated).subscribe({
@@ -102,7 +126,9 @@ export class AlbumUpcoming implements OnInit {
       },
     });
   }
-
+  transform(date: string | null | undefined): string {
+    return date ? dayjs(date).format('LL') : '';
+  }
   addToUpcoming(album: IAlbum): void {
     this.startEditing(album);
   }
@@ -110,21 +136,17 @@ export class AlbumUpcoming implements OnInit {
   onSearch(event: Event): void {
     this.searchTerm.set((event.target as HTMLInputElement).value);
   }
-  daysUntil(date: any): number {
+
+  daysUntil(date: string | null | undefined): number {
     if (!date) return 0;
-
-    const today = new Date();
-    const release = new Date(date);
-
-    const diff = release.getTime() - today.getTime();
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return dayjs(date).diff(dayjs(), 'day');
   }
+
   private loadUpcomingAlbums(): void {
     this.isLoading.set(true);
 
     this.albumService.getUpcoming().subscribe({
       next: res => {
-        console.log('UPCOMING:', res);
         this.myAlbums.set(res);
         this.isLoading.set(false);
       },

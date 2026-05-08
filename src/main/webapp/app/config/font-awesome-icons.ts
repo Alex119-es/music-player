@@ -56,6 +56,7 @@ import {
   faWrench,
   faClock,
   faCalendarPlus,
+  faCalendar,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -117,5 +118,6 @@ export const fontAwesomeIcons = [
   faWrench,
   faClock,
   faCalendarPlus,
+  faCalendar,
   // jhipster-needle-add-icon-import
 ];
